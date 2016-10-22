@@ -221,12 +221,14 @@ void HighSpeedDeviceTask_1(void const * argument)
         cnt ++;if(cnt >= 100000)cnt = 0;
 		if(cnt % 2 == 0)
 		{
-			//抢占SI4463
+			//we used a MUTEX to sync the usage of SI4463,because more than one task use it
+			//get the MUTEX
 			osMutexWait(SI4463Mutex,osWaitForever);
-			//平均100秒就要发送同步信号
+			//every 100 seconds send the infromation
 			if(cnt % 5000 == 0 && cnt != 0)board_sync_device();
+			//if received success flick the LED2
 			if(board.ops->CheckReceive() == true)Alarm.d_puts(LED2,"10001000",1);
-			//释放SI4463
+			//Release the MUTEX
 			osMutexRelease(SI4463Mutex);
 		}
     }
@@ -241,7 +243,10 @@ void HighSpeedDeviceTask_2(void const * argument)
 	{
         osDelay(20);
 		cnt ++;if(cnt >= 100000)cnt = 0;
-		//按键任务
+		//get the key valus
+		/*
+		we use ADkey<judge the key value by the ADC value,Every key Correspond to every ADC value >
+		*/
 		if(cnt % 1 == 0)
 		{
 			d_ADC_Key.d_gets(0,(uint8_t *)&KeyValue,0);
