@@ -155,7 +155,7 @@ void BackGroundTask_1(void const * argument)
 /*
 ****************************************************
 *  Function       : BackGroundTask_2
-*  Description    : 串口中继器(根据端口向任务转发消息)
+*  Description    : 
 *  Calls          : 
 *  Called By      : 
 *  Input          : 
@@ -173,28 +173,35 @@ void BackGroundTask_2(void const * argument)
 	}
 }
 
-//高速定时器任务(20ms)
+//H-speed timer task(20ms)
 void HighSpeedTimerTask(void const * argument)
 {
 	static uint16_t cnt = 0x00;
-	//每两秒钟闪烁LED1
+	//every 2 seconds we flick the LED1
 	cnt ++;if(cnt > 100)cnt = 0;
     if(cnt == 0)Alarm.d_puts(LED1,"100000000",1);
+	//devices's timing process is here
 	d_ADC_Key.d_timing_proceee(0,0,0);
 	Alarm.d_timing_proceee(0,0,0);
 	si4463.d_timing_proceee(20,0,0);
     GizwitsTimingProcess();
-	//每一秒递减一次设备生存时间（生存时间是120S）
+	//the TTL(time to live)
+	/*
+	The SI4463 commucation module is One master more slave,So the master need to know wheter the slaver is exist,
+	So once the slaver power on,the first thing to do is send what I have&&Addr to the master,once master receive 
+	such information,It record it and keep it for about 120 seconds,once expired,the master wiil delete it,
+	the slaver need to send such information every 100 seconds to keep that.
+	*/
 	if(cnt % 50 == 0)board_device_list_opera();
 }
-//低速定时器任务(100ms)
+//L-speed timer task(100ms)
 void LowSpeedTimerTask(void const * argument)
 {
 	;
 }
 
 
-//高速器件1
+//H-Device-1
 void HighSpeedDeviceTask_1(void const * argument)
 {
     uint32_t cnt = 0x00;
@@ -225,7 +232,7 @@ void HighSpeedDeviceTask_1(void const * argument)
     }
 }
 
-//高速器件2
+//H-Device-2
 void HighSpeedDeviceTask_2(void const * argument)
 {
 	static KeyValueEnum KeyValue = 0;
@@ -254,7 +261,7 @@ void HighSpeedDeviceTask_2(void const * argument)
 		}
 	}
 }
-//低速器件2
+//L-Device-2
 void LowSpeedDeviceTask_1(void const * argument)
 {
 
@@ -269,7 +276,7 @@ void LowSpeedDeviceTask_1(void const * argument)
         if(CUR_BOARD == MAIN_BOARD)GizwitsExecDirective();
     }
 }
-//低速器件1
+//L-Device-1
 void LowSpeedDeviceTask_2(void const * argument)
 {
     uint8_t SHT2xSerialNumber[8] = {0x00},MinuteLast = 0x00;
