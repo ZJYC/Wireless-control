@@ -1,6 +1,6 @@
 #include "board.h"
 
-Caution caution = 
+static Caution caution = 
 {
     {0,0,0,0,0},
     {0,0,0,0,0},
@@ -20,7 +20,7 @@ Caution caution =
 *  Others         : 
 *****************************************************
 */
-result Alarm_open(void)
+static result Alarm_open(void)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
     //³õÊ¼»¯4¸öLED
@@ -55,7 +55,7 @@ result Alarm_open(void)
 *  Others         : 
 *****************************************************
 */
-result Alarm_close(void)
+static result Alarm_close(void)
 {
 	HAL_GPIO_DeInit(GPIOC,GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
     HAL_GPIO_DeInit(GPIOE,GPIO_PIN_1);
@@ -77,7 +77,7 @@ result Alarm_close(void)
 *  Others         : 
 *****************************************************
 */
-result Alarm_detect(void)
+static result Alarm_detect(void)
 {
 	if(CHECK_STATE(Alarm.state,STATE_CLOSE))
 	{
@@ -98,16 +98,11 @@ result Alarm_detect(void)
 *  Others         : 
 *****************************************************
 */
-result Alarm_command(uint8_t * command, uint32_t param)
+static result Alarm_command(uint8_t * command, uint32_t param)
 {
 	if(CHECK_STATE(Alarm.state,STATE_CLOSE))
 	{
 		Alarm.d_open();
-	}
-
-	if(strcmp((const char *)command,"OPEN") == 0)
-	{
-		Alarm.d_puts(LED5,"11100011100011111111000",10);
 	}
     return true;
 }
@@ -123,7 +118,7 @@ result Alarm_command(uint8_t * command, uint32_t param)
 *  Others         : 
 *****************************************************
 */
-result Alarm_set(uint32_t LEDx, uint32_t State)
+static result Alarm_set(uint32_t LEDx, uint32_t State)
 {
 	if(CHECK_STATE(Alarm.state,STATE_CLOSE))
 	{
@@ -175,7 +170,7 @@ result Alarm_set(uint32_t LEDx, uint32_t State)
 *  Others         : 
 *****************************************************
 */
-result Alarm_puts(uint32_t LEDx, uint8_t * Directive, uint32_t Cnt)
+static result Alarm_puts(uint32_t LEDx, uint8_t * Directive, uint32_t Cnt)
 {
 	if(CHECK_STATE(Alarm.state,STATE_CLOSE))
 	{
@@ -200,7 +195,7 @@ result Alarm_puts(uint32_t LEDx, uint8_t * Directive, uint32_t Cnt)
 *  Others         : 
 *****************************************************
 */
-result Alarm_gets(uint32_t SendAddr, uint8_t * start, uint32_t length)
+static result Alarm_gets(uint32_t SendAddr, uint8_t * start, uint32_t length)
 {
 	if(CHECK_STATE(Alarm.state,STATE_CLOSE))
 	{
@@ -221,7 +216,7 @@ result Alarm_gets(uint32_t SendAddr, uint8_t * start, uint32_t length)
 *  Others         : 
 *****************************************************
 */
-result Alarm_timing_process(uint32_t Param1, uint32_t Param2, uint32_t Param3)
+static result Alarm_timing_process(uint32_t Param1, uint32_t Param2, uint32_t Param3)
 {
     uint16_t Cnt1;
     uint8_t * Temp = 0;

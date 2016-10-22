@@ -1,6 +1,25 @@
 
 #include "board.h"
 
+static void DS1307_GetTime(DS1307_Time * Ds1307Time);
+static void DS1307_Delay(u32 n);
+static void DS1307_Init(void);
+static void DS1307_SCL_OUTPUT(void);
+static void DS1307_SCL_INPUT(void);
+static void DS1307_SDA_OUTPUT(void);
+static void DS1307_SDA_INPUT(void);
+static void DS1307_I2cStartCondition(void);
+static void DS1307_I2cStopCondition(void);
+static void DS1307_I2cAcknowledge(void);
+static void DS1307_I2cNoAcknowledge(void);
+static uint8_t DS1307_I2cReadByte(void);
+static uint8_t DS1307_I2cWriteByte(uint8_t byte);
+static uint8_t DS1307_Wait_Ack(void);
+static void RTC_init(void);
+static void ds1307_Write(uint8_t WriteAddr,uint8_t Data);
+static uint8_t ds1307_Read(uint8_t ReadAddr);
+
+
 DS1307_Time Ds1307Time = {0x00};
 /*
 ****************************************************
@@ -14,7 +33,7 @@ DS1307_Time Ds1307Time = {0x00};
 *  Others         : 
 *****************************************************
 */
-result DS1307_open(void)
+static result DS1307_open(void)
 {
     RTC_init();
     SET_STATE(DS1307.state,STATE_OPEN);
@@ -33,7 +52,7 @@ result DS1307_open(void)
 *  Others         : 
 *****************************************************
 */
-result DS1307_close(void)
+static result DS1307_close(void)
 {
     RESET_STATE(DS1307.state,STATE_OPEN);
     SET_STATE(DS1307.state,STATE_CLOSE);
@@ -52,7 +71,7 @@ result DS1307_close(void)
 *  Others         : 
 *****************************************************
 */
-result DS1307_detect(void)
+static result DS1307_detect(void)
 {
 	if(CHECK_STATE(DS1307.state,STATE_CLOSE))
 	{
@@ -73,7 +92,7 @@ result DS1307_detect(void)
 *  Others         : 
 *****************************************************
 */
-result DS1307_command(uint8_t * command, uint32_t param)
+static result DS1307_command(uint8_t * command, uint32_t param)
 {
 	if(CHECK_STATE(DS1307.state,STATE_CLOSE))
 	{
@@ -94,7 +113,7 @@ result DS1307_command(uint8_t * command, uint32_t param)
 *  Others         : 
 *****************************************************
 */
-result DS1307_set(uint32_t Area, uint32_t Value)
+static result DS1307_set(uint32_t Area, uint32_t Value)
 {
 	if(CHECK_STATE(DS1307.state,STATE_CLOSE))
 	{
@@ -155,7 +174,7 @@ result DS1307_set(uint32_t Area, uint32_t Value)
 *  Others         : 
 *****************************************************
 */
-result DS1307_puts(uint32_t RecvAddr, uint8_t * start, uint32_t length)
+static result DS1307_puts(uint32_t RecvAddr, uint8_t * start, uint32_t length)
 {
 	if(CHECK_STATE(DS1307.state,STATE_CLOSE))
 	{
@@ -176,7 +195,7 @@ result DS1307_puts(uint32_t RecvAddr, uint8_t * start, uint32_t length)
 *  Others         : 
 *****************************************************
 */
-result DS1307_gets(uint32_t Param1, uint8_t * Param2, uint32_t Param3)
+static result DS1307_gets(uint32_t Param1, uint8_t * Param2, uint32_t Param3)
 {
 	if(CHECK_STATE(DS1307.state,STATE_CLOSE))
 	{
@@ -194,7 +213,7 @@ result DS1307_gets(uint32_t Param1, uint8_t * Param2, uint32_t Param3)
 
 #if 1//DS1307低级驱动
 
-void DS1307_GetTime(DS1307_Time * Ds1307Time)
+static void DS1307_GetTime(DS1307_Time * Ds1307Time)
 {
 	uint8_t temp = 0;
 	temp=ds1307_Read(ADDR_SEC);
@@ -226,7 +245,7 @@ void DS1307_GetTime(DS1307_Time * Ds1307Time)
 
 }
 
-void DS1307_Delay(u32 n)
+static void DS1307_Delay(u32 n)
 {
     uint16_t i;
     
@@ -239,7 +258,7 @@ void DS1307_Delay(u32 n)
     }
 }
 
-void DS1307_Init(void)
+static void DS1307_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct;
 
@@ -252,7 +271,7 @@ void DS1307_Init(void)
     DS1307_SDA_HIGH();
 }
 
-void DS1307_SCL_OUTPUT(void)
+static void DS1307_SCL_OUTPUT(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.Pin =  DS1307_SCL_PIN;
@@ -261,7 +280,7 @@ void DS1307_SCL_OUTPUT(void)
     HAL_GPIO_Init(DS1307_I2C_PORT, &GPIO_InitStructure);
 }
 
-void DS1307_SCL_INPUT(void)
+static void DS1307_SCL_INPUT(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.Pin =  DS1307_SCL_PIN;
@@ -270,7 +289,7 @@ void DS1307_SCL_INPUT(void)
     HAL_GPIO_Init(DS1307_I2C_PORT, &GPIO_InitStructure);
 }
 
-void DS1307_SDA_OUTPUT(void)
+static void DS1307_SDA_OUTPUT(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.Pin =  DS1307_SDA_PIN;
@@ -279,7 +298,7 @@ void DS1307_SDA_OUTPUT(void)
     HAL_GPIO_Init(DS1307_I2C_PORT, &GPIO_InitStructure);
 }
 
-void DS1307_SDA_INPUT(void)
+static void DS1307_SDA_INPUT(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.Pin =  DS1307_SDA_PIN;
@@ -287,7 +306,7 @@ void DS1307_SDA_INPUT(void)
     HAL_GPIO_Init(DS1307_I2C_PORT, &GPIO_InitStructure);
 }
 
-void DS1307_I2cStartCondition(void)
+static void DS1307_I2cStartCondition(void)
 {  
     DS1307_SCL_OUTPUT();
     DS1307_SDA_OUTPUT();
@@ -299,7 +318,7 @@ void DS1307_I2cStartCondition(void)
     DS1307_Delay(1);
 }
 
-void DS1307_I2cStopCondition(void)
+static void DS1307_I2cStopCondition(void)
 {   
     DS1307_SCL_OUTPUT();
     DS1307_SDA_OUTPUT();
@@ -312,7 +331,7 @@ void DS1307_I2cStopCondition(void)
 
 }
 
-void DS1307_I2cAcknowledge(void)
+static void DS1307_I2cAcknowledge(void)
 {    
     DS1307_SCL_OUTPUT();
     DS1307_SDA_OUTPUT();
@@ -323,7 +342,7 @@ void DS1307_I2cAcknowledge(void)
     DS1307_Delay(1);
 }
 
-void DS1307_I2cNoAcknowledge(void)
+static void DS1307_I2cNoAcknowledge(void)
 {
     
     DS1307_SCL_OUTPUT();
@@ -336,7 +355,7 @@ void DS1307_I2cNoAcknowledge(void)
 
 }
 
-uint8_t DS1307_I2cReadByte(void)
+static uint8_t DS1307_I2cReadByte(void)
 {
     uint8_t i, val = 0;
     
@@ -365,7 +384,7 @@ uint8_t DS1307_I2cReadByte(void)
     return (val);
 }
 
-uint8_t DS1307_I2cWriteByte(uint8_t byte)
+static uint8_t DS1307_I2cWriteByte(uint8_t byte)
 {
     uint8_t i = 0,ack = 0;
 
@@ -409,7 +428,7 @@ uint8_t DS1307_I2cWriteByte(uint8_t byte)
 	return ack;
 }
 
-uint8_t DS1307_Wait_Ack(void)
+static uint8_t DS1307_Wait_Ack(void)
 {
 	uint8_t ucErrTime=0;
     
@@ -434,7 +453,7 @@ uint8_t DS1307_Wait_Ack(void)
 	return 0;  
 } 
 
-void RTC_init(void)
+static void RTC_init(void)
 {
 	DS1307_Init();
 	ds1307_Write(0x00,0x00);
@@ -442,7 +461,7 @@ void RTC_init(void)
 	//注意：这里会出一点问题，秒会被清零
 }
 
-void ds1307_Write(uint8_t WriteAddr,uint8_t Data)
+static void ds1307_Write(uint8_t WriteAddr,uint8_t Data)
 {	
     uint8_t temp;
     temp=(Data/10*16)+(Data%10);			//16进制转BCD	
@@ -453,7 +472,7 @@ void ds1307_Write(uint8_t WriteAddr,uint8_t Data)
     DS1307_I2cStopCondition();				//产生停止条件	 
 }
 
-uint8_t ds1307_Read(uint8_t ReadAddr)
+static uint8_t ds1307_Read(uint8_t ReadAddr)
 {				  
 	uint8_t temp;		  
 	DS1307_I2cStartCondition();  

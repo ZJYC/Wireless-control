@@ -40,13 +40,6 @@ typedef struct
 
 extern deviceModule DS1307;
 extern DS1307_Time Ds1307Time;
-
-void RTC_init(void);
-void ds1307_Write(uint8_t WriteAddr,uint8_t Data);
-uint8_t ds1307_Read(uint8_t ReadAddr);
-void DS1307_GetTime(DS1307_Time * Ds1307Time);
-void DS1307_Init(void);
-
 #ifdef __cplusplus
 }
 #endif

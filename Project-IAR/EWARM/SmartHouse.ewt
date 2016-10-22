@@ -1246,15 +1246,39 @@
   <group>
     <name>User</name>
     <group>
+      <name>Alarm</name>
+      <file>
+        <name>$PROJ_DIR$\..\User\Alarm\Alarm.c</name>
+      </file>
+    </group>
+    <group>
+      <name>CRC_JIAMI</name>
+      <file>
+        <name>$PROJ_DIR$\..\User\CRC_JIAMI\CRC_JIAMI.c</name>
+      </file>
+    </group>
+    <group>
+      <name>DS1307</name>
+      <file>
+        <name>$PROJ_DIR$\..\User\DS1307\DS1307.c</name>
+      </file>
+    </group>
+    <group>
+      <name>Giztwi</name>
+      <file>
+        <name>$PROJ_DIR$\..\User\Gizwits\Gizwits.c</name>
+      </file>
+    </group>
+    <group>
+      <name>Key</name>
+      <file>
+        <name>$PROJ_DIR$\..\User\Key\Key.c</name>
+      </file>
+    </group>
+    <group>
       <name>MODULE</name>
       <file>
-        <name>$PROJ_DIR$\..\User\Alarm.c</name>
-      </file>
-      <file>
         <name>$PROJ_DIR$\..\User\Module\board.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\User\CRC_JIAMI.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\User\Module\DataTransfer.c</name>
@@ -1263,23 +1287,32 @@
         <name>$PROJ_DIR$\..\User\Module\DeviceModule.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\User\DS1307.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\User\Gizwits\Gizwits.c</name>
-      </file>
-      <file>
         <name>$PROJ_DIR$\..\User\Module\Handle.c</name>
       </file>
+    </group>
+    <group>
+      <name>Relay</name>
       <file>
-        <name>$PROJ_DIR$\..\User\Key.c</name>
+        <name>$PROJ_DIR$\..\User\Relay\relay.c</name>
+      </file>
+    </group>
+    <group>
+      <name>RF4463</name>
+      <file>
+        <name>$PROJ_DIR$\..\User\RF4463\RF4463.c</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\User\relay.c</name>
+        <name>$PROJ_DIR$\..\User\RF4463\si446x.c</name>
       </file>
+    </group>
+    <group>
+      <name>SHT2x</name>
       <file>
-        <name>$PROJ_DIR$\..\User\RF4463.c</name>
+        <name>$PROJ_DIR$\..\User\SHT2x\SHT2x.c</name>
       </file>
+    </group>
+    <group>
+      <name>UsartSerial</name>
       <file>
         <name>$PROJ_DIR$\..\User\USART\SerialDriver.c</name>
       </file>
@@ -1288,12 +1321,6 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\User\USART\SerialDriver_OS.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\User\SHT2x.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\User\RF4463\si446x.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\User\USART\UsartDriver.c</name>
