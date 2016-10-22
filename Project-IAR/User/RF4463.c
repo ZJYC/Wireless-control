@@ -3,7 +3,7 @@
 
 #define     ACK_LENGTH      10 
      
-uint8_t       AckBuffer[ACK_LENGTH] = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
+static uint8_t       AckBuffer[ACK_LENGTH] = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
 
 void SI4463_Delay(uint32_t cnt);
 
@@ -20,7 +20,7 @@ void SI4463_Delay(uint32_t cnt);
 *  Author         : 
 *****************************************************
 */
-result d_open_si4463(void)
+static result d_open_si4463(void)
 {
     //first open the SPI peripherals...
 	if(spi_1.p_open() != true)return false;
@@ -51,7 +51,7 @@ result d_open_si4463(void)
 *  Author         : 
 *****************************************************
 */
-result d_close_si4463(void)
+static result d_close_si4463(void)
 {
     SET_STATE(si4463.state,STATE_CLOSE);
     RESET_STATE(si4463.state,STATE_OPEN);
@@ -60,7 +60,7 @@ result d_close_si4463(void)
 /*
 ****************************************************
 *  Function       : d_detect_si4463
-*  Description    : 检测SI4463是否存在
+*  Description    : detect if the device is exist
 *  Calls          : 
 *  Called By      : 
 *  Input          : 
@@ -70,7 +70,7 @@ result d_close_si4463(void)
 *  Author         : 
 *****************************************************
 */
-result d_detect_si4463(void)
+static result d_detect_si4463(void)
 {
     if(CHECK_STATE(si4463.state,STATE_CLOSE))
     {
@@ -95,7 +95,7 @@ result d_detect_si4463(void)
 *  Author         : 
 *****************************************************
 */
-result d_command_si4463 (uint8_t * Param1, uint32_t Param2)
+static result d_command_si4463 (uint8_t * Param1, uint32_t Param2)
 {
     if(CHECK_STATE(si4463.state,STATE_CLOSE))
     {
@@ -125,7 +125,7 @@ result d_command_si4463 (uint8_t * Param1, uint32_t Param2)
 *  Author         : 
 *****************************************************
 */
-result d_set_si4463(uint32_t Param1,uint32_t Param2)
+static result d_set_si4463(uint32_t Param1,uint32_t Param2)
 {
     if(CHECK_STATE(si4463.state,STATE_CLOSE))
     {
@@ -157,7 +157,7 @@ result d_set_si4463(uint32_t Param1,uint32_t Param2)
 *  Author         : 
 *****************************************************
 */
-result d_puts_si4463(uint32_t RecvAddr,uint8_t * start,uint32_t length)
+static result d_puts_si4463(uint32_t RecvAddr,uint8_t * start,uint32_t length)
 {
 	uint8_t RepeatCounter = 0;
 	//retry the send for 4 timers
@@ -172,14 +172,15 @@ result d_puts_si4463(uint32_t RecvAddr,uint8_t * start,uint32_t length)
     {
 		uint8_t temp[10] = {0x00},cnt = 0,cnt1 = 0;
 		//p_dataframe temp_dataframe = (p_dataframe)start;
-		/***********************警告***************************/
-		/*SI446X_SEND_PACKET不能实现其他频率（通道）发送，  */
-		/*只能先用SI446X_START_RX修改本地频率，然后才能实现 */
-		/*任意频率（通道）发送*/
+		/***********************Notification***************************/
+		/*
+		I found that if I want to Tx at a different frequence,I should first call func <SI446X_START_RX>
+		with the expect frequence,then call <SI446X_SEND_PACKET> to send at that expect frequence,That is why I
+		write following code
+		*/
 		/******************************************************/
         if(SI446X_START_RX(RecvAddr, 0, PACKET_LENGTH,8, 8, 8) != true)return false;
-		// 2016--10--22--11--15--27:Change the delay length here from 20 to 4
-        SI4463_Delay(4);
+        SI4463_Delay(4);// 2016--10--22--11--15--27:Change the delay length here from 20 to 4
 		//inter critical mode,
         taskENTER_CRITICAL();
 		if(SI446X_SEND_PACKET(start,length,RecvAddr,0) != true)return false;//发送数据
@@ -189,11 +190,11 @@ result d_puts_si4463(uint32_t RecvAddr,uint8_t * start,uint32_t length)
 			SI4463_Delay(1);
         }while (!(temp[3] & (1<<5))); 
 		cnt = 0;
-        //进入接收状态  PACKET_LENGTH
+        //Inter RX mode to receive the ACK
         if(SI446X_START_RX(board.board_Local_channel, 0,ACK_LENGTH  ,8, 8, 8) != true)return false;
         taskEXIT_CRITICAL();
         //osDelay(20);
-        //开始检有无ACK并检查其完整性
+        //wait for 0.1 second to check the ACK
         for(cnt = 0;cnt < 10;cnt ++)
         {
             osDelay(10);
@@ -206,10 +207,9 @@ result d_puts_si4463(uint32_t RecvAddr,uint8_t * start,uint32_t length)
                 {
                     if(start[cnt1] != AckBuffer[cnt1])return false;
                  }
-                //检查通过。。。
+                //indicate we get the right ACK
                 if(cnt1 == ACK_LENGTH)
                 {
-                    //进入接收状态
                     if(SI446X_START_RX(board.board_Local_channel, 0, PACKET_LENGTH,8, 8, 8) != true)return false;
                     return true;
                 }
@@ -219,9 +219,10 @@ result d_puts_si4463(uint32_t RecvAddr,uint8_t * start,uint32_t length)
                 }
             }
         }
-		//如果到达这里，说明没有等到ACK此次发送认为失败了，需要重传
+		//runing to here indicate that we didn't receive the ACK,we will resend
 		RepeatCounter ++;
-        //osDelay(5);
+		//variable length to delay
+        osDelay(RepeatCounter * 5);
 		if(RepeatCounter >= 4)
         {
             return false;
@@ -233,17 +234,20 @@ result d_puts_si4463(uint32_t RecvAddr,uint8_t * start,uint32_t length)
 /*
 ****************************************************
 *  Function       : d_gets_si4463
-*  Description    : 将数据读出来
+*  Description    : receive data through certain addr,if received success,send ACK immediately
 *  Calls          : 
 *  Called By      : 
-*  Input          : start:数据起始，length：数据长度
+*  Input          : 
+					SendAddr:Addr to receive
+					start:the addr to storage the data
+					length：data length received
 *  Output         : 
 *  Return         : 
 *  Others         : 
 *  Author         : 
 *****************************************************
 */
-result d_gets_si4463(uint32_t SendAddr,uint8_t * start,uint32_t length)
+static result d_gets_si4463(uint32_t SendAddr,uint8_t * start,uint32_t length)
 {
     static uint8_t LastSendAddr = 0xff,cnt2 = 0;
     static uint32_t cnt = 0;
@@ -252,7 +256,7 @@ result d_gets_si4463(uint32_t SendAddr,uint8_t * start,uint32_t length)
     
     cnt ++;
     if(cnt > 1000000)cnt = 0;
-    
+    //In reality I found the SI4463 will become uncontrol so I want init it at regular time.
     if(CHECK_STATE(si4463.state,STATE_CLOSE) || (cnt % 10000 == 0))
     {
         if(si4463.d_open() != true)
@@ -268,36 +272,29 @@ result d_gets_si4463(uint32_t SendAddr,uint8_t * start,uint32_t length)
 
     {
 		uint8_t temp[10] = {0x00};
-		/* 检测是否收到一个数据包 */
+		/* check if we receive data */
         taskENTER_CRITICAL();
 		if(SI446X_INT_STATUS(temp) != true)return false;
 		if (temp[3] & (1<<4))
 		{
             p_dataframe temp_dataframe = (p_dataframe)start;
-            //读取数据包内容
+            //read the data
 			length = SI446X_READ_PACKET(start);
             taskEXIT_CRITICAL();
-            //解密数据，出错则返回失败
+            //decryption the data we have received and compare it
             if(CRC_JIEMI((uint8_t *)start) == false)return false;
-            
-            //SI4463_Delay(300);
-            
-            //osDelay(5);
-			/***********************警告***************************/
-			/*SI446X_SEND_PACKET不能实现其他频率（通道）发送，  */
-			/*只能先用SI446X_START_RX修改本地频率，然后才能实现 */
-			/*任意频率（通道）发送*/
-			/******************************************************/
+			//if the data was right then we'd send ACK to sender's addr
+			//the following code due to the reason as above
             if(SI446X_START_RX(temp_dataframe->sender_channel, 0, PACKET_LENGTH,8, 8, 8) != true)return false;
-            // 返回应答信号,应答数据为10-19
+            // send the ACK
             if(SI446X_SEND_PACKET(AckBuffer, ACK_LENGTH,temp_dataframe->sender_channel,0) != true)return false;
             do
             {  
                 //osDelay(5);
                 if(SI446X_INT_STATUS(temp) != true || cnt2++ > 200)return false;
 				SI4463_Delay(1);
-            }while (!(temp[3] & (1<<5)));    //等待发射完成（中断产生）
-            //进入接收状态
+            }while (!(temp[3] & (1<<5)));    //wait for send success
+            //inter RX mode
             if(SI446X_START_RX(board.board_Local_channel, 0, PACKET_LENGTH,8, 8, 8) != true)return false;
             data_recv_process();
             return true;
@@ -310,7 +307,7 @@ result d_gets_si4463(uint32_t SendAddr,uint8_t * start,uint32_t length)
 /*
 ****************************************************
 *  Function       : d_timing_proceee_si4463
-*  Description    : 
+*  Description    : the device has some function that implemented by timing call
 *  Calls          : 
 *  Called By      : 
 *  Input          : 
@@ -319,7 +316,7 @@ result d_gets_si4463(uint32_t SendAddr,uint8_t * start,uint32_t length)
 *  Others         : 
 *****************************************************
 */
-result d_timing_proceee_si4463(uint32_t Interval, uint32_t Param2, uint32_t Param3)
+static result d_timing_proceee_si4463(uint32_t Interval, uint32_t Param2, uint32_t Param3)
 {
 	static uint32_t During = 0x00;
 	
@@ -332,8 +329,8 @@ result d_timing_proceee_si4463(uint32_t Interval, uint32_t Param2, uint32_t Para
     }
 	
 	During += Interval;
-	//每30分钟关闭一次
-	if(During >= 10 * 60 * 1000)
+	//every 5 minutss the SI4463 was closed..and then every call to its func will init it 
+	if(During >= 5 * 60 * 1000)
 	{
 		During = 0;
 		si4463.d_close();
@@ -347,16 +344,16 @@ result d_timing_proceee_si4463(uint32_t Interval, uint32_t Param2, uint32_t Para
 /*
 ****************************************************
 *  Function       : d_process_it_si4463
-*  Description    : 
+*  Description    : The device have some functions need to be implemented by interrupt
 *  Calls          : 
 *  Called By      : 
 *  Input          : 
 *  Output         : 
 *  Return         : 
-*  Others         : 
+*  Others         : Nothing to do here
 *****************************************************
 */
-result d_process_it_si4463(uint32_t Param1, uint32_t Param2, uint32_t Param3)
+static result d_process_it_si4463(uint32_t Param1, uint32_t Param2, uint32_t Param3)
 {
     if(CHECK_STATE(si4463.state,STATE_CLOSE))
     {

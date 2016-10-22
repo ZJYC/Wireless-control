@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"E:\DangerWithYou\IAR\common\bin\cspybat" -f "F:\重要资料\学习笔记\放眼未来\HouseControl\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.general.xcl" --backend -f "F:\重要资料\学习笔记\放眼未来\HouseControl\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.driver.xcl" 
+"E:\DangerWithYou\IAR\common\bin\cspybat" -f "C:\Users\Zhaojingyangchun\Documents\GitHub\HouseControl\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.general.xcl" --backend -f "C:\Users\Zhaojingyangchun\Documents\GitHub\HouseControl\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"E:\DangerWithYou\IAR\common\bin\cspybat" -f "F:\重要资料\学习笔记\放眼未来\HouseControl\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.general.xcl" "--debug_file=%~1" --backend -f "F:\重要资料\学习笔记\放眼未来\HouseControl\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.driver.xcl" 
+"E:\DangerWithYou\IAR\common\bin\cspybat" -f "C:\Users\Zhaojingyangchun\Documents\GitHub\HouseControl\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\Zhaojingyangchun\Documents\GitHub\HouseControl\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.driver.xcl" 
 
 @echo off 
 :end
