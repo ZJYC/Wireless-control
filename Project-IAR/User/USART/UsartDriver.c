@@ -5,6 +5,9 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 static SerialTCBTypedef SerialTCB_Usart2 = {0x00};
+static uint8_t Uart2Buf[100] = {0x00};
+static uint8_t Uart2BufIndex = 0x00;
+static uint8_t Recvd = 0x00;
 
 #if	1//操作系统驱动接口层
 
@@ -58,6 +61,9 @@ result d_open_usart_1 (void)
     
     SET_STATE(usart_1.state,STATE_OPEN);
     RESET_STATE(usart_1.state,STATE_CLOSE);
+	
+    Uart2BufIndex = 0;
+	usart_1.d_gets(0,&Uart2Buf[Uart2BufIndex],1);
 	
 	return true;
 }
@@ -149,13 +155,14 @@ result d_set_usart_1 (uint32_t Param_1, uint32_t Param_2)
 *  Others         : 
 *****************************************************
 */
-result d_puts_usart_1 (uint32_t Counter, uint8_t * Str, uint32_t Param) 
+result d_puts_usart_1 (uint32_t Param, uint8_t * Str, uint32_t Length) 
 {
 	Param = Param;
 	
 	if(CHECK_STATE(usart_1.state,STATE_CLOSE))usart_1.d_open();
 	
 	//if(UsartTcbSends(&Usart_1_Tcb,Counter,Str) == true)return true;
+	HAL_UART_Transmit_IT(&huart1,Str,Length);
 	
     return false;
 }
@@ -171,12 +178,13 @@ result d_puts_usart_1 (uint32_t Counter, uint8_t * Str, uint32_t Param)
 *  Others         : 
 *****************************************************
 */
-result d_gets_usart_1 (uint32_t Counter, uint8_t * Str, uint32_t Param)
+result d_gets_usart_1 (uint32_t param, uint8_t * Str, uint32_t Length)
 {
 	if(CHECK_STATE(usart_1.state,STATE_CLOSE))usart_1.d_open();
 	
 	//if(UsartTcbRecvs(&Usart_1_Tcb,Counter,Str) == true)return true;
-
+	HAL_UART_Receive_IT(&huart1,Str,Length);
+	
     return false;	
 }
 /*
@@ -192,14 +200,18 @@ result d_gets_usart_1 (uint32_t Counter, uint8_t * Str, uint32_t Param)
 *****************************************************
 */
 result d_timing_proceee_usart_1(uint32_t Param_1, uint32_t Param_2, uint32_t Param_3)
-{
+{	
 	Param_2 = Param_2;
 	Param_3 = Param_3;
 	
 	if(CHECK_STATE(usart_1.state,STATE_CLOSE))usart_1.d_open();
 	//10ms调用一次
 	//UsartTcbRxTxTimingProcess(&Usart_1_Tcb,Param_1);
-	
+	if(Recvd == 0xff)
+	{
+		Recvd = 0x00;
+		HMI_ExecInstruction(Uart2Buf,0);
+	}
 	return true;
 }
 /*
@@ -214,8 +226,13 @@ result d_timing_proceee_usart_1(uint32_t Param_1, uint32_t Param_2, uint32_t Par
 *  Others         : 
 *****************************************************
 */
+
+//static uint8_t Uart2Buf[100] = {0x00};
+//static uint8_t Uart2BufIndex = 0x00;
+
 result d_process_it_usart_1(uint32_t ItType, uint32_t Param_2, uint32_t Param_3)
 {
+	static uint8_t FF_Counter = 0;
 	//Param_1 = Param_1;
 	Param_2 = Param_2;
 	Param_3 = Param_3;
@@ -225,6 +242,11 @@ result d_process_it_usart_1(uint32_t ItType, uint32_t Param_2, uint32_t Param_3)
 	if(ItType == RxIt)
 	{
 		//UsartTcbRxItProcess(&Usart_1_Tcb);
+		if(Uart2Buf[Uart2BufIndex] == 0xFF)FF_Counter ++;else FF_Counter = 0;
+		if(FF_Counter >= 3 && Uart2BufIndex > 3){FF_Counter = 0;Uart2BufIndex = 0;Recvd = 0xff;}
+		if(Uart2BufIndex >= 100)Uart2BufIndex = 0;
+		Uart2BufIndex++;
+		usart_1.d_gets(0,&Uart2Buf[Uart2BufIndex],1);
 	}
 	if(ItType == TxIt)
 	{
@@ -539,12 +561,14 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart->Instance == USART1)usart_1.d_process_it(TxIt,0,0);
 	if(huart->Instance == USART2)usart_2.d_process_it(TxIt,0,0);
+	//if(huart->Instance == USART3)HMI.d_process_it(TxIt,0,0);
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart->Instance == USART1)usart_1.d_process_it(RxIt,0,0);
 	if(huart->Instance == USART2)usart_2.d_process_it(RxIt,0,0);
+	//if(huart->Instance == USART3)HMI.d_process_it(RxIt,0,0);
 }
 
 

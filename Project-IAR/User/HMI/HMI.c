@@ -25,13 +25,63 @@
 
 /*变量定义*/
 
-UART_HandleTypeDef huart3;
+//UART_HandleTypeDef huart1;
+
 uint8_t BuffHMI[30] = {0x00};
-PageInfTypedef PageAll = 
+
+
+uint8_t CurPageID = 0,CurItem = 0;
+PageInfTypedef PageAll[] = 
 {
-    {0,"c0",0,0},
-    {}
-}
+    {
+	"大北屋",
+	2,
+    {
+    {0,"c0",17,0},
+	{0,"c1",18,0},
+	{0,"c2",19,0},
+    {0,"n0",18,0},
+	{0,"n1",19,0},
+	{0,"n2",20,0},
+    }
+    },
+    {
+	"南屋",
+	3,
+    {
+    {0,"c0",18,0},
+	{0,"c1",19,0},
+	{0,"c2",20,0},
+    {0,"n0",18,0},
+	{0,"n1",19,0},
+	{0,"n2",20,0},
+    }
+	},
+    {
+	"大门",
+	4,
+    {
+    {0,"c0",18,0},
+	{0,"c1",19,0},
+	{0,"c2",20,0},
+    {0,"n0",18,0},
+	{0,"n1",19,0},
+	{0,"n2",20,0},
+    }
+	},
+    {
+	"庭院",
+	5,
+    {
+    {0,"c0",18,0},
+	{0,"c1",19,0},
+	{0,"c2",20,0},
+    {0,"n0",18,0},
+	{0,"n1",19,0},
+	{0,"n2",20,0},
+    }
+    }
+};
 
 /*变量声明*/
 
@@ -40,105 +90,6 @@ PageInfTypedef PageAll =
 
 
 /*函数声明*/
-static result HMI_open(void)
-{
-    GPIO_InitTypeDef GPIO_InitStruct;
-    
-    huart3.Instance = USART3;
-    huart3.Init.BaudRate = 115200;
-    huart3.Init.WordLength = UART_WORDLENGTH_8B;
-    huart3.Init.StopBits = UART_STOPBITS_1;
-    huart3.Init.Parity = UART_PARITY_NONE;
-    huart3.Init.Mode = UART_MODE_TX_RX;
-    huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-    huart3.Init.OverSampling = UART_OVERSAMPLING_16;
-    if (HAL_UART_Init(&huart3) != HAL_OK)
-    {
-        Error_Handler();
-        return false;
-    }
-    
-    __HAL_RCC_USART3_CLK_ENABLE();
-    
-    GPIO_InitStruct.Pin = GPIO_PIN_8;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-    GPIO_InitStruct.Pin = GPIO_PIN_9;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-    __HAL_AFIO_REMAP_USART3_ENABLE();
-
-    /* Peripheral interrupt init */
-    HAL_NVIC_SetPriority(USART3_IRQn, 10, 0);
-    HAL_NVIC_EnableIRQ(USART3_IRQn);
-    
-    SET_STATE(HMI.state,STATE_OPEN);
-    RESET_STATE(HMI.state,STATE_CLOSE);
-    
-    return true;
-
-}
-static result HMI_close(void)
-{
-    HAL_UART_MspDeInit(&huart3);
-    
-    RESET_STATE(HMI.state,STATE_OPEN);
-    SET_STATE(HMI.state,STATE_CLOSE);
-
-}
-static result HMI_detect(void)
-{
-    return true;
-}
-static result HMI_command(uint8_t * command, uint32_t param)
-{
-    (void *)command;
-    (void *)param;
-    
-    return true;
-}
-//configuration such as Light/Baud etc
-static result HMI_set(uint32_t Item, uint32_t State)
-{
-    
-}
-static result HMI_puts(uint32_t LEDx, uint8_t * Directive, uint32_t Cnt)
-{
-    
-}
-static result HMI_gets(uint32_t SendAddr, uint8_t * start, uint32_t length)
-{
-    
-}
-static result HMI_timing_process(uint32_t Param1, uint32_t Param2, uint32_t Param3)
-{
-    
-}
-static result HMI_process_it(uint32_t ADC_Handle, uint32_t Param2, uint32_t Param3)
-{
-    
-}
-
-deviceModule HMI = 
-{
-    "HMI",
-    STATE_CLOSE,
-    0x00,
-	Private,
-    HMI_open,
-    HMI_close,
-    HMI_detect,
-    HMI_command,
-    HMI_set,
-    HMI_puts,
-    HMI_gets,
-    HMI_timing_process,
-    HMI_process_it
-};
 
 #if 1//发送指令
 
@@ -327,13 +278,101 @@ static uint8_t * SendInstruct_rest(void)
 
 /*
 
-向HMI设置数值，HMI会不会返回触摸热区或者是其他事件？
+向HMI设置数值，HMI会不会返回触摸热区或者是其他事件？NO
 
 */
 
-result SaveHMIValue(uint8_t PageID,uint8_t )
+static result SaveHMIValue(uint8_t PageID,uint8_t ItemID,uint8_t NewValue)
+{
+	uint8_t i = 0,j = 0;
+	
+	for(i = 0;i < sizeof(PageAll)/sizeof(PageAll[0]);i ++)
+	{
+		if(PageAll[i].ID == PageID)
+		{
+			for(j = 0;j < 6; j ++)
+			{
+				if(PageAll[i].Item[j].ID == ItemID)
+				{
+					PageAll[i].Item[j].Changed = 0xff;
+					PageAll[i].Item[j].Value = NewValue;
+				}
+			}
+			
+		}
+	}
+	
+	return true;
+	
+}
 
+static result SyncPage(uint8_t PageID)
+{
+	uint8_t i = 0,j = 0,Buf[30] = {0x00},Buf_1[10] = {0x00};
+	
+	for(i = 0;i < sizeof(PageAll)/sizeof(PageAll[0]);i ++)
+	{
+		if(PageAll[i].ID == PageID)
+		{
+			for(j = 0;j < 6;j ++)
+			{
+				strcpy(Buf,PageAll[i].Item[j].Name);
+				strcat(Buf,".val=");
+				sprintf(Buf_1,"%d",PageAll[i].Item[j].Value);
+				strcat(Buf,Buf_1);
+				usart_1.d_puts(0,Buf,strlen(Buf));
+				osDelay(50);
+			}
+		}
+	}
+}
 
+result HMI_ExecInstruction(uint8_t * Data,uint8_t Length)
+{
+	
+	if(Data == 0)return false;
+	
+	switch(*Data)
+	{
+		case HMI_RETURN_00:{return HMI_ReturnErr;}
+		case HMI_RETURN_01:{return HMI_ReturnTrue;}
+		case HMI_RETURN_02:{return HMI_ReturnErr;}
+		case HMI_RETURN_03:{return HMI_ReturnErr;}
+		case HMI_RETURN_04:{return HMI_ReturnErr;}
+		case HMI_RETURN_05:{return HMI_ReturnErr;}
+		case HMI_RETURN_11:{return HMI_ReturnErr;}
+		case HMI_RETURN_12:{return HMI_ReturnErr;}
+		case HMI_RETURN_1A:{return HMI_ReturnErr;}
+		case HMI_RETURN_1B:{return HMI_ReturnErr;}
+		case HMI_RETURN_1C:{return HMI_ReturnErr;}
+		case HMI_RETURN_1D:{return HMI_ReturnErr;}
+		case HMI_RETURN_1E:{return HMI_ReturnErr;}
+		case HMI_RETURN_1F:{return HMI_ReturnErr;}
+		case HMI_RETURN_20:{return HMI_ReturnErr;}
+		case HMI_RETURN_23:{return HMI_ReturnErr;}
+		case HMI_RETURN_HotArea			:{
+											HMI_ProcotolHotArea_Typedef *HotArea = (HMI_ProcotolHotArea_Typedef*)Data;
+											SaveHMIValue(HotArea->CurPageID,HotArea->ButtonID,HotArea->TouchEvent);
+											break;
+										}
+		case HMI_RETURN_CurPageID		:{
+											HMI_ReturnCurPageID_Typedef * PageID = (HMI_ReturnCurPageID_Typedef *)Data;
+											SyncPage(PageID->CurPageID);
+											break;
+										}
+		case HMI_RETURN_TouchPos			:{break;}
+		case HMI_RETURN_SleepTouch		:{break;}
+		case HMI_RETURN_ReturnStr		:{break;}
+		case HMI_RETURN_ReturnVal		:{break;}
+		case HMI_RETURN_AutoInterSleep	:{break;}
+		case HMI_RETURN_AutoAware		:{break;}
+		case HMI_RETURN_StartUpSuccess	:{break;}
+		case HMI_RETURN_SdUpdate			:{break;}
+		case HMI_RETURN_DataTransparentCpt:{break;}
+		case HMI_RETURN_DataTransparentRdy:{break;}
+		default:break;
+	}
+}
 
 
 

@@ -24,6 +24,8 @@
 typedef enum _result 
 { 
     false = 0,
+    HMI_ReturnErr = 1,
+    HMI_ReturnTrue = 2,
     true = 0xff
 } result;
 

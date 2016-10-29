@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"D:\IAR\common\bin\cspybat" -f "C:\GitHub\Wireless-control\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.general.xcl" --backend -f "C:\GitHub\Wireless-control\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.driver.xcl" 
+"E:\DangerWithYou\IAR\common\bin\cspybat" -f "C:\Users\Zhaojingyangchun\Documents\GitHub\HouseControl\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.general.xcl" --backend -f "C:\Users\Zhaojingyangchun\Documents\GitHub\HouseControl\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"D:\IAR\common\bin\cspybat" -f "C:\GitHub\Wireless-control\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.general.xcl" "--debug_file=%~1" --backend -f "C:\GitHub\Wireless-control\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.driver.xcl" 
+"E:\DangerWithYou\IAR\common\bin\cspybat" -f "C:\Users\Zhaojingyangchun\Documents\GitHub\HouseControl\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.general.xcl" "--debug_file=%~1" --backend -f "C:\Users\Zhaojingyangchun\Documents\GitHub\HouseControl\Project-IAR\EWARM\settings\SmartHouse.SmartHouse.driver.xcl" 
 
 @echo off 
 :end
