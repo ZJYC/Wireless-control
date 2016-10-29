@@ -14,7 +14,7 @@ Watch0=_ 0 "" 0 "" 0 "" 0 "" 0 0 0 0
 Watch1=_ 0 "" 0 "" 0 "" 0 "" 0 0 0 0
 CStepIntDis=_ 0
 [DebugChecksum]
-Checksum=2001175031
+Checksum=1641453081
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -43,6 +43,38 @@ ITMportsEnable=0
 ITMportsTermIO=0
 ITMportsLogFile=0
 ITMlogFile=$PROJ_DIR$\ITM.log
+[Interrupts]
+Enabled=1
+[MemConfig]
+Base=1
+Manual=0
+Ddf=1
+TypeViol=0
+Stop=1
+[Trace1]
+Enabled=0
+ShowSource=1
+[Simulator]
+Freq=10000000
+MultiCoreRunAll=1
+[struct_types]
+Fmt0=DS1307_Time-day	3	0
+Fmt1=DS1307_Time-hour	3	0
+Fmt2=DS1307_Time-min	3	0
+Fmt3=DS1307_Time-mon	3	0
+Fmt4=DS1307_Time-sec	3	0
+Fmt5=DS1307_Time-wday	3	0
+Fmt6=DS1307_Time-year	3	0
+Fmt7=SerialDataFrameTypedef-Crc	4	0
+Fmt8=SerialDataFrameTypedef-IP	4	0
+Fmt9=SerialTCBTypedef-State	1	0
+[array_types]
+Fmt0=uint8_t[100]	4	0
+Fmt1=uint8_t[128]	4	0
+Fmt2=uint8_t[2]	4	0
+Fmt3=uint8_t[64]	4	0
+[watch_formats]
+Fmt0={W}1:Crc	4	0
 [Trace2]
 Enabled=0
 ShowSource=0
@@ -63,6 +95,12 @@ GraphEnabled=0
 ShowTimeLog=1
 LiveEnabled=0
 LiveFile=PowerLogLive.log
+[DataLog]
+LogEnabled=0
+GraphEnabled=0
+ShowTimeLog=1
+SumEnabled=0
+ShowTimeSum=1
 [EventLog]
 Title_0=Ch3
 Symbol_0=0 4 1
@@ -78,44 +116,6 @@ ShowTimeLog=1
 SumEnabled=0
 ShowTimeSum=1
 SumSortOrder=0
-[PowerProbe]
-Frequency=10000
-Probe0=I0
-ProbeSetup0=2 1 1 2 0 0
-[struct_types]
-Fmt0=DS1307_Time-day	3	0
-Fmt1=DS1307_Time-hour	3	0
-Fmt2=DS1307_Time-min	3	0
-Fmt3=DS1307_Time-mon	3	0
-Fmt4=DS1307_Time-sec	3	0
-Fmt5=DS1307_Time-wday	3	0
-Fmt6=DS1307_Time-year	3	0
-Fmt7=SerialDataFrameTypedef-Crc	4	0
-Fmt8=SerialDataFrameTypedef-IP	4	0
-Fmt9=SerialTCBTypedef-State	1	0
-[array_types]
-Fmt0=uint8_t[128]	4	0
-Fmt1=uint8_t[2]	4	0
-Fmt2=uint8_t[64]	4	0
-[watch_formats]
-Fmt0={W}1:Crc	4	0
-[DriverProfiling]
-Enabled=0
-Mode=1
-Graph=0
-Symbiont=0
-Exclusions=
-[CallStackLog]
-Enabled=0
-[CallStackStripe]
-ShowTiming=1
-[Log file]
-LoggingEnabled=_ 0
-LogFile=_ ""
-Category=_ 0
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
 [InterruptLog]
 LogEnabled=0
 GraphEnabled=0
@@ -123,31 +123,33 @@ ShowTimeLog=1
 SumEnabled=0
 ShowTimeSum=1
 SumSortOrder=0
-[DataLog]
-LogEnabled=0
-GraphEnabled=0
-ShowTimeLog=1
-SumEnabled=0
-ShowTimeSum=1
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
+[DriverProfiling]
+Enabled=0
+Mode=3
+Graph=0
+Symbiont=0
+Exclusions=
+[CallStackLog]
+Enabled=0
+[CallStackStripe]
+ShowTiming=1
+[PowerProbe]
+Frequency=10000
+Probe0=I0
+ProbeSetup0=2 1 1 2 0 0
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Count=0
-[Interrupts]
-Enabled=1
-[MemConfig]
-Base=1
-Manual=0
-Ddf=1
-TypeViol=0
-Stop=1
-[Trace1]
-Enabled=0
-ShowSource=1
+Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\User\HMI\HMI.c}.351.5" 0 0 1 "" 0 "" 0
+Count=1
 [Aliases]
 A0=_ "C:\Users\Zhaojingyangchun\Desktop\XXX\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM3\port.c" ""
 Count=1
 SuppressDialog=1
-[Simulator]
-Freq=10000000
-MultiCoreRunAll=1

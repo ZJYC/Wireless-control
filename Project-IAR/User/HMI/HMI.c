@@ -37,21 +37,21 @@ PageInfTypedef PageAll[] =
 	"大北屋",
 	2,
     {
-    {0,"c0",17,0},
-	{0,"c1",18,0},
-	{0,"c2",19,0},
-    {0,"n0",18,0},
-	{0,"n1",19,0},
-	{0,"n2",20,0},
+    {0,"c0",14,1},
+	{0,"c1",15,1},
+	{0,"c2",16,0},
+    {0,"n0",18,13},
+	{0,"n1",19,45},
+	{0,"n2",20,23},
     }
     },
     {
 	"南屋",
 	3,
     {
-    {0,"c0",18,0},
-	{0,"c1",19,0},
-	{0,"c2",20,0},
+    {0,"c0",15,0},
+	{0,"c1",16,0},
+	{0,"c2",17,0},
     {0,"n0",18,0},
 	{0,"n1",19,0},
 	{0,"n2",20,0},
@@ -61,9 +61,9 @@ PageInfTypedef PageAll[] =
 	"大门",
 	4,
     {
-    {0,"c0",18,0},
-	{0,"c1",19,0},
-	{0,"c2",20,0},
+    {0,"c0",15,0},
+	{0,"c1",16,0},
+	{0,"c2",17,0},
     {0,"n0",18,0},
 	{0,"n1",19,0},
 	{0,"n2",20,0},
@@ -73,9 +73,9 @@ PageInfTypedef PageAll[] =
 	"庭院",
 	5,
     {
-    {0,"c0",18,0},
-	{0,"c1",19,0},
-	{0,"c2",20,0},
+    {0,"c0",15,0},
+	{0,"c1",16,0},
+	{0,"c2",17,0},
     {0,"n0",18,0},
 	{0,"n1",19,0},
 	{0,"n2",20,0},
@@ -90,6 +90,8 @@ PageInfTypedef PageAll[] =
 
 
 /*函数声明*/
+
+static result SyncPage(uint8_t PageID);
 
 #if 1//发送指令
 
@@ -295,7 +297,10 @@ static result SaveHMIValue(uint8_t PageID,uint8_t ItemID,uint8_t NewValue)
 				if(PageAll[i].Item[j].ID == ItemID)
 				{
 					PageAll[i].Item[j].Changed = 0xff;
-					PageAll[i].Item[j].Value = NewValue;
+                    if(PageAll[i].Item[j].Value == 0)PageAll[i].Item[j].Value = 1;
+                    else PageAll[i].Item[j].Value = 0;
+                    SyncPage(PageID);
+                    return true;
 				}
 			}
 			
@@ -308,7 +313,7 @@ static result SaveHMIValue(uint8_t PageID,uint8_t ItemID,uint8_t NewValue)
 
 static result SyncPage(uint8_t PageID)
 {
-	uint8_t i = 0,j = 0,Buf[30] = {0x00},Buf_1[10] = {0x00};
+	uint8_t i = 0,j = 0,Buf[30] = {0x00},Buf_1[10] = {0x00},Len = 0;
 	
 	for(i = 0;i < sizeof(PageAll)/sizeof(PageAll[0]);i ++)
 	{
@@ -316,12 +321,22 @@ static result SyncPage(uint8_t PageID)
 		{
 			for(j = 0;j < 6;j ++)
 			{
-				strcpy(Buf,PageAll[i].Item[j].Name);
-				strcat(Buf,".val=");
-				sprintf(Buf_1,"%d",PageAll[i].Item[j].Value);
-				strcat(Buf,Buf_1);
-				usart_1.d_puts(0,Buf,strlen(Buf));
-				osDelay(50);
+                //if(PageAll[i].Item[j].Changed == 0xff)
+                {
+                    PageAll[i].Item[j].Changed = 0x00;
+                    strcpy(Buf,PageAll[i].Item[j].Name);
+                    strcat(Buf,".val=");
+                    sprintf(Buf_1,"%d",PageAll[i].Item[j].Value);
+                    strcat(Buf,Buf_1);
+                    Len = strlen(Buf);
+                    Buf[Len + 0] = 0xff;
+                    Buf[Len + 1] = 0xff;
+                    Buf[Len + 2] = 0xff;
+                    usart_1.d_puts(0,Buf,Len + 3);
+                    osDelay(50);
+                    usart_1.d_puts(0,Buf,Len + 3);
+                    osDelay(50);
+                }
 			}
 		}
 	}
@@ -329,9 +344,12 @@ static result SyncPage(uint8_t PageID)
 
 result HMI_ExecInstruction(uint8_t * Data,uint8_t Length)
 {
-	
+	uint8_t i = 0;
+    
 	if(Data == 0)return false;
 	
+    Alarm.d_puts(LED2,"10001000",1);
+    
 	switch(*Data)
 	{
 		case HMI_RETURN_00:{return HMI_ReturnErr;}
@@ -353,10 +371,13 @@ result HMI_ExecInstruction(uint8_t * Data,uint8_t Length)
 		case HMI_RETURN_HotArea			:{
 											HMI_ProcotolHotArea_Typedef *HotArea = (HMI_ProcotolHotArea_Typedef*)Data;
 											SaveHMIValue(HotArea->CurPageID,HotArea->ButtonID,HotArea->TouchEvent);
+                                            CurPageID = HotArea->CurPageID;
+                                            SyncPage(HotArea->CurPageID);
 											break;
 										}
 		case HMI_RETURN_CurPageID		:{
 											HMI_ReturnCurPageID_Typedef * PageID = (HMI_ReturnCurPageID_Typedef *)Data;
+                                            CurPageID = PageID->CurPageID;
 											SyncPage(PageID->CurPageID);
 											break;
 										}
@@ -371,7 +392,12 @@ result HMI_ExecInstruction(uint8_t * Data,uint8_t Length)
 		case HMI_RETURN_DataTransparentCpt:{break;}
 		case HMI_RETURN_DataTransparentRdy:{break;}
 		default:break;
-	}
+	};
+    
+    for(i = 0;i < Length;i ++)
+    {
+        Data[i] = 0x00;
+    }
 }
 
 
