@@ -1270,6 +1270,12 @@
       </file>
     </group>
     <group>
+      <name>HMI</name>
+      <file>
+        <name>$PROJ_DIR$\..\User\HMI\HMI.c</name>
+      </file>
+    </group>
+    <group>
       <name>Key</name>
       <file>
         <name>$PROJ_DIR$\..\User\Key\Key.c</name>

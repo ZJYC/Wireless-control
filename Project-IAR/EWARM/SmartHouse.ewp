@@ -336,6 +336,7 @@
           <state>$PROJ_DIR$\..\User\DS1307</state>
           <state>$PROJ_DIR$\..\User\Relay</state>
           <state>$PROJ_DIR$\..\User\Key</state>
+          <state>$PROJ_DIR$\..\User\HMI</state>
         </option>
         <option>
           <name>CCStdIncCheck</name>
@@ -1197,6 +1198,12 @@
       <name>Giztwi</name>
       <file>
         <name>$PROJ_DIR$\..\User\Gizwits\Gizwits.c</name>
+      </file>
+    </group>
+    <group>
+      <name>HMI</name>
+      <file>
+        <name>$PROJ_DIR$\..\User\HMI\HMI.c</name>
       </file>
     </group>
     <group>
