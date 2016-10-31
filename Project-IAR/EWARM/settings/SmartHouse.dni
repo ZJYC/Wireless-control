@@ -147,8 +147,7 @@ ProbeSetup0=2 1 1 2 0 0
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\User\HMI\HMI.c}.351.5" 0 0 1 "" 0 "" 0
-Count=1
+Count=0
 [Aliases]
 A0=_ "C:\Users\Zhaojingyangchun\Desktop\XXX\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM3\port.c" ""
 Count=1

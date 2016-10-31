@@ -63,8 +63,10 @@ SuspendListTypedef SuspendList[SuspendListNum] = {0x00};
 
 //填加到等待列表
 static SerialResultTypedef SuspendListAdd(
+                        #if (EnableIP_Port)
 						uint8_t IP,
 						uint8_t Port,
+                        #endif
 						uint8_t * Buf,
 						uint16_t * Len,
 						void * Signal);
@@ -72,8 +74,10 @@ static SerialResultTypedef SuspendListAdd(
 //static SerialResultTypedef SuspendListDel(uint8_t IP,uint8_t Port);
 //执行
 static SerialResultTypedef SuspendListCheck(
+                        #if (EnableIP_Port)
 						uint8_t IP,
 						uint8_t Port,
+                        #endif
 						uint8_t ** Buf,
 						uint16_t ** Len,
 						void ** Signal);

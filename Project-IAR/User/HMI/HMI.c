@@ -278,6 +278,21 @@ static uint8_t * SendInstruct_rest(void)
 
 #endif
 
+static result HMI_SendInstruction(uint8_t * Command)
+{
+    uint8_t Buf[30] = {0x00},Len = 0;
+    
+    strcpy(Buf,Command);
+    
+    Len = strlen(Buf);
+    
+    Buf[Len + 0] = 0xff;
+    Buf[Len + 1] = 0xff;
+    Buf[Len + 2] = 0xff;
+    
+    usart_1.d_puts(0,Buf,Len + 3);
+}
+
 /*
 
 向HMI设置数值，HMI会不会返回触摸热区或者是其他事件？NO
@@ -328,14 +343,7 @@ static result SyncPage(uint8_t PageID)
                     strcat(Buf,".val=");
                     sprintf(Buf_1,"%d",PageAll[i].Item[j].Value);
                     strcat(Buf,Buf_1);
-                    Len = strlen(Buf);
-                    Buf[Len + 0] = 0xff;
-                    Buf[Len + 1] = 0xff;
-                    Buf[Len + 2] = 0xff;
-                    usart_1.d_puts(0,Buf,Len + 3);
-                    osDelay(50);
-                    usart_1.d_puts(0,Buf,Len + 3);
-                    osDelay(50);
+                    HMI_SendInstruction(Buf);
                 }
 			}
 		}

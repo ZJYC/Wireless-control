@@ -217,12 +217,12 @@ result d_timing_proceee_usart_1(uint32_t Param_1, uint32_t Param_2, uint32_t Par
         Timeout = 0;
         //Uart2BufIndex = 0;
     }
-	if(Recvd == 0xff)
+	if(Recvd == 0xff)//表示收到数据
 	{
-		Recvd = 0x00;
         while(Uart2Buf[i] == 0)i++;
         if(i >= 100)return false;
 		HMI_ExecInstruction(&Uart2Buf[i],100 - i);
+		Recvd = 0x00;
 	}
 	return true;
 }
@@ -251,7 +251,7 @@ result d_process_it_usart_1(uint32_t ItType, uint32_t Param_2, uint32_t Param_3)
 	
 	if(CHECK_STATE(usart_1.state,STATE_CLOSE))usart_1.d_open();
 	
-	if(ItType == RxIt)
+	if(ItType == RxIt && Recvd == 0x00)
 	{
         Timeout = 5;
 		//UsartTcbRxItProcess(&Usart_1_Tcb);
