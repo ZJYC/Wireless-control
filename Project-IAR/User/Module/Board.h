@@ -48,7 +48,7 @@
 #define BOARD_3         CHANNEL_3
 #define BOARD_4         CHANNEL_4
 //需要自定义
-#define CUR_BOARD           MAIN_BOARD
+#define CUR_BOARD           BOARD_2
 #define MAX_DEVICE_NUM      40          //最多允许添加外部40个器件
 #define INFSETNUM           30
 //设备列表(主要用于添加外板的器件)

@@ -254,10 +254,74 @@
       <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_spi_ex.pbi</file>
       <file>$PROJ_DIR$\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h</file>
       <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_pwr.__cstat.et</file>
+<<<<<<< HEAD
       <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_dac.o</file>
       <file>$PROJ_DIR$\SmartHouse\Obj\RF4463.pbi</file>
       <file>$PROJ_DIR$\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_can_ex.h</file>
       <file>$PROJ_DIR$\..\User\Alarm.c</file>
+=======
+      <file>$PROJ_DIR$\SmartHouse\Obj\adc.pbi</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_rcc_ex.pbi</file>
+      <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\diskio.o</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\diskio.__cstat.et</file>
+      <file>$PROJ_DIR$\..\Inc\sdio.h</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\queue.__cstat.et</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\sd_diskio.o</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_adc.o</file>
+      <file>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_adc.__cstat.et</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_timebase_TIM.__cstat.et</file>
+      <file>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\Gizwits.o</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\si446x.o</file>
+      <file>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\include\StackMacros.h</file>
+      <file>$PROJ_DIR$\..\Drivers\CMSIS\Include\core_cmInstr.h</file>
+      <file>$PROJ_DIR$\..\Middlewares\Third_Party\FatFs\src\drivers\sd_diskio.h</file>
+      <file>$PROJ_DIR$\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h</file>
+      <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
+      <file>$TOOLKIT_DIR$\inc\c\stdarg.h</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\SerialDriver_OS.o</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_dac_ex.o</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_cortex.pbi</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\event_groups.o</file>
+      <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+      <file>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h</file>
+      <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+      <file>$PROJ_DIR$\..\Drivers\CMSIS\Include\core_cmFunc.h</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_flash_ex.__cstat.et</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\UsartDriver.o</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_flash.pbi</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_flash.__cstat.et</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\SHT2x.__cstat.et</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\system_stm32f1xx.pbi</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_tim.__cstat.et</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\list.pbi</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\CRC_JIAMI.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+      <file>$PROJ_DIR$\stm32f103xe_flash.icf</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\adc.__cstat.et</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\croutine.o</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_tim_ex.pbi</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\queue.pbi</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\freertos.o</file>
+      <file>$PROJ_DIR$\..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\ff_gen_drv.pbi</file>
+      <file>$PROJ_DIR$\..\User\Module\DataTransfer.h</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\UsartDriver.pbi</file>
+      <file>$PROJ_DIR$\..\User\Key.c</file>
+      <file>$PROJ_DIR$\..\Inc\gpio.h</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_gpio.o</file>
+      <file>$PROJ_DIR$\..\User\RF4463.c</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\spi.__cstat.et</file>
+      <file>$PROJ_DIR$\..\User\Module\Board.h</file>
+      <file>$PROJ_DIR$\SmartHouse\Exe\SmartHouse.out</file>
+      <file>$PROJ_DIR$\..\Inc\FreeRTOSConfig.h</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_hal_uart.__cstat.et</file>
+      <file>$PROJ_DIR$\..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h</file>
+      <file>$PROJ_DIR$\..\User\Relay\relay.h</file>
+      <file>$PROJ_DIR$\SmartHouse\Obj\Handle.pbi</file>
+>>>>>>> parent of 82875a3... It can worked with HMI,But not stable
       <file>$PROJ_DIR$\SmartHouse\Obj\cc950.o</file>
       <file>$PROJ_DIR$\SmartHouse\Obj\stm32f1xx_it.pbi</file>
       <file>$PROJ_DIR$\..\Inc\stm32f1xx_hal_conf.h</file>
@@ -851,7 +915,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 120 194 18 72 87 14 54 193 198 326 176 69 144 29 121 24 40 337 49 114 344 265 83 70 225 214 325 345 31 171 246 104 302 216 138 223 10 254 36 100 259 250 343 227 158 273</file>
+=======
+          <file> 311 261 366 122 268 191 297 39 33 316 178 363 139 288 53 159 131 259 198 309 370 162 248 184 270 221 151 37 164 35 112 371 301 197 310 359 364 114 117 229 299 77 90 94 211 100 252 269 271 355 255 50 196 341 336 59 369 192 55 362 169 187 240 61 70 36 74 218 166 290 325 56 156 302 30 101 238 281 144 89 96 233 367 356 333 352 42 239 353 339 322 127 203 216</file>
+>>>>>>> parent of 82875a3... It can worked with HMI,But not stable
         </tool>
         <tool>
           <name>ICCARM</name>
@@ -1472,7 +1540,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 246 120 325 104 225 31 302 265 87 214 345 171 69 144 24 326 40 194 337 176 49 114 344 83 29 254 36 14 54 193 72 121 223 10 216 138 18 70 198 100 259 250 343 227 158 273</file>
+=======
+          <file> 162 61 281 59 39 359 261 352 50 362 131 363 255 356 239 339 341 192 187 184 218 310 77 100 297 367 37 333 42 353 101 322 221 196 336 369 55 169 240 112 371 301 271 90 268 316 198 309 122 33 35 94 203 156 370 290 325 364 56 114 302 366 30 117 311 70 36 74 211 197 166 127 299 252 216 355 259 53 270 144 89 288 151 269 229 238 159 164</file>
+>>>>>>> parent of 82875a3... It can worked with HMI,But not stable
         </tool>
         <tool>
           <name>ICCARM</name>
@@ -1688,7 +1760,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 225 87 32 167 254 346 65 154 36 193 70 74 152 195 14 54 69 158 155 100 261 161 209 130 344 239 24 214 326 325 40 345 194 31 337 171 176 246 49 104 302 114 265 83 29 18 198 216 259 250 343 227 273 7 56 185 179 72 120 121 223 10 144 138 351 62 288 126 67 23</file>
+=======
+          <file> 156 39 359 261 325 30 363 255 290 56 302 101 36 74 184 218 310 77 100 297 364 370 114 366 117 311 70 271 90 268 316 198 309 122 33 35 94 203 367 281 37 356 333 352 42 239 353 162 339 322 221 50 196 341 336 59 369 192 55 362 169 187 240 61 112 371 131 301 211 197 166 127 299 252 216 355 259 53 270 144 89 288 151 269 229 238 159 164</file>
+>>>>>>> parent of 82875a3... It can worked with HMI,But not stable
         </tool>
         <tool>
           <name>ICCARM</name>
@@ -1913,7 +1989,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
+<<<<<<< HEAD
           <file> 214 120 171 345 87 344 225 325 31 246 104 302 265 69 144 24 326 40 194 337 176 49 114 83 29 254 36 14 54 193 72 121 223 10 216 138 291 18 70 198 100 259 250 343 227 158 273</file>
+=======
+          <file> 74 302 290 39 359 261 56 101 36 363 255 325 156 30 184 218 310 77 100 297 364 370 114 366 117 311 70 271 90 268 316 198 309 122 33 35 94 203 367 281 37 356 333 352 42 239 353 162 339 322 221 50 196 341 336 59 369 192 55 362 169 187 240 61 112 371 131 301 211 197 166 127 299 252 216 355 259 53 270 144 89 288 151 269 229 238 159 164</file>
+>>>>>>> parent of 82875a3... It can worked with HMI,But not stable
         </tool>
         <tool>
           <name>ICCARM</name>

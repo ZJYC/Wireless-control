@@ -185,7 +185,6 @@ void HighSpeedTimerTask(void const * argument)
 	Alarm.d_timing_proceee(0,0,0);
 	si4463.d_timing_proceee(20,0,0);
     GizwitsTimingProcess();
-    usart_1.d_timing_proceee(20,20,20);
 	//the TTL(time to live)
 	/*
 	The SI4463 commucation module is One master more slave,So the master need to know wheter the slaver is exist,
@@ -296,8 +295,6 @@ void LowSpeedDeviceTask_2(void const * argument)
     DS1307.d_open();
     
     relay.d_open();
-    
-    usart_1.d_open();
 	
 	while(1)
 	{

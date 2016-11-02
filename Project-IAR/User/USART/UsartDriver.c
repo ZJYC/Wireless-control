@@ -8,7 +8,6 @@ static SerialTCBTypedef SerialTCB_Usart2 = {0x00};
 static uint8_t Uart2Buf[100] = {0x00};
 static uint8_t Uart2BufIndex = 0x00;
 static uint8_t Recvd = 0x00;
-static uint8_t Timeout = 0x00;;
 
 #if	1//操作系统驱动接口层
 
@@ -65,7 +64,6 @@ result d_open_usart_1 (void)
 	
     Uart2BufIndex = 0;
 	usart_1.d_gets(0,&Uart2Buf[Uart2BufIndex],1);
-    usart_1.d_puts(0,"c0.val=1",strlen("c0.val=1"));
 	
 	return true;
 }
@@ -202,16 +200,14 @@ result d_gets_usart_1 (uint32_t param, uint8_t * Str, uint32_t Length)
 *****************************************************
 */
 result d_timing_proceee_usart_1(uint32_t Param_1, uint32_t Param_2, uint32_t Param_3)
-{
-    uint8_t i = 0;
-    
-	Param_1 = Param_1;
+{	
 	Param_2 = Param_2;
 	Param_3 = Param_3;
 	
 	if(CHECK_STATE(usart_1.state,STATE_CLOSE))usart_1.d_open();
 	//10ms调用一次
 	//UsartTcbRxTxTimingProcess(&Usart_1_Tcb,Param_1);
+<<<<<<< HEAD
     if(Timeout-- == 0)
     {   
         Timeout = 0;
@@ -223,6 +219,12 @@ result d_timing_proceee_usart_1(uint32_t Param_1, uint32_t Param_2, uint32_t Par
         if(i >= 100)return false;
 		HMI_ExecInstruction(&Uart2Buf[i],100 - i);
 		Recvd = 0x00;
+=======
+	if(Recvd == 0xff)
+	{
+		Recvd = 0x00;
+		HMI_ExecInstruction(Uart2Buf,0);
+>>>>>>> parent of 82875a3... It can worked with HMI,But not stable
 	}
 	return true;
 }
@@ -253,7 +255,6 @@ result d_process_it_usart_1(uint32_t ItType, uint32_t Param_2, uint32_t Param_3)
 	
 	if(ItType == RxIt && Recvd == 0x00)
 	{
-        Timeout = 5;
 		//UsartTcbRxItProcess(&Usart_1_Tcb);
 		if(Uart2Buf[Uart2BufIndex] == 0xFF)FF_Counter ++;else FF_Counter = 0;
 		if(FF_Counter >= 3 && Uart2BufIndex > 3){FF_Counter = 0;Uart2BufIndex = 0;Recvd = 0xff;}
