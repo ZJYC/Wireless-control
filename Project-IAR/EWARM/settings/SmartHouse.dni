@@ -133,8 +133,6 @@ ShowTimeSum=1
 mode=0
 [Breakpoints2]
 Count=0
-<<<<<<< HEAD
-=======
 [Interrupts]
 Enabled=1
 [MemConfig]
@@ -146,7 +144,6 @@ Stop=1
 [Trace1]
 Enabled=0
 ShowSource=1
->>>>>>> parent of 82875a3... It can worked with HMI,But not stable
 [Aliases]
 A0=_ "C:\Users\Zhaojingyangchun\Desktop\XXX\Middlewares\Third_Party\FreeRTOS\Source\portable\IAR\ARM_CM3\port.c" ""
 Count=1

@@ -289,6 +289,8 @@ static result HMI_SendInstruction(uint8_t * Command)
     Buf[Len + 2] = 0xff;
     
     usart_1.d_puts(0,Buf,Len + 3);
+    
+    return true;
 }
 
 /*
@@ -331,7 +333,6 @@ static result SyncPage(uint8_t PageID)
 		{
 			for(j = 0;j < 6;j ++)
 			{
-<<<<<<< HEAD
                 //if(PageAll[i].Item[j].Changed == 0xff)
                 {
                     PageAll[i].Item[j].Changed = 0x00;
@@ -341,14 +342,13 @@ static result SyncPage(uint8_t PageID)
                     strcat(Buf,Buf_1);
                     HMI_SendInstruction(Buf);
                 }
-=======
+
 				strcpy(Buf,PageAll[i].Item[j].Name);
 				strcat(Buf,".val=");
 				sprintf(Buf_1,"%d",PageAll[i].Item[j].Value);
 				strcat(Buf,Buf_1);
 				usart_1.d_puts(0,Buf,strlen(Buf));
 				osDelay(50);
->>>>>>> parent of 82875a3... It can worked with HMI,But not stable
 			}
 		}
 	}

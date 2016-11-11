@@ -1,10 +1,6 @@
 "D:\IAR\arm\bin\armproc.dll" 
 
-<<<<<<< HEAD
-"D:\IAR\arm\bin\armjlink2.dll" 
-=======
-"E:\DangerWithYou\IAR\arm\bin\armsim2.dll" 
->>>>>>> parent of 82875a3... It can worked with HMI,But not stable
+"D:\IAR\arm\bin\armsim2.dll" 
 
 "C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Exe\SmartHouse.out" 
 

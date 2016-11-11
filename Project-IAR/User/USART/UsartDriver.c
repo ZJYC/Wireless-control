@@ -201,30 +201,29 @@ result d_gets_usart_1 (uint32_t param, uint8_t * Str, uint32_t Length)
 */
 result d_timing_proceee_usart_1(uint32_t Param_1, uint32_t Param_2, uint32_t Param_3)
 {	
+	uint8_t i = 0;
 	Param_2 = Param_2;
 	Param_3 = Param_3;
 	
 	if(CHECK_STATE(usart_1.state,STATE_CLOSE))usart_1.d_open();
 	//10ms调用一次
 	//UsartTcbRxTxTimingProcess(&Usart_1_Tcb,Param_1);
-<<<<<<< HEAD
-    if(Timeout-- == 0)
-    {   
-        Timeout = 0;
-        //Uart2BufIndex = 0;
-    }
+    //if(Timeout-- == 0)
+    //{   
+    //    Timeout = 0;
+    //    //Uart2BufIndex = 0;
+    //}
 	if(Recvd == 0xff)//表示收到数据
 	{
         while(Uart2Buf[i] == 0)i++;
         if(i >= 100)return false;
 		HMI_ExecInstruction(&Uart2Buf[i],100 - i);
 		Recvd = 0x00;
-=======
-	if(Recvd == 0xff)
-	{
-		Recvd = 0x00;
-		HMI_ExecInstruction(Uart2Buf,0);
->>>>>>> parent of 82875a3... It can worked with HMI,But not stable
+		if(Recvd == 0xff)
+		{
+			Recvd = 0x00;
+			HMI_ExecInstruction(Uart2Buf,0);
+		}
 	}
 	return true;
 }
