@@ -63,10 +63,8 @@ SuspendListTypedef SuspendList[SuspendListNum] = {0x00};
 
 //填加到等待列表
 static SerialResultTypedef SuspendListAdd(
-                        #if (EnableIP_Port)
 						uint8_t IP,
 						uint8_t Port,
-                        #endif
 						uint8_t * Buf,
 						uint16_t * Len,
 						void * Signal);
@@ -74,10 +72,8 @@ static SerialResultTypedef SuspendListAdd(
 //static SerialResultTypedef SuspendListDel(uint8_t IP,uint8_t Port);
 //执行
 static SerialResultTypedef SuspendListCheck(
-                        #if (EnableIP_Port)
 						uint8_t IP,
 						uint8_t Port,
-                        #endif
 						uint8_t ** Buf,
 						uint16_t ** Len,
 						void ** Signal);
@@ -140,10 +136,8 @@ uint8_t SerialInit_Basic(
 //返回：成功返回0
 SerialResultTypedef SerialSend_Basic(
 					pSerialTCBTypedef TCB,
-                    #if (EnableIP_Port)
 					uint8_t IP,
 					uint8_t Port,
-                    #endif
 					uint8_t *pData,
 					uint16_t Len)
 {
@@ -159,10 +153,8 @@ SerialResultTypedef SerialSend_Basic(
 	
 	TCB->DataFrameTx.Head[0] = 0xFF;
 	TCB->DataFrameTx.Head[1] = 0xFF;
-    #if (EnableIP_Port)
 	TCB->DataFrameTx.IP = IP;
 	TCB->DataFrameTx.Port = Port;
-    #endif
 	/* 如果长度为零，默认为字符串 */
 	if(Len != 0)TCB->DataFrameTx.DataLen = Len;
 	else TCB->DataFrameTx.DataLen = strlen((char const *)pData) + 1;
@@ -257,10 +249,8 @@ SerialResultTypedef SerialSendProcessIT(pSerialTCBTypedef TCB)
 //Callback:收到数据的回调函数
 //返回：成功返回0
 SerialResultTypedef SerialRecv_Basic(pSerialTCBTypedef TCB,
-                    #if (EnableIP_Port)
 					uint8_t IP,
 					uint8_t Port,
-                    #endif
 					uint8_t *pData,
 					uint16_t *Len,
 					void * Signal)
@@ -283,9 +273,7 @@ SerialResultTypedef SerialRecv_Basic(pSerialTCBTypedef TCB,
 	//add such information to the pending list
 	//SerialResult = 
     SuspendListAdd(
-                    #if (EnableIP_Port)
                     IP,Port,
-                    #endif
                     pData,Len,Signal);
 	//we judge whether we recevie data by the Len,So the first step is to clear the Len,
 	//this step only execute once
@@ -374,9 +362,7 @@ static SerialResultTypedef SerialNotify(pSerialTCBTypedef TCB)
 	
 	//check whether there is a correspond suspendlist,
 	if(SuspendListCheck(
-                            #if (EnableIP_Port)
                             TCB->DataFrameRx.IP,TCB->DataFrameRx.Port,
-                            #endif
                             &Buf,&Len,&Signal) == SR_True)
 	{
 		if(Buf != 0 && Len != 0)
@@ -421,10 +407,8 @@ __weak SerialResultTypedef SerialNotifyHook(void * Signal)
 */
 //填加到等待列表
 static SerialResultTypedef SuspendListAdd(
-                        #if (EnableIP_Port)
 						uint8_t IP,
 						uint8_t Port,
-                        #endif
 						uint8_t * Buf,
 						uint16_t * Len,
 						void * Signal)

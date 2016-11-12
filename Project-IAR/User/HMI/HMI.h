@@ -239,7 +239,7 @@ extern deviceModule HMI;
 
 /*函数声明*/
 
-
+result HMI_Task(uint32_t Type,uint32_t Param);
 
 
 

@@ -11,8 +11,7 @@ u8 LL_SHT2x_WriteUserReg(u8 reg);
 void LL_SHT2x_SoftReset(void);
 void LL_SHT2x_GetSerialNumber(u8 *buf);
 void LL_SHT2x_Test(void);
-
-float Temperature = 0,Humidity = 0;
+static SHT2x_PARAM AHT2xData = {0x00};
 /*
 ****************************************************
 *  Function       : d_open_SHT20
@@ -28,6 +27,9 @@ float Temperature = 0,Humidity = 0;
 result d_open_SHT20(void)
 {
     LL_SHT2x_Init();
+    
+    AddPrivateBuf(&SHT20,(uint8_t *)&AHT2xData,sizeof(SHT2x_PARAM));
+    
     SET_STATE(SHT20.state,STATE_OPEN);
     RESET_STATE(SHT20.state,STATE_CLOSE);
     return true;
@@ -64,13 +66,8 @@ result d_close_SHT20 (void)
 */
 result d_detect_SHT20 (void)
 {
-    if(CHECK_STATE(SHT20.state,STATE_CLOSE))
-    {
-        if(SHT20.d_open() != true)
-        {
-            return false;
-        }
-    }
+    if(CHECK_STATE(SHT20.state,STATE_CLOSE) && SHT20.d_open() != true)return false;
+    
 	return true;
 }
 /*
@@ -90,13 +87,7 @@ result d_command_SHT20 (uint8_t * Param1, uint32_t Param2)
 	Param1 = Param1;
 	Param2 = Param2;
 
-    if(CHECK_STATE(SHT20.state,STATE_CLOSE))
-    {
-        if(SHT20.d_open() != true)
-        {
-            return false;
-        }
-    }
+    if(CHECK_STATE(SHT20.state,STATE_CLOSE) && SHT20.d_open() != true)return false;
 	return true;
 }
 /*
@@ -113,21 +104,15 @@ result d_command_SHT20 (uint8_t * Param1, uint32_t Param2)
 */
 result d_set_SHT20 (uint32_t type, uint32_t param)
 {
-    uint8_t * temp_t = (uint8_t *)param;
-    float * temp_f = (float*)param;
-
-    if(CHECK_STATE(SHT20.state,STATE_CLOSE))
-    {
-        if(SHT20.d_open() != true)
-        {
-            return false;
-        }
-    }
+    SHT2x_PARAM * SHT2xData = (SHT2x_PARAM *)SHT20.data;
+    
+    if(CHECK_STATE(SHT20.state,STATE_CLOSE) && SHT20.d_open() != true)return false;
+    
     switch(type)
     {
-        case 0:{LL_SHT2x_GetSerialNumber(temp_t);break;}
-        case 1:{*temp_f = LL_SHT2x_MeasureTempPoll();break;}
-        case 2:{*temp_f = LL_SHT2x_MeasureHumiPoll();break;}
+        case 0:{LL_SHT2x_GetSerialNumber(SHT2xData->SerialNumber);break;}
+        case 1:{SHT2xData->Temperature = LL_SHT2x_MeasureTempPoll();break;}
+        case 2:{SHT2xData->Humidity = LL_SHT2x_MeasureHumiPoll();break;}
         default:break;
     }
 
@@ -152,13 +137,8 @@ result d_puts_SHT20 (uint32_t Param1, uint8_t * Param2, uint32_t Param3)
 	Param2 = Param2;
 	Param3 = Param3;
 
-    if(CHECK_STATE(SHT20.state,STATE_CLOSE))
-    {
-        if(SHT20.d_open() != true)
-        {
-            return false;
-        }
-    }
+    if(CHECK_STATE(SHT20.state,STATE_CLOSE) && SHT20.d_open() != true)return false;
+    
 	return true;
 }
 /*
@@ -179,13 +159,8 @@ result d_gets_SHT20 (uint32_t Param1, uint8_t * Param2, uint32_t Param3)
 	Param2 = Param2;
 	Param3 = Param3;
 	
-    if(CHECK_STATE(SHT20.state,STATE_CLOSE))
-    {
-        if(SHT20.d_open() != true)
-        {
-            return false;
-        }
-    }
+    if(CHECK_STATE(SHT20.state,STATE_CLOSE) && SHT20.d_open() != true)return false;
+    
 	return true;
 }
 /*
@@ -206,13 +181,8 @@ result d_timing_proceee_SHT20(uint32_t Param1, uint32_t Param2, uint32_t Param3)
 	Param2 = Param2;
 	Param3 = Param3;
 	
-    if(CHECK_STATE(SHT20.state,STATE_CLOSE))
-    {
-        if(SHT20.d_open() != true)
-        {
-            return false;
-        }
-    }
+    if(CHECK_STATE(SHT20.state,STATE_CLOSE) && SHT20.d_open() != true)return false;
+    
 	return true;
 }
 /*
@@ -234,14 +204,41 @@ result d_process_it_SHT20(uint32_t Param1, uint32_t Param2, uint32_t Param3)
 	Param2 = Param2;
 	Param3 = Param3;
 	
-    if(CHECK_STATE(SHT20.state,STATE_CLOSE))
-    {
-        if(SHT20.d_open() != true)
-        {
-            return false;
-        }
-    }
+    if(CHECK_STATE(SHT20.state,STATE_CLOSE) && SHT20.d_open() != true)return false;
+
 	return true;
+}
+
+result SHT2x_Task(uint32_t Type,uint32_t Param)
+{
+    
+    SHT2x_PARAM * SHT2xData = (SHT2x_PARAM *)SHT20.data;
+    
+	SHT2xData->Count =  Param;
+	 
+	if(Task_CalledPeriod == Type && SHT2xData->Count % 2000 == 0)
+	{
+        //get ...
+		SHT20.d_set(1,0);
+		SHT20.d_set(2,0);
+        
+		if(fabs(SHT2xData->TemperatureLast - SHT2xData->Temperature) > 0.5 || fabs(SHT2xData->HumidityLast - SHT2xData->Humidity) > 2)
+		{
+			SHT2xData->TemperatureLast = SHT2xData->Temperature;
+			SHT2xData->HumidityLast = SHT2xData->Humidity;
+			osMutexWait(SI4463Mutex,osWaitForever);
+			if(board.ops->sync_send_TH(CHANNEL_0) == true)
+			{
+				Alarm.d_puts(LED2,"10001000",1);
+			}
+			else
+			{
+				Alarm.d_puts(LED2,"11110000",1);
+			}
+			osMutexRelease(SI4463Mutex);
+		}
+	}
+
 }
 
 #if 1//SHT20µÍ¼¶Çý¶¯
@@ -683,17 +680,18 @@ void LL_SHT2x_GetSerialNumber(u8 *buf)
 
 deviceModule SHT20 = 
 {
-    "SHT20",
-    STATE_CLOSE,
-    0x00,
-	Private,
-    d_open_SHT20,
-    d_close_SHT20,
-    d_detect_SHT20,
-    d_command_SHT20,
-    d_set_SHT20,
-    d_puts_SHT20,
-    d_gets_SHT20,
-    d_timing_proceee_SHT20,
-	d_process_it_SHT20
+    .name               = "SHT20",
+    .state              = STATE_CLOSE,
+    .next               = 0x00,
+	.DA                 = Private,
+    .d_open             = d_open_SHT20,
+    .d_close            = d_close_SHT20,
+    .d_detect           = d_detect_SHT20,
+    .d_command          = d_command_SHT20,
+    .d_set              = d_set_SHT20,
+    .d_puts             = d_puts_SHT20,
+    .d_gets             = d_gets_SHT20,
+    .d_timing_proceee   = d_timing_proceee_SHT20,
+	.d_process_it       = d_process_it_SHT20,
+    .Task               = SHT2x_Task
 };

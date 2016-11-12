@@ -265,25 +265,25 @@ static result Alarm_timing_process(uint32_t Param1, uint32_t Param2, uint32_t Pa
 deviceModule Alarm = 
 {
 	#if(CUR_BOARD == MAIN_BOARD)
-	"Alarm_0",	
+	.name               = "Alarm_0",	
 	#elif(CUR_BOARD == BOARD_1)
-	"Alarm_1",	
+	.name               = "Alarm_1",	
 	#elif(CUR_BOARD == BOARD_2)
-	"Alarm_2",
+	.name               = "Alarm_2",
 	#elif(CUR_BOARD == BOARD_3)
-	"Alarm_3",	
-	#endif
-	STATE_CLOSE,
-	0x00,
-	Public,
-	Alarm_open,
-	Alarm_close,
-	Alarm_detect,
-	Alarm_command,
-	Alarm_set,
-	Alarm_puts,
-	Alarm_gets,
-    Alarm_timing_process
+	.name               = "Alarm_3",	
+    #endif
+	.state              = STATE_CLOSE,
+	.next               = 0x00,
+	.DA                 = Public,
+	.d_open             = Alarm_open,
+	.d_close            = Alarm_close,
+	.d_detect           = Alarm_detect,
+	.d_command          = Alarm_command,
+	.d_set              = Alarm_set,
+	.d_puts             = Alarm_puts,
+	.d_gets             = Alarm_gets,
+    .d_timing_proceee   = Alarm_timing_process
 };
 
 

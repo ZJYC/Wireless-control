@@ -254,27 +254,26 @@ static result d_process_it_relay(uint32_t Param1, uint32_t Param2, uint32_t Para
 deviceModule relay = 
 {
 	#if(CUR_BOARD == MAIN_BOARD)
-	"Relay_0",	
+	.name               ="Relay_0",	
 	#elif(CUR_BOARD == BOARD_1)
-	"Relay_1",	
+	.name               ="Relay_1",	
 	#elif(CUR_BOARD == BOARD_2)
-	"Relay_2",
+	.name               ="Relay_2",
 	#elif(CUR_BOARD == BOARD_3)
-	"Relay_3",	
-	#endif
-	STATE_CLOSE,
-	0x00,
-	Public,
-	/* ²Ù×÷ */
-	d_open_relay,
-	d_close_relay,
-	d_detect_relay,
-	d_command_relay,
-	d_set_relay,
-	d_puts_relay,
-	d_gets_relay,
-	d_timing_proceee_relay,
-	d_process_it_relay
+	.name               ="Relay_3",	
+    #endif
+	.state              = STATE_CLOSE,
+	.next               = 0x00,
+	.DA                 = Public,
+	.d_open             = d_open_relay,
+	.d_close            = d_close_relay,
+	.d_detect           = d_detect_relay,
+	.d_command          = d_command_relay,
+	.d_set              = d_set_relay,
+	.d_puts             = d_puts_relay,
+	.d_gets             = d_gets_relay,
+	.d_timing_proceee   = d_timing_proceee_relay,
+	.d_process_it       = d_process_it_relay
 };
 
 

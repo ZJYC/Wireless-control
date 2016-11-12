@@ -15,11 +15,9 @@
 
 #include "board.h"						//the header file for your own project
 
-#define EnableIP_Port                   1
 #define BufSize                         128//the Buffer size for both RX/TX,(BYTE)
 #define SuspendListNum                  10//Suspend list amount
 
-#if (EnableIP_Port)
     
     #define IP_0	(0)
     #define IP_1	(1)
@@ -37,7 +35,6 @@
     #define PORT_5  (5)
     #define PORT_6  (6)
 
-#endif
 
 #define DriverState_CLOSE			(1 << 0)
 #define DriverState_OPEN			(1 << 1)
@@ -62,10 +59,8 @@ __packed typedef struct SuspendListTypedef_
 {
 	
 	SerialResultTypedef Used;	//indicate whether the item was used
-    #if (EnableIP_Port)
 	uint8_t IP;					//IP address
 	uint8_t Port;				//Port number
-    #endif
 	uint8_t Reserve;			//not used currently
 	uint8_t *Buf;               //point to the buffer which will storage the recevied data
 	uint16_t *Len;              //pointer to a 16-bit variable to indicate the length of recevied data
@@ -83,10 +78,8 @@ __packed typedef struct SerialDataFrameTypedef_
 	*/
 	
 	uint8_t		Head[2];
-    #if (EnableIP_Port)
 	uint8_t		IP;			
 	uint8_t		Port;
-    #endif
 	uint8_t		DataLen;
 	uint8_t		Buf[BufSize];
 	uint16_t	Crc;
@@ -129,10 +122,8 @@ uint8_t SerialInit_Basic(
 //返回：成功返回0
 SerialResultTypedef SerialSend_Basic(
 					pSerialTCBTypedef TCB,
-                    #if (EnableIP_Port)
 					uint8_t IP,
 					uint8_t Port,
-                    #endif
 					uint8_t *pData,
 					uint16_t Len);
 //发送中断中要执行的函数
@@ -149,10 +140,8 @@ SerialResultTypedef SerialSendProcessIT(pSerialTCBTypedef TCB);
 //Callback:收到数据的回调函数
 //返回：成功返回0
 SerialResultTypedef SerialRecv_Basic(pSerialTCBTypedef TCB,
-                    #if (EnableIP_Port)
 					uint8_t IP,
 					uint8_t Port,
-                    #endif
 					uint8_t *pData,
 					uint16_t *Len,
 					void * Signal);
@@ -170,17 +159,13 @@ uint8_t SerialInit_OS(
 					uint8_t (*RecvDataIT)(uint8_t *));
 SerialResultTypedef SerialSend_OS(
 					pSerialTCBTypedef TCB,
-                    #if (EnableIP_Port)
 					uint8_t IP,
 					uint8_t Port,
-                    #endif
 					uint8_t *pData,
 					uint16_t Len);
 SerialResultTypedef SerialRecv_OS(pSerialTCBTypedef TCB,
-                    #if (EnableIP_Port)
 					uint8_t IP,
 					uint8_t Port,
-                    #endif
 					uint8_t *pData,
 					uint16_t *Len);
 /* $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$裸机$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ */
@@ -191,17 +176,13 @@ uint8_t SerialInit_Bare(
 					uint8_t (*RecvDataIT)(uint8_t *));
 SerialResultTypedef SerialSend_Bare(
 					pSerialTCBTypedef TCB,
-                    #if (EnableIP_Port)
 					uint8_t IP,
 					uint8_t Port,
-                    #endif
 					uint8_t *pData,
 					uint16_t Len);
 SerialResultTypedef SerialRecv_Base(pSerialTCBTypedef TCB,
-                    #if(EnableIP_Port)
 					uint8_t IP,
 					uint8_t Port,
-                    #endif
 					uint8_t *pData,
 					uint16_t *Len);
                                     

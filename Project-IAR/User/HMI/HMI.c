@@ -91,7 +91,9 @@ PageInfTypedef PageAll[] =
 
 /*函数声明*/
 
-#if 1//发送指令
+result HMI_ExecInstruction(uint8_t * Data,uint8_t Length);
+
+#if 0//发送指令
 
 static uint8_t * SendInstruct_page(uint8_t * ID)
 {
@@ -278,7 +280,7 @@ static uint8_t * SendInstruct_rest(void)
 
 static result HMI_SendInstruction(uint8_t * Command)
 {
-    uint8_t Buf[30] = {0x00},Len = 0;
+    uint8_t Buf[30] = {0x00},Len = 0,cnt = 0;
     
     strcpy(Buf,Command);
     
@@ -289,6 +291,25 @@ static result HMI_SendInstruction(uint8_t * Command)
     Buf[Len + 2] = 0xff;
     
     usart_1.d_puts(0,Buf,Len + 3);
+    
+    while(1)
+    {
+        uint8_t i = 0;
+        p_Uart2PrivateTypedef U2PD = (p_Uart2PrivateTypedef)usart_1.data;
+        
+        osDelay(20);
+        
+        if(U2PD->Recvd == 0xff)//表示收到数据
+        {
+            //要掠过前导0 
+            while(U2PD->Uart2Buf[i] == 0)i++;
+            if(i >= 100)return false;
+            if(HMI_ExecInstruction(&U2PD->Uart2Buf[i],100 - i) == HMI_ReturnTrue)break;
+            U2PD->Recvd = 0x00;
+        }
+        if(cnt ++ > 4)return false;
+        usart_1.d_puts(0,Buf,Len + 3);
+    }
     
     return true;
 }
@@ -311,7 +332,7 @@ static result SaveHMIValue(uint8_t PageID,uint8_t ItemID,uint8_t NewValue)
 			{
 				if(PageAll[i].Item[j].ID == ItemID)
 				{
-					PageAll[i].Item[j].Changed = 0xff;
+					//PageAll[i].Item[j].Changed = 0xff;
 					PageAll[i].Item[j].Value = NewValue;
 				}
 			}
@@ -325,7 +346,7 @@ static result SaveHMIValue(uint8_t PageID,uint8_t ItemID,uint8_t NewValue)
 
 static result SyncPage(uint8_t PageID)
 {
-	uint8_t i = 0,j = 0,Buf[30] = {0x00},Buf_1[10] = {0x00};
+	uint8_t i = 0,j = 0,k = 0,Buf[30] = {0x00},Buf_1[10] = {0x00};
 	
 	for(i = 0;i < sizeof(PageAll)/sizeof(PageAll[0]);i ++)
 	{
@@ -333,22 +354,15 @@ static result SyncPage(uint8_t PageID)
 		{
 			for(j = 0;j < 6;j ++)
 			{
-                //if(PageAll[i].Item[j].Changed == 0xff)
+                //for(k = 0;k < 3;k ++)
                 {
-                    PageAll[i].Item[j].Changed = 0x00;
                     strcpy(Buf,PageAll[i].Item[j].Name);
                     strcat(Buf,".val=");
                     sprintf(Buf_1,"%d",PageAll[i].Item[j].Value);
                     strcat(Buf,Buf_1);
                     HMI_SendInstruction(Buf);
+                    osDelay(20);
                 }
-
-				strcpy(Buf,PageAll[i].Item[j].Name);
-				strcat(Buf,".val=");
-				sprintf(Buf_1,"%d",PageAll[i].Item[j].Value);
-				strcat(Buf,Buf_1);
-				usart_1.d_puts(0,Buf,strlen(Buf));
-				osDelay(50);
 			}
 		}
 	}
@@ -402,7 +416,19 @@ result HMI_ExecInstruction(uint8_t * Data,uint8_t Length)
 }
 
 
-
+result HMI_Task(uint32_t Type,uint32_t Param)
+{
+	uint8_t i = 0;
+	p_Uart2PrivateTypedef U2PD = (p_Uart2PrivateTypedef)usart_1.data;
+	if(U2PD->Recvd == 0xff)//表示收到数据
+	{
+        //要掠过前导0 
+        while(U2PD->Uart2Buf[i] == 0)i++;
+        if(i >= 100)return false;
+		HMI_ExecInstruction(&U2PD->Uart2Buf[i],100 - i);
+		U2PD->Recvd = 0x00;
+	}
+}
 
 
 

@@ -301,26 +301,7 @@ void LowSpeedDeviceTask_2(void const * argument)
 		osDelay(100);
 		cnt ++;if(cnt >= 100000)cnt = 0;
 		//温湿度传感器任务
-		if(cnt % 20 == 0)
-		{
-			SHT20.d_set(1,(uint32_t)&Temperature);
-			SHT20.d_set(2,(uint32_t)&Humidity);
-			if(fabs(TemperatureLast - Temperature) > 0.5 || fabs(HumidityLast - Humidity) > 2)
-			{
-				TemperatureLast = Temperature;
-				HumidityLast = Humidity;
-				osMutexWait(SI4463Mutex,osWaitForever);
-				if(board.ops->sync_send_TH(CHANNEL_0) == true)
-				{
-					Alarm.d_puts(LED2,"10001000",1);
-				}
-				else
-				{
-					Alarm.d_puts(LED2,"11110000",1);
-				}
-				osMutexRelease(SI4463Mutex);
-			}
-		}
+        SHT20.Task(Task_CalledPeriod,cnt);
 		//DS1307任务
 		if(cnt % 5 == 0)
 		{
@@ -359,6 +340,11 @@ void LowSpeedDeviceTask_2(void const * argument)
         {
             GizwitsSync();
         }
+		
+		if(cnt % 1 == 0)
+		{
+			usart_1.Task(0,0);
+		}
 		
 	}
 }

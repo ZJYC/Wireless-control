@@ -34,6 +34,12 @@ typedef struct UsartTcbStruct_
 	result	 IntervalCpt;
 	
 }UsartTcbStruct,*p_UsartTcbStruct;
+typedef struct Uart2PrivateTypedef_
+{
+    uint8_t Uart2Buf[100];
+    uint8_t Uart2BufIndex;
+    uint8_t Recvd;
+}Uart2PrivateTypedef,*p_Uart2PrivateTypedef;
 
 extern deviceModule usart_1;
 extern deviceModule usart_2;

@@ -70,11 +70,12 @@ typedef enum {
 } SHT2xI2cAckState;
 
 typedef struct _sht2x_param_ {
-    float TEMP_HM;
-    float HUMI_HM;
-    float TEMP_POLL;
-    float HUMI_POLL;    
+    float Temperature;
+	float TemperatureLast;
+    float Humidity;
+	float HumidityLast;
     u8 SerialNumber[8];
+    uint32_t Count;
 } SHT2x_PARAM, *P_SHT2x_PARAM;
 
 extern deviceModule SHT20;

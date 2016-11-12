@@ -73,6 +73,14 @@ p_deviceModule device_find_local(uint8_t * name)
 
 #endif
 
+result AddPrivateBuf(p_deviceModule Device,uint8_t * Buf,uint32_t BufLen)
+{
+	if(Buf == 0 || BufLen == 0)return false;
+	Device->data = Buf;
+	Device->DataLen = BufLen;
+	return true;
+}
+
 #if	1//SPI1
 
 peripherals spi_1 = 

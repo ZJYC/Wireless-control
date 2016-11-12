@@ -356,19 +356,18 @@ result d_ADC_Key_process_it(uint32_t ADC_Handle, uint32_t Param2, uint32_t Param
 
 deviceModule d_ADC_Key = 
 {
-	"ADC_KEY",
-	STATE_CLOSE,
-	0x00,
-	Private,
-	d_ADC_Key_Open,
-	d_ADC_Key_Close,
-	d_ADC_Key_Detect,
-	d_ADC_Key_Command,
-	d_ADC_Key_Set,
-	d_ADC_Key_Puts,
-	d_ADC_Key_Gets,
-	d_ADC_Key_TimingProcess,
-	d_ADC_Key_process_it
+	.name               = "ADC_KEY",
+	.state              = STATE_CLOSE,
+	.next               = 0x00,
+	.DA                 = Private,
+	.d_open             = d_ADC_Key_Open,
+	.d_close            = d_ADC_Key_Close,
+	.d_detect           = d_ADC_Key_Detect,
+	.d_command          = d_ADC_Key_Command,
+	.d_set              = d_ADC_Key_Set,
+	.d_puts             = d_ADC_Key_Puts,
+	.d_gets             = d_ADC_Key_Gets,
+	.d_timing_proceee   = d_ADC_Key_TimingProcess,
 };
 
 

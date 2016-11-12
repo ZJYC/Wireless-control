@@ -493,19 +493,17 @@ static uint8_t ds1307_Read(uint8_t ReadAddr)
 
 deviceModule DS1307 = 
 {
-    "DS1307",
-    //0,
-    //0,
-    STATE_CLOSE,
-    0x00,
-	Private,
-    DS1307_open,
-    DS1307_close,
-    DS1307_detect,
-    DS1307_command,
-    DS1307_set,
-    DS1307_puts,
-    DS1307_gets
+    .name               = "DS1307",
+    .state              = STATE_CLOSE,
+    .next               = 0x00,
+	.DA                 = Private,
+    .d_open             = DS1307_open,
+    .d_close            = DS1307_close,
+    .d_detect           = DS1307_detect,
+    .d_command          = DS1307_command,
+    .d_set              = DS1307_set,
+    .d_puts             = DS1307_puts,
+    .d_gets             = DS1307_gets
 };
 
 

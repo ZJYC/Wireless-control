@@ -1,9 +1,13 @@
 
 #include "Board.h"
 
-#define     ACK_LENGTH      10 
+RfPrivateDataTypedef RFPD = 
+{
+    { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 },
+    0,
+};
      
-static uint8_t       AckBuffer[ACK_LENGTH] = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
+//uint8_t AckBuffer[ACK_LENGTH] = { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
 
 void SI4463_Delay(uint32_t cnt);
 
@@ -31,7 +35,9 @@ static result d_open_si4463(void)
     // set the power to max
     SI446X_SET_POWER(0x7F); 
      //     
-    SI446X_START_RX(board.board_Local_channel, 0, PACKET_LENGTH, 8, 8, 8);    
+    SI446X_START_RX(board.board_Local_channel, 0, PACKET_LENGTH, 8, 8, 8);
+    //
+    AddPrivateBuf(&si4463,(uint8_t *)&RFPD,sizeof(RfPrivateDataTypedef));
     //
     SET_STATE(si4463.state,STATE_OPEN);
     RESET_STATE(si4463.state,STATE_CLOSE);
@@ -72,13 +78,7 @@ static result d_close_si4463(void)
 */
 static result d_detect_si4463(void)
 {
-    if(CHECK_STATE(si4463.state,STATE_CLOSE))
-    {
-        if(si4463.d_open() != true)
-        {
-            return false;
-        }
-    }
+    if(CHECK_STATE(si4463.state,STATE_CLOSE) && si4463.d_open() != true)return false;
     
 	return true;
 }
@@ -97,14 +97,8 @@ static result d_detect_si4463(void)
 */
 static result d_command_si4463 (uint8_t * Param1, uint32_t Param2)
 {
-    if(CHECK_STATE(si4463.state,STATE_CLOSE))
-    {
-        if(si4463.d_open() != true)
-        {
-            return false;
-        }
-    }
-	
+    if(CHECK_STATE(si4463.state,STATE_CLOSE) && si4463.d_open() != true)return false;	
+    
 	Param1 = Param1;
 	Param2 = Param2;
 
@@ -127,13 +121,7 @@ static result d_command_si4463 (uint8_t * Param1, uint32_t Param2)
 */
 static result d_set_si4463(uint32_t Param1,uint32_t Param2)
 {
-    if(CHECK_STATE(si4463.state,STATE_CLOSE))
-    {
-        if(si4463.d_open() != true)
-        {
-            return false;
-        }
-    }
+    if(CHECK_STATE(si4463.state,STATE_CLOSE) && si4463.d_open() != true)return false;
 	
 	Param1 = Param1;
 	Param2 = Param2;
@@ -160,15 +148,10 @@ static result d_set_si4463(uint32_t Param1,uint32_t Param2)
 static result d_puts_si4463(uint32_t RecvAddr,uint8_t * start,uint32_t length)
 {
 	uint8_t RepeatCounter = 0;
+    p_RfPrivateDataTypedef RFPD = (p_RfPrivateDataTypedef)si4463.Buf;
 	//retry the send for 4 timers
 	ReSend:
-    if(CHECK_STATE(si4463.state,STATE_CLOSE))
-    {
-        if(si4463.d_open() != true)
-        {
-            return false;
-        }
-    }
+    if(CHECK_STATE(si4463.state,STATE_CLOSE) && si4463.d_open() != true)return false;
     {
 		uint8_t temp[10] = {0x00},cnt = 0,cnt1 = 0;
 		//p_dataframe temp_dataframe = (p_dataframe)start;
@@ -194,8 +177,8 @@ static result d_puts_si4463(uint32_t RecvAddr,uint8_t * start,uint32_t length)
         if(SI446X_START_RX(board.board_Local_channel, 0,ACK_LENGTH  ,8, 8, 8) != true)return false;
         taskEXIT_CRITICAL();
         //osDelay(20);
-        //wait for 0.1 second to check the ACK
-        for(cnt = 0;cnt < 10;cnt ++)
+        //wait for 0.3 second to check the ACK
+        for(cnt = 0;cnt < 30;cnt ++)
         {
             osDelay(10);
             if(SI446X_INT_STATUS(temp) != true)return false;
@@ -205,7 +188,7 @@ static result d_puts_si4463(uint32_t RecvAddr,uint8_t * start,uint32_t length)
                 
                 for(cnt1 = 0;cnt1 < ACK_LENGTH;cnt1 ++)
                 {
-                    if(start[cnt1] != AckBuffer[cnt1])return false;
+                    if(start[cnt1] != RFPD->AckBuffer[cnt1])return false;
                  }
                 //indicate we get the right ACK
                 if(cnt1 == ACK_LENGTH)
@@ -257,13 +240,7 @@ static result d_gets_si4463(uint32_t SendAddr,uint8_t * start,uint32_t length)
     cnt ++;
     if(cnt > 1000000)cnt = 0;
     //In reality I found the SI4463 will become uncontrol so I want init it at regular time.
-    if(CHECK_STATE(si4463.state,STATE_CLOSE) || (cnt % 10000 == 0))
-    {
-        if(si4463.d_open() != true)
-        {
-            return false;
-        }
-    }
+    if(CHECK_STATE(si4463.state,STATE_CLOSE) && si4463.d_open() != true)return false;
     if(LastSendAddr != SendAddr || cnt % 100 == 0)
     {
         LastSendAddr = SendAddr;
@@ -287,7 +264,7 @@ static result d_gets_si4463(uint32_t SendAddr,uint8_t * start,uint32_t length)
 			//the following code due to the reason as above
             if(SI446X_START_RX(temp_dataframe->sender_channel, 0, PACKET_LENGTH,8, 8, 8) != true)return false;
             // send the ACK
-            if(SI446X_SEND_PACKET(AckBuffer, ACK_LENGTH,temp_dataframe->sender_channel,0) != true)return false;
+            if(SI446X_SEND_PACKET(RFPD->AckBuffer, ACK_LENGTH,temp_dataframe->sender_channel,0) != true)return false;
             do
             {  
                 //osDelay(5);
@@ -320,17 +297,11 @@ static result d_timing_proceee_si4463(uint32_t Interval, uint32_t Param2, uint32
 {
 	static uint32_t During = 0x00;
 	
-    if(CHECK_STATE(si4463.state,STATE_CLOSE))
-    {
-        if(si4463.d_open() != true)
-        {
-            return false;
-        }
-    }
+    if(CHECK_STATE(si4463.state,STATE_CLOSE) && si4463.d_open() != true)return false;
 	
 	During += Interval;
-	//every 5 minutss the SI4463 was closed..and then every call to its func will init it 
-	if(During >= 5 * 60 * 1000)
+	//every 3 minutss the SI4463 was closed..and then every call to its func will init it 
+	if(During >= 3 * 60 * 1000)
 	{
 		During = 0;
 		si4463.d_close();
@@ -355,13 +326,7 @@ static result d_timing_proceee_si4463(uint32_t Interval, uint32_t Param2, uint32
 */
 static result d_process_it_si4463(uint32_t Param1, uint32_t Param2, uint32_t Param3)
 {
-    if(CHECK_STATE(si4463.state,STATE_CLOSE))
-    {
-        if(si4463.d_open() != true)
-        {
-            return false;
-        }
-    }
+    if(CHECK_STATE(si4463.state,STATE_CLOSE) && si4463.d_open() != true)return false;
 	
 	Param1 = Param1;
 	Param2 = Param2;
@@ -372,21 +337,19 @@ static result d_process_it_si4463(uint32_t Param1, uint32_t Param2, uint32_t Par
 
 deviceModule si4463 = 
 {
-	"si4463",
-	//1,
-	//1,
-	STATE_CLOSE,
-    0x00,
-	Private,
-	d_open_si4463,
-	d_close_si4463,
-	d_detect_si4463,
-    d_command_si4463,
-	d_set_si4463,
-	d_puts_si4463,
-	d_gets_si4463,
-	d_timing_proceee_si4463,
-	d_process_it_si4463
+	.name               = "si4463",
+	.state              = STATE_CLOSE,
+    .next               = 0x00,
+	.DA                 = Private,
+	.d_open             = d_open_si4463,
+	.d_close            = d_close_si4463,
+	.d_detect           = d_detect_si4463,
+    .d_command          = d_command_si4463,
+	.d_set              = d_set_si4463,
+	.d_puts             = d_puts_si4463,
+	.d_gets             = d_gets_si4463,
+	.d_timing_proceee   = d_timing_proceee_si4463,
+	.d_process_it       = d_process_it_si4463
 };
 
 

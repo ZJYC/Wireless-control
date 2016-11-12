@@ -184,14 +184,15 @@ uint8_t send_sync_time(uint8_t recevier_channel)
 uint8_t sync_send_TH(uint8_t recevier_channel)
 {
     uint8_t string[64] = {0x00},temp[10] = {0x00};
+    SHT2x_PARAM * SHT2xData = (SHT2x_PARAM *)SHT20.data;
     
     strcpy((char *)string,"TH-");
     
-    sprintf((char *)temp,"%4.2f-",Temperature);
+    sprintf((char *)temp,"%4.2f-",SHT2xData->Temperature);
     
     strcat((char *)string,(char *)temp);
 
-    sprintf((char *)temp,"%4.2f-",Humidity);
+    sprintf((char *)temp,"%4.2f-",SHT2xData->Humidity);
     
     strcat((char *)string,(char *)temp);
     

@@ -5,9 +5,8 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 static SerialTCBTypedef SerialTCB_Usart2 = {0x00};
-static uint8_t Uart2Buf[100] = {0x00};
-static uint8_t Uart2BufIndex = 0x00;
-static uint8_t Recvd = 0x00;
+
+static Uart2PrivateTypedef U2PD = {0x00};
 
 #if	1//操作系统驱动接口层
 
@@ -27,6 +26,7 @@ static uint8_t Recvd = 0x00;
 result d_open_usart_1 (void)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
+	p_Uart2PrivateTypedef U2PD = (p_Uart2PrivateTypedef)usart_1.data;
 	
 	__HAL_RCC_USART1_CLK_ENABLE();
 	
@@ -61,9 +61,10 @@ result d_open_usart_1 (void)
     
     SET_STATE(usart_1.state,STATE_OPEN);
     RESET_STATE(usart_1.state,STATE_CLOSE);
-	
-    Uart2BufIndex = 0;
-	usart_1.d_gets(0,&Uart2Buf[Uart2BufIndex],1);
+	//
+    AddPrivateBuf(&usart_1,(uint8_t *)&U2PD,sizeof(Uart2PrivateTypedef));
+    U2PD->Uart2BufIndex = 0;
+	usart_1.d_gets(0,&U2PD->Uart2Buf[U2PD->Uart2BufIndex],1);
 	
 	return true;
 }
@@ -206,25 +207,6 @@ result d_timing_proceee_usart_1(uint32_t Param_1, uint32_t Param_2, uint32_t Par
 	Param_3 = Param_3;
 	
 	if(CHECK_STATE(usart_1.state,STATE_CLOSE))usart_1.d_open();
-	//10ms调用一次
-	//UsartTcbRxTxTimingProcess(&Usart_1_Tcb,Param_1);
-    //if(Timeout-- == 0)
-    //{   
-    //    Timeout = 0;
-    //    //Uart2BufIndex = 0;
-    //}
-	if(Recvd == 0xff)//表示收到数据
-	{
-        while(Uart2Buf[i] == 0)i++;
-        if(i >= 100)return false;
-		HMI_ExecInstruction(&Uart2Buf[i],100 - i);
-		Recvd = 0x00;
-		if(Recvd == 0xff)
-		{
-			Recvd = 0x00;
-			HMI_ExecInstruction(Uart2Buf,0);
-		}
-	}
 	return true;
 }
 /*
@@ -246,20 +228,20 @@ result d_timing_proceee_usart_1(uint32_t Param_1, uint32_t Param_2, uint32_t Par
 result d_process_it_usart_1(uint32_t ItType, uint32_t Param_2, uint32_t Param_3)
 {
 	static uint8_t FF_Counter = 0;
+    p_Uart2PrivateTypedef U2PD = (p_Uart2PrivateTypedef)usart_1.data;
 	//Param_1 = Param_1;
 	Param_2 = Param_2;
 	Param_3 = Param_3;
 	
 	if(CHECK_STATE(usart_1.state,STATE_CLOSE))usart_1.d_open();
 	
-	if(ItType == RxIt && Recvd == 0x00)
+	if(ItType == RxIt && U2PD->Recvd == 0x00)
 	{
-		//UsartTcbRxItProcess(&Usart_1_Tcb);
-		if(Uart2Buf[Uart2BufIndex] == 0xFF)FF_Counter ++;else FF_Counter = 0;
-		if(FF_Counter >= 3 && Uart2BufIndex > 3){FF_Counter = 0;Uart2BufIndex = 0;Recvd = 0xff;}
-		if(Uart2BufIndex >= 100)Uart2BufIndex = 0;
-		Uart2BufIndex++;
-		usart_1.d_gets(0,&Uart2Buf[Uart2BufIndex],1);
+		if(U2PD->Uart2Buf[U2PD->Uart2BufIndex] == 0xFF)FF_Counter ++;else FF_Counter = 0;
+		if(FF_Counter >= 3 && U2PD->Uart2BufIndex > 3){FF_Counter = 0;U2PD->Uart2BufIndex = 0;U2PD->Recvd = 0xff;}
+		if(U2PD->Uart2BufIndex >= 100)U2PD->Uart2BufIndex = 0;
+		U2PD->Uart2BufIndex++;
+		usart_1.d_gets(0,&U2PD->Uart2Buf[U2PD->Uart2BufIndex],1);
 	}
 	if(ItType == TxIt)
 	{
@@ -272,19 +254,20 @@ result d_process_it_usart_1(uint32_t ItType, uint32_t Param_2, uint32_t Param_3)
 
 deviceModule usart_1 = 
 {
-	"Usart_1",
-	STATE_CLOSE,
-	0x00,
-	Private,
-	d_open_usart_1,
-	d_close_usart_1,
-	d_detect_usart_1,
-	d_command_usart_1,
-	d_set_usart_1,
-	d_puts_usart_1,
-	d_gets_usart_1,
-	d_timing_proceee_usart_1,
-	d_process_it_usart_1
+	.name               = "Usart_1",
+	.state              = STATE_CLOSE,
+	.next               = 0x00,
+	.DA                 = Private,
+	.d_open             = d_open_usart_1,
+	.d_close            = d_close_usart_1,
+	.d_detect           = d_detect_usart_1,
+	.d_command          = d_command_usart_1,
+	.d_set              = d_set_usart_1,
+	.d_puts             = d_puts_usart_1,
+	.d_gets             = d_gets_usart_1,
+	.d_timing_proceee   = d_timing_proceee_usart_1,
+	.d_process_it       = d_process_it_usart_1,
+    .Task               = HMI_Task
 };
 
 #endif
@@ -550,19 +533,19 @@ result d_process_it_usart_2(uint32_t ItType, uint32_t Param_2, uint32_t Param_3)
 
 deviceModule usart_2 = 
 {
-	"Usart_2",
-	STATE_CLOSE,
-	0x00,
-	Private,
-	d_open_usart_2,
-	d_close_usart_2,
-	d_detect_usart_2,
-	d_command_usart_2,
-	d_set_usart_2,
-	d_puts_usart_2,
-	d_gets_usart_2,
-	d_timing_proceee_usart_2,
-	d_process_it_usart_2
+	.name               = "Usart_2",
+	.state              = STATE_CLOSE,
+	.next               = 0x00,
+	.DA                 = Private,
+	.d_open             = d_open_usart_2,
+	.d_close            = d_close_usart_2,
+	.d_detect           = d_detect_usart_2,
+	.d_command          = d_command_usart_2,
+	.d_set              = d_set_usart_2,
+	.d_puts             = d_puts_usart_2,
+	.d_gets             = d_gets_usart_2,
+	.d_timing_proceee   = d_timing_proceee_usart_2,
+	//.d_process_it       = //.d_process_it =  d_timing_proceee_usart_2;
 };
 
 
