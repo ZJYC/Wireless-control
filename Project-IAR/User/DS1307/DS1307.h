@@ -27,19 +27,19 @@
 #define ADDR_YEAR		0x06
 #define ADDR_ALL        0x07
 
-typedef struct
+typedef struct DS1307TimeTypedef_
 {
-	 uint8_t sec;
-	 uint8_t min;
-	 uint8_t hour;
-	 uint8_t wday;
-	 uint8_t day;
-	 uint8_t mon;
-	 uint8_t year;
-}DS1307_Time,*p_DS1307_Time;
+	uint8_t sec;
+	uint8_t min;
+	uint8_t hour;
+	uint8_t wday;
+	uint8_t day;
+	uint8_t mon;
+	uint8_t year;
+	uint8_t MinuteLast;
+}DS1307TimeTypedef,*p_DS1307TimeTypedef;
 
 extern deviceModule DS1307;
-extern DS1307_Time Ds1307Time;
 #ifdef __cplusplus
 }
 #endif

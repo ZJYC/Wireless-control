@@ -20,7 +20,7 @@ typedef struct _dataframe
     uint8_t     Key;			//解密种子
     uint16_t    crc;			//CRC校验
 	frame_type  type;			//操作(OPERATION)+传输(DATATRAN)+报警(ALARM)+同步(SYNC)+应答(ACK)
-	uint8_t     level;			//级别
+	//uint8_t     level;			//级别
 	uint8_t     sender_channel;
 	uint8_t     recevier_channel;
 	uint8_t     data_length;//数据长度

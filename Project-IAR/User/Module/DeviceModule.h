@@ -27,7 +27,7 @@ typedef enum _result
     false = 0,
     HMI_ReturnErr = 1,
     HMI_ReturnTrue = 2,
-    true = 0xffff
+    true = 0xff//不可大于0xff，
 } result;
 
 typedef enum _Command

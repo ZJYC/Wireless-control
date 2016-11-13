@@ -169,7 +169,7 @@ static result Alarm_puts(uint32_t LEDx, uint8_t * Directive, uint32_t Cnt)
 	p_Caution caution = (p_Caution)Alarm.data;
 	
 	if(CHECK_STATE(Alarm.state,STATE_CLOSE) && Alarm.d_open() != true)return false;
-
+	
     osMutexWait(AlarmMutex,osWaitForever);
     caution->Counter_1[LEDx] = Cnt,
     caution->Directive[LEDx] = Directive;

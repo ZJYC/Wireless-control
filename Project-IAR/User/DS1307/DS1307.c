@@ -1,7 +1,7 @@
 
 #include "board.h"
 
-static void DS1307_GetTime(DS1307_Time * Ds1307Time);
+static void DS1307_GetTime(DS1307TimeTypedef * Ds1307Time);
 static void DS1307_Delay(u32 n);
 static void DS1307_Init(void);
 static void DS1307_SCL_OUTPUT(void);
@@ -19,8 +19,8 @@ static void RTC_init(void);
 static void ds1307_Write(uint8_t WriteAddr,uint8_t Data);
 static uint8_t ds1307_Read(uint8_t ReadAddr);
 
-//p_DS1307_Time DS1307_Time = (p_DS1307_Time)DS1307.data;
-DS1307_Time Ds1307Time = {0x00};
+//p_DS1307TimeTypedef DS1307Time = (p_DS1307TimeTypedef)DS1307.data;
+DS1307TimeTypedef DS1307Time = {0x00};
 /*
 ****************************************************
 *  Function       : DS1307_open
@@ -37,7 +37,7 @@ static result DS1307_open(void)
 {
     RTC_init();
 	
-	AddPrivateBuf(&DS1307,(uint8_t *)&Ds1307Time,sizeof(DS1307_Time));
+	AddPrivateBuf(&DS1307,(uint8_t *)&DS1307Time,sizeof(DS1307TimeTypedef));
 	
     SET_STATE(DS1307.state,STATE_OPEN);
     RESET_STATE(DS1307.state,STATE_CLOSE);
@@ -188,7 +188,7 @@ static result DS1307_puts(uint32_t RecvAddr, uint8_t * start, uint32_t length)
 */
 static result DS1307_gets(uint32_t Param1, uint8_t * Param2, uint32_t Param3)
 {
-	p_DS1307_Time DS1307_Time = (p_DS1307_Time)DS1307.data;
+	p_DS1307TimeTypedef DS1307Time = (p_DS1307TimeTypedef)DS1307.data;
 	
 	if(CHECK_STATE(DS1307.state,STATE_CLOSE) && DS1307.d_open() != true)return false;
 
@@ -196,16 +196,43 @@ static result DS1307_gets(uint32_t Param1, uint8_t * Param2, uint32_t Param3)
 	Param2 = Param2;
 	Param3 = Param3;
 	
-    DS1307_GetTime(DS1307_Time);
+    DS1307_GetTime(DS1307Time);
 
     return true;
 }
 
+static result DS1307Task(uint32_t Type,uint32_t cnt)
+{
+	p_DS1307TimeTypedef DS1307Time = (p_DS1307TimeTypedef)DS1307.data;
+	
+	if(Task_CalledPeriod == Type && cnt % 5 == 0)
+	{
+		DS1307.d_gets(0,0,0);
+		if(DS1307Time->min != DS1307Time->MinuteLast)
+		{
+			DS1307Time->MinuteLast = DS1307Time->min;
+			osMutexWait(SI4463Mutex,osWaitForever);
+			//同步时间成功闪烁LED2
+			if(send_sync_time(0xFF) == true)
+			{
+				Alarm.d_puts(LED2,"10001000",1);
+			}
+			else
+			{
+				Alarm.d_puts(LED2,"11110000",1);
+			}
+			osMutexRelease(SI4463Mutex);
+		}
+    }
+	
+}
+
 #if 1//DS1307低级驱动
 
-static void DS1307_GetTime(DS1307_Time * Ds1307Time)
+static void DS1307_GetTime(DS1307TimeTypedef * Ds1307Time)
 {
 	uint8_t temp = 0;
+	
 	temp=ds1307_Read(ADDR_SEC);
 	temp = (temp&0x0f) + (((temp>>4)&0x07)*10);
 	Ds1307Time->sec = temp;
@@ -493,7 +520,8 @@ deviceModule DS1307 =
     .d_command          = DS1307_command,
     .d_set              = DS1307_set,
     .d_puts             = DS1307_puts,
-    .d_gets             = DS1307_gets
+    .d_gets             = DS1307_gets,
+	.Task				= DS1307Task
 };
 
 

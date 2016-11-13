@@ -109,20 +109,21 @@ void sync_handle(void)
     
     if(strcmp((char const *)Buf[0],"TIME") == 0)
     {
+        p_DS1307TimeTypedef DS1307Time = (p_DS1307TimeTypedef)DS1307.data;
         //时间同步
-        Ds1307Time.year = atoi((char const *)Buf[1]) - 2000;
+        DS1307Time->year = atoi((char const *)Buf[1]) - 2000;
         
-        Ds1307Time.mon = atoi((char const *)Buf[2]);
+        DS1307Time->mon = atoi((char const *)Buf[2]);
         
-        Ds1307Time.day = atoi((char const *)Buf[3]);
+        DS1307Time->day = atoi((char const *)Buf[3]);
         
-        Ds1307Time.hour = atoi((char const *)Buf[4]);
+        DS1307Time->hour = atoi((char const *)Buf[4]);
         
-        Ds1307Time.min = atoi((char const *)Buf[5]);
+        DS1307Time->min = atoi((char const *)Buf[5]);
         
-        Ds1307Time.sec = atoi((char const *)Buf[6]);
+        DS1307Time->sec = atoi((char const *)Buf[6]);
         
-        Ds1307Time.wday = atoi((char const *)Buf[7]);
+        DS1307Time->wday = atoi((char const *)Buf[7]);
         
     }
     if(strcmp((char const *)Buf[0],"TH") == 0)

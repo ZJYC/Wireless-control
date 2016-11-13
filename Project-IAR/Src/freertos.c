@@ -219,51 +219,18 @@ void HighSpeedDeviceTask_1(void const * argument)
     {
         osDelay(20);
         cnt ++;if(cnt >= 100000)cnt = 0;
-		if(cnt % 2 == 0)
-		{
-			//we used a MUTEX to sync the usage of SI4463,because more than one task use it
-			//get the MUTEX
-			osMutexWait(SI4463Mutex,osWaitForever);
-			//every 100 seconds send the infromation
-			if(cnt % 5000 == 0 && cnt != 0)board_sync_device();
-			//if received success flick the LED2
-			if(board.ops->CheckReceive() == true)Alarm.d_puts(LED2,"10001000",1);
-			//Release the MUTEX
-			osMutexRelease(SI4463Mutex);
-		}
+        si4463.Task(Task_CalledPeriod,cnt);
     }
 }
 
 //H-Device-2
 void HighSpeedDeviceTask_2(void const * argument)
 {
-	static KeyValueEnum KeyValue = 0;
 	uint32_t cnt  = 0; 
     while(1)
 	{
         osDelay(20);
 		cnt ++;if(cnt >= 100000)cnt = 0;
-		//get the key valus
-		/*
-		we use ADkey<judge the key value by the ADC value,Every key Correspond to every ADC value >
-		*/
-		if(cnt % 1 == 0)
-		{
-			d_ADC_Key.d_gets(0,(uint8_t *)&KeyValue,0);
-			if(KeyValue != N)
-			{
-				osMutexWait(SI4463Mutex,osWaitForever);
-				switch(KeyValue)
-				{
-					case A:{board.ops->send_operation("Relay_1-1-OPEN-",CHANNEL_1);break;}
-					case B:{board.ops->send_operation("Relay_2-1-OPEN-",CHANNEL_2);break;}
-					case C:{board.ops->send_operation("Relay_3-1-OPEN-",CHANNEL_3);break;}
-					case D:{board.ops->send_operation("Relay_0-1-OPEN-",CHANNEL_0);break;}
-					default:break;
-				}
-				osMutexRelease(SI4463Mutex);
-			}
-		}
 	}
 }
 //L-Device-2
@@ -284,13 +251,11 @@ void LowSpeedDeviceTask_1(void const * argument)
 //L-Device-1
 void LowSpeedDeviceTask_2(void const * argument)
 {
-    uint8_t SHT2xSerialNumber[8] = {0x00},MinuteLast = 0x00;
 	uint32_t cnt  = 0;
     float TemperatureLast = 0,HumidityLast = 0;
 	//初始化SHT20
     SHT20.d_open();
 	//获取SHT20序列号
-    SHT20.d_set(0,(uint32_t)SHT2xSerialNumber);
 	//初始化时钟
     DS1307.d_open();
     
@@ -303,47 +268,16 @@ void LowSpeedDeviceTask_2(void const * argument)
 		//温湿度传感器任务
         SHT20.Task(Task_CalledPeriod,cnt);
 		//DS1307任务
-		if(cnt % 5 == 0)
-		{
-			DS1307.d_gets(0,0,0);
-			if(Ds1307Time.min != MinuteLast)
-			{
-				MinuteLast = Ds1307Time.min;
-				osMutexWait(SI4463Mutex,osWaitForever);
-				//同步时间成功闪烁LED2
-				if(send_sync_time(0xFF) == true)
-				{
-					Alarm.d_puts(LED2,"10001000",1);
-				}
-				else
-				{
-					Alarm.d_puts(LED2,"11110000",1);
-				}
-				osMutexRelease(SI4463Mutex);
-			}
-		}
-        
-		if(cnt % 600 && CUR_BOARD == MAIN_BOARD && 0)
-		{
-			static uint8_t CntBoardNum = 0,CntBitNum = 0;
-			uint8_t Buf[30] = {0};
-			if(++ CntBoardNum > 3)CntBoardNum = 0;
-			for(CntBitNum = 0;CntBitNum < 6;CntBitNum ++)
-			{
-				sprintf((char*)Buf,"GET-Relay_%d-%d-",CntBoardNum,CntBitNum);
-				send_sync(Buf,GetBoardAddr(CntBoardNum));
-				osDelay(100);
-			}
-		}
+        DS1307.Task(Task_CalledPeriod,cnt);
 		
         if(cnt % 60 == 0 && CUR_BOARD == MAIN_BOARD)
         {
-            GizwitsSync();
+            //GizwitsSync();
         }
 		
 		if(cnt % 1 == 0)
 		{
-			usart_1.Task(0,0);
+			usart_1.Task(0,cnt);
 		}
 		
 	}

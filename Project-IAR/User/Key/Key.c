@@ -158,7 +158,12 @@ static result d_ADC_Key_Open (void)
 	ADC_Enable(&hadc1);
 
 	AddPrivateBuf(&d_ADC_Key,(uint8_t *)&ADC_Key,sizeof(ADC_KeyStruct));
-	
+    {
+        p_ADC_KeyStruct ADC_Key = (p_ADC_KeyStruct)d_ADC_Key.data;
+        ADC_Key->MutexKey = osMutexCreate(0x00);
+        if(ADC_Key->MutexKey == 0x00)return false;
+    }
+    
 	SET_STATE(d_ADC_Key.state,STATE_OPEN);
     RESET_STATE(d_ADC_Key.state,STATE_CLOSE);
 	return true;
@@ -277,7 +282,10 @@ static result d_ADC_Key_Puts (uint32_t RecvAddr, uint8_t * start, uint32_t lengt
 static result d_ADC_Key_Gets (uint32_t SendAddr, uint8_t * p_KeyValue, uint32_t length)
 {
 	KeyValueEnum KeyValue = N;
-	
+	p_ADC_KeyStruct ADC_Key = (p_ADC_KeyStruct)d_ADC_Key.data;
+    
+    osMutexWait(ADC_Key->MutexKey,osWaitForever);
+    
 	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE) && d_ADC_Key.d_open() != true)return false;
 
     SendAddr = SendAddr;
@@ -287,6 +295,8 @@ static result d_ADC_Key_Gets (uint32_t SendAddr, uint8_t * p_KeyValue, uint32_t 
 	
 	*(KeyValueEnum*)p_KeyValue = KeyValue;
 	
+    osMutexRelease(ADC_Key->MutexKey);
+    
 	return true;
 }
 /*
@@ -354,6 +364,7 @@ deviceModule d_ADC_Key =
 	.d_puts             = d_ADC_Key_Puts,
 	.d_gets             = d_ADC_Key_Gets,
 	.d_timing_proceee   = d_ADC_Key_TimingProcess,
+    .d_process_it       = d_ADC_Key_process_it
 };
 
 

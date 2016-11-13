@@ -27,7 +27,7 @@ uint8_t send_data(frame_type type,uint8_t recevier_channel,uint8_t * inf,uint8_t
     
 	//数据填充
 	board.frame_tx->type = type;
-	board.frame_tx->level = board.board_level;
+	//board.frame_tx->level = board.board_level;
 	board.frame_tx->recevier_channel = recevier_channel;
 	board.frame_tx->data_length = length;
 	board.frame_tx->sender_channel = board.board_Local_channel;
@@ -51,7 +51,7 @@ uint8_t send_data(frame_type type,uint8_t recevier_channel,uint8_t * inf,uint8_t
 	//加密数据
     CRC_JIAMI((uint8_t *)tx_buffer);
     
-	/* send 64 bytes once */
+	/* send 64 bytes */
 	if(si4463.d_puts(recevier_channel,tx_buffer,64)== true)
     {
         return true;
@@ -146,36 +146,23 @@ uint8_t send_sync(uint8_t * inf,uint8_t recevier_channel)
 
 uint8_t send_sync_time(uint8_t recevier_channel)
 {
+    p_DS1307TimeTypedef DS1307Time = (p_DS1307TimeTypedef)DS1307.data;
     uint8_t string[64] = {0x00},temp[10] = {0x00};
     
-    strcpy((char *)string,"TIME-20");
-    
-    sprintf((char *)temp,"%d-",Ds1307Time.year);
-    
+    strcpy((char *)string,"TIME-20"); 
+    sprintf((char *)temp,"%d-",DS1307Time->year);
     strcat((char *)string,(char *)temp);
-    
-    sprintf((char *)temp,"%d-",Ds1307Time.mon);
-    
+    sprintf((char *)temp,"%d-",DS1307Time->mon);
     strcat((char *)string,(char *)temp);
-    
-    sprintf((char *)temp,"%d-",Ds1307Time.day);
-    
+    sprintf((char *)temp,"%d-",DS1307Time->day);
     strcat((char *)string,(char *)temp);
-    
-    sprintf((char *)temp,"%d-",Ds1307Time.hour);
-    
+    sprintf((char *)temp,"%d-",DS1307Time->hour);
     strcat((char *)string,(char *)temp);
-    
-    sprintf((char *)temp,"%d-",Ds1307Time.min);
-    
+    sprintf((char *)temp,"%d-",DS1307Time->min);
     strcat((char *)string,(char *)temp);
-    
-    sprintf((char *)temp,"%d-",Ds1307Time.sec);
-    
+    sprintf((char *)temp,"%d-",DS1307Time->sec);
     strcat((char *)string,(char *)temp);
-
-    sprintf((char *)temp,"%d-",Ds1307Time.wday);
-    
+    sprintf((char *)temp,"%d-",DS1307Time->wday);
     strcat((char *)string,(char *)temp);
     
     return send_sync(string,recevier_channel);
@@ -187,13 +174,9 @@ uint8_t sync_send_TH(uint8_t recevier_channel)
     SHT2x_PARAM * SHT2xData = (SHT2x_PARAM *)SHT20.data;
     
     strcpy((char *)string,"TH-");
-    
     sprintf((char *)temp,"%4.2f-",SHT2xData->Temperature);
-    
     strcat((char *)string,(char *)temp);
-
     sprintf((char *)temp,"%4.2f-",SHT2xData->Humidity);
-    
     strcat((char *)string,(char *)temp);
     
     return send_sync(string,recevier_channel);

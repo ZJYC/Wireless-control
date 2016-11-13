@@ -216,7 +216,7 @@ result SHT2x_Task(uint32_t Type,uint32_t Param)
     
 	SHT2xData->Count =  Param;
 	 
-	if(Task_CalledPeriod == Type && SHT2xData->Count % 2000 == 0)
+	if(Task_CalledPeriod == Type && SHT2xData->Count % 20 == 0)
 	{
         //get ...
 		SHT20.d_set(1,0);

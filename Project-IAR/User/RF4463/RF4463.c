@@ -335,6 +335,23 @@ static result d_process_it_si4463(uint32_t Param1, uint32_t Param2, uint32_t Par
 	return true;
 }
 
+static result RF4463Task(uint32_t Type,uint32_t cnt)
+{
+	if(Task_CalledPeriod == Type && cnt % 2 == 0)
+	{
+		//we used a MUTEX to sync the usage of SI4463,because more than one task use it
+		//get the MUTEX
+		osMutexWait(SI4463Mutex,osWaitForever);
+		//every 100 seconds send the infromation
+		if(cnt % 5000 == 0 && cnt != 0)board_sync_device();
+		//if received success flick the LED2
+		if(board.ops->CheckReceive() == true)Alarm.d_puts(LED2,"10001000",1);
+		//Release the MUTEX
+		osMutexRelease(SI4463Mutex);
+	}
+	return true;
+}
+
 deviceModule si4463 = 
 {
 	.name               = "si4463",
@@ -349,7 +366,8 @@ deviceModule si4463 =
 	.d_puts             = d_puts_si4463,
 	.d_gets             = d_gets_si4463,
 	.d_timing_proceee   = d_timing_proceee_si4463,
-	.d_process_it       = d_process_it_si4463
+	.d_process_it       = d_process_it_si4463,
+	.Task				= RF4463Task
 };
 
 

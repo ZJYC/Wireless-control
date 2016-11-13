@@ -16,9 +16,7 @@ typedef struct Caution_
     uint16_t PrivateCnt[5];     //¶ÀÁ¢¼ÆÊýÆ÷
 }Caution,*p_Caution;
 
-
 extern deviceModule Alarm;
-extern Caution caution;
 
 
 

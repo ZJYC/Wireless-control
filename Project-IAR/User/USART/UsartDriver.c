@@ -26,7 +26,6 @@ static Uart2PrivateTypedef U2PD = {0x00};
 result d_open_usart_1 (void)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
-	p_Uart2PrivateTypedef U2PD = (p_Uart2PrivateTypedef)usart_1.data;
 	
 	__HAL_RCC_USART1_CLK_ENABLE();
 	
@@ -63,8 +62,11 @@ result d_open_usart_1 (void)
     RESET_STATE(usart_1.state,STATE_CLOSE);
 	//
     AddPrivateBuf(&usart_1,(uint8_t *)&U2PD,sizeof(Uart2PrivateTypedef));
-    U2PD->Uart2BufIndex = 0;
-	usart_1.d_gets(0,&U2PD->Uart2Buf[U2PD->Uart2BufIndex],1);
+    {
+        p_Uart2PrivateTypedef U2PD = (p_Uart2PrivateTypedef)usart_1.data;
+        U2PD->Uart2BufIndex = 0;
+        usart_1.d_gets(0,&U2PD->Uart2Buf[U2PD->Uart2BufIndex],1);
+    }
 	
 	return true;
 }
@@ -227,7 +229,7 @@ result d_timing_proceee_usart_1(uint32_t Param_1, uint32_t Param_2, uint32_t Par
 
 result d_process_it_usart_1(uint32_t ItType, uint32_t Param_2, uint32_t Param_3)
 {
-	static uint8_t FF_Counter = 0;
+	static uint8_t FF_Counter = 0,Temp = 0;
     p_Uart2PrivateTypedef U2PD = (p_Uart2PrivateTypedef)usart_1.data;
 	//Param_1 = Param_1;
 	Param_2 = Param_2;
@@ -235,13 +237,23 @@ result d_process_it_usart_1(uint32_t ItType, uint32_t Param_2, uint32_t Param_3)
 	
 	if(CHECK_STATE(usart_1.state,STATE_CLOSE))usart_1.d_open();
 	
-	if(ItType == RxIt && U2PD->Recvd == 0x00)
+	if(ItType == RxIt)
 	{
-		if(U2PD->Uart2Buf[U2PD->Uart2BufIndex] == 0xFF)FF_Counter ++;else FF_Counter = 0;
-		if(FF_Counter >= 3 && U2PD->Uart2BufIndex > 3){FF_Counter = 0;U2PD->Uart2BufIndex = 0;U2PD->Recvd = 0xff;}
-		if(U2PD->Uart2BufIndex >= 100)U2PD->Uart2BufIndex = 0;
-		U2PD->Uart2BufIndex++;
-		usart_1.d_gets(0,&U2PD->Uart2Buf[U2PD->Uart2BufIndex],1);
+        if(U2PD->Recvd == 0x00)
+        {
+            if(U2PD->Uart2Buf[U2PD->Uart2BufIndex] == 0xFF)FF_Counter ++;else FF_Counter = 0;
+            if(FF_Counter >= 3 && U2PD->Uart2BufIndex > 3)
+            {
+                FF_Counter = 0;U2PD->Uart2BufIndex = 0;U2PD->Recvd = 0xff;
+            }
+            if(U2PD->Uart2BufIndex >= 100)U2PD->Uart2BufIndex = 0;
+            U2PD->Uart2BufIndex++;
+            usart_1.d_gets(0,&U2PD->Uart2Buf[U2PD->Uart2BufIndex],1);
+        }
+        else
+        {
+            usart_1.d_gets(0,&Temp,1);
+        }
 	}
 	if(ItType == TxIt)
 	{
@@ -545,7 +557,7 @@ deviceModule usart_2 =
 	.d_puts             = d_puts_usart_2,
 	.d_gets             = d_gets_usart_2,
 	.d_timing_proceee   = d_timing_proceee_usart_2,
-	//.d_process_it       = //.d_process_it =  d_timing_proceee_usart_2;
+	.d_process_it       = d_process_it_usart_2
 };
 
 

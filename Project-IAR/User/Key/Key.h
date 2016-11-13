@@ -19,7 +19,7 @@
 */
 
 #include "Board.h"
-
+#include "cmsis_os.h"
 #define NumOfKey	4
 #define ADCPort		GPIOx
 #define ADCPin		PINx
@@ -48,6 +48,8 @@ typedef struct ADC_KeyStruction
 	
 	KeyValueEnum NewKeyValue;
 	KeyValueEnum OldKeyValue;
+    
+    osMutexId MutexKey;
 	
 }ADC_KeyStruct,*p_ADC_KeyStruct;
 
