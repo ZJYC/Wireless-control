@@ -148,7 +148,7 @@ static result d_set_si4463(uint32_t Param1,uint32_t Param2)
 static result d_puts_si4463(uint32_t RecvAddr,uint8_t * start,uint32_t length)
 {
 	uint8_t RepeatCounter = 0;
-    p_RfPrivateDataTypedef RFPD = (p_RfPrivateDataTypedef)si4463.Buf;
+    p_RfPrivateDataTypedef RFPD = (p_RfPrivateDataTypedef)si4463.data;
 	//retry the send for 4 timers
 	ReSend:
     if(CHECK_STATE(si4463.state,STATE_CLOSE) && si4463.d_open() != true)return false;
@@ -234,7 +234,7 @@ static result d_gets_si4463(uint32_t SendAddr,uint8_t * start,uint32_t length)
 {
     static uint8_t LastSendAddr = 0xff,cnt2 = 0;
     static uint32_t cnt = 0;
-    
+    p_RfPrivateDataTypedef RFPD = (p_RfPrivateDataTypedef)si4463.data;
     length = length;
     
     cnt ++;

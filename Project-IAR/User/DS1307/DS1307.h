@@ -36,7 +36,7 @@ typedef struct
 	 uint8_t day;
 	 uint8_t mon;
 	 uint8_t year;
-}DS1307_Time;
+}DS1307_Time,*p_DS1307_Time;
 
 extern deviceModule DS1307;
 extern DS1307_Time Ds1307Time;

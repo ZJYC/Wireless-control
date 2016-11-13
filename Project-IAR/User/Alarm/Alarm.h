@@ -14,7 +14,7 @@ typedef struct Caution_
     uint8_t * Directive[5];   //报警信号
     uint16_t CommonCnt;         //公用计数器
     uint16_t PrivateCnt[5];     //独立计数器
-}Caution;
+}Caution,*p_Caution;
 
 
 extern deviceModule Alarm;

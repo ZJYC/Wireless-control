@@ -1,5 +1,6 @@
 #include "board.h"
 
+//p_Caution caution = (p_Caution)Alarm.data;
 static Caution caution = 
 {
     {0,0,0,0,0},
@@ -37,6 +38,8 @@ static result Alarm_open(void)
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+	
+	AddPrivateBuf(&Alarm,(uint8_t *)&caution,sizeof(Caution));
 	//设置状态
     SET_STATE(Alarm.state,STATE_OPEN);
     RESET_STATE(Alarm.state,STATE_CLOSE);
@@ -79,10 +82,7 @@ static result Alarm_close(void)
 */
 static result Alarm_detect(void)
 {
-	if(CHECK_STATE(Alarm.state,STATE_CLOSE))
-	{
-		Alarm.d_open();
-	}
+	if(CHECK_STATE(Alarm.state,STATE_CLOSE) && Alarm.d_open() != true)return false;
 
     return true;
 }
@@ -100,10 +100,7 @@ static result Alarm_detect(void)
 */
 static result Alarm_command(uint8_t * command, uint32_t param)
 {
-	if(CHECK_STATE(Alarm.state,STATE_CLOSE))
-	{
-		Alarm.d_open();
-	}
+	if(CHECK_STATE(Alarm.state,STATE_CLOSE) && Alarm.d_open() != true)return false;
     return true;
 }
 /*
@@ -120,10 +117,7 @@ static result Alarm_command(uint8_t * command, uint32_t param)
 */
 static result Alarm_set(uint32_t LEDx, uint32_t State)
 {
-	if(CHECK_STATE(Alarm.state,STATE_CLOSE))
-	{
-		Alarm.d_open();
-	}
+	if(CHECK_STATE(Alarm.state,STATE_CLOSE) && Alarm.d_open() != true)return false;
 	
 	switch(LEDx)
 	{
@@ -172,14 +166,13 @@ static result Alarm_set(uint32_t LEDx, uint32_t State)
 */
 static result Alarm_puts(uint32_t LEDx, uint8_t * Directive, uint32_t Cnt)
 {
-	if(CHECK_STATE(Alarm.state,STATE_CLOSE))
-	{
-		Alarm.d_open();
-	}
+	p_Caution caution = (p_Caution)Alarm.data;
+	
+	if(CHECK_STATE(Alarm.state,STATE_CLOSE) && Alarm.d_open() != true)return false;
 
     osMutexWait(AlarmMutex,osWaitForever);
-    caution.Counter_1[LEDx] = Cnt,
-    caution.Directive[LEDx] = Directive;
+    caution->Counter_1[LEDx] = Cnt,
+    caution->Directive[LEDx] = Directive;
     osMutexRelease(AlarmMutex);
     return true;
 }
@@ -197,10 +190,7 @@ static result Alarm_puts(uint32_t LEDx, uint8_t * Directive, uint32_t Cnt)
 */
 static result Alarm_gets(uint32_t SendAddr, uint8_t * start, uint32_t length)
 {
-	if(CHECK_STATE(Alarm.state,STATE_CLOSE))
-	{
-		Alarm.d_open();
-	}
+	if(CHECK_STATE(Alarm.state,STATE_CLOSE) && Alarm.d_open() != true)return false;
 
     return true;
 }
@@ -220,11 +210,9 @@ static result Alarm_timing_process(uint32_t Param1, uint32_t Param2, uint32_t Pa
 {
     uint16_t Cnt1;
     uint8_t * Temp = 0;
+	p_Caution caution = (p_Caution)Alarm.data;
 	
-	if(CHECK_STATE(Alarm.state,STATE_CLOSE))
-	{
-		Alarm.d_open();
-	}
+	if(CHECK_STATE(Alarm.state,STATE_CLOSE) && Alarm.d_open() != true)return false;
 
 	Param1 = Param1;
 	Param2 = Param2;
@@ -233,28 +221,28 @@ static result Alarm_timing_process(uint32_t Param1, uint32_t Param2, uint32_t Pa
     //osMutexWait(AlarmMutex,osWaitForever);
     //循环计数
     taskENTER_CRITICAL();
-    caution.CommonCnt++;if(caution.CommonCnt > 100)caution.CommonCnt = 0;
+    caution->CommonCnt++;if(caution->CommonCnt > 100)caution->CommonCnt = 0;
     for(Cnt1 = 0;Cnt1 < 5;Cnt1 ++)
     {
-        if(caution.Counter_1[Cnt1] != 0x00)
+        if(caution->Counter_1[Cnt1] != 0x00)
         {
-            Temp = caution.Directive[Cnt1];
-            if(Temp[caution.PrivateCnt[Cnt1]] == 0)
+            Temp = caution->Directive[Cnt1];
+            if(Temp[caution->PrivateCnt[Cnt1]] == 0)
             {
-                caution.PrivateCnt[Cnt1] = 0;
-                caution.Counter_1[Cnt1]--;
+                caution->PrivateCnt[Cnt1] = 0;
+                caution->Counter_1[Cnt1]--;
                 Alarm.d_set(Cnt1,0);
                 continue;
             }
-            if(Temp[caution.PrivateCnt[Cnt1]] == '1')
+            if(Temp[caution->PrivateCnt[Cnt1]] == '1')
             {
                 Alarm.d_set(Cnt1,1);
             }
-            if(Temp[caution.PrivateCnt[Cnt1]] == '0')
+            if(Temp[caution->PrivateCnt[Cnt1]] == '0')
             {
                 Alarm.d_set(Cnt1,0);
             }
-            caution.PrivateCnt[Cnt1] ++;
+            caution->PrivateCnt[Cnt1] ++;
         }
     }
     //osMutexRelease(AlarmMutex);

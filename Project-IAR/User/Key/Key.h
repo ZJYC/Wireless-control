@@ -49,7 +49,7 @@ typedef struct ADC_KeyStruction
 	KeyValueEnum NewKeyValue;
 	KeyValueEnum OldKeyValue;
 	
-}ADC_KeyStruct;
+}ADC_KeyStruct,*p_ADC_KeyStruct;
 
 extern deviceModule d_ADC_Key;
 

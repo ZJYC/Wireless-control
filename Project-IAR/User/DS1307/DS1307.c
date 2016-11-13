@@ -19,7 +19,7 @@ static void RTC_init(void);
 static void ds1307_Write(uint8_t WriteAddr,uint8_t Data);
 static uint8_t ds1307_Read(uint8_t ReadAddr);
 
-
+//p_DS1307_Time DS1307_Time = (p_DS1307_Time)DS1307.data;
 DS1307_Time Ds1307Time = {0x00};
 /*
 ****************************************************
@@ -36,6 +36,9 @@ DS1307_Time Ds1307Time = {0x00};
 static result DS1307_open(void)
 {
     RTC_init();
+	
+	AddPrivateBuf(&DS1307,(uint8_t *)&Ds1307Time,sizeof(DS1307_Time));
+	
     SET_STATE(DS1307.state,STATE_OPEN);
     RESET_STATE(DS1307.state,STATE_CLOSE);
     return true;
@@ -73,10 +76,7 @@ static result DS1307_close(void)
 */
 static result DS1307_detect(void)
 {
-	if(CHECK_STATE(DS1307.state,STATE_CLOSE))
-	{
-		DS1307.d_open();
-	}
+	if(CHECK_STATE(DS1307.state,STATE_CLOSE) && DS1307.d_open() != true)return false;
 
     return true;
 }
@@ -94,10 +94,7 @@ static result DS1307_detect(void)
 */
 static result DS1307_command(uint8_t * command, uint32_t param)
 {
-	if(CHECK_STATE(DS1307.state,STATE_CLOSE))
-	{
-		DS1307.d_open();
-	}
+	if(CHECK_STATE(DS1307.state,STATE_CLOSE) && DS1307.d_open() != true)return false;
 
     return true;
 }
@@ -115,10 +112,7 @@ static result DS1307_command(uint8_t * command, uint32_t param)
 */
 static result DS1307_set(uint32_t Area, uint32_t Value)
 {
-	if(CHECK_STATE(DS1307.state,STATE_CLOSE))
-	{
-		DS1307.d_open();
-	}
+	if(CHECK_STATE(DS1307.state,STATE_CLOSE) && DS1307.d_open() != true)return false;
 	
 	switch(Area)
 	{
@@ -176,10 +170,7 @@ static result DS1307_set(uint32_t Area, uint32_t Value)
 */
 static result DS1307_puts(uint32_t RecvAddr, uint8_t * start, uint32_t length)
 {
-	if(CHECK_STATE(DS1307.state,STATE_CLOSE))
-	{
-		DS1307.d_open();
-	}
+	if(CHECK_STATE(DS1307.state,STATE_CLOSE) && DS1307.d_open() != true)return false;
 
     return true;
 }
@@ -197,16 +188,15 @@ static result DS1307_puts(uint32_t RecvAddr, uint8_t * start, uint32_t length)
 */
 static result DS1307_gets(uint32_t Param1, uint8_t * Param2, uint32_t Param3)
 {
-	if(CHECK_STATE(DS1307.state,STATE_CLOSE))
-	{
-		DS1307.d_open();
-	}
+	p_DS1307_Time DS1307_Time = (p_DS1307_Time)DS1307.data;
+	
+	if(CHECK_STATE(DS1307.state,STATE_CLOSE) && DS1307.d_open() != true)return false;
 
     Param1 = Param1;
 	Param2 = Param2;
 	Param3 = Param3;
 	
-    DS1307_GetTime(&Ds1307Time);
+    DS1307_GetTime(DS1307_Time);
 
     return true;
 }

@@ -1,29 +1,30 @@
 
 #include "Board.h"
 
-const RelayStruct RelayArray[6] = 
+REPD_Typedef REPD = 
 {
-    {GPIOE,GPIO_PIN_10},
-    {GPIOE,GPIO_PIN_11},
-    {GPIOE,GPIO_PIN_12},
-    {GPIOE,GPIO_PIN_13},
-    {GPIOE,GPIO_PIN_14},
-    {GPIOE,GPIO_PIN_15}
-};
-
-static uint8_t RelayState[6] = 
-{
-    RelayClose,
-    RelayClose,
-    RelayClose,
-    RelayClose,
-    RelayClose,
-    RelayClose
+	{
+		{GPIOE,GPIO_PIN_10},
+		{GPIOE,GPIO_PIN_11},
+		{GPIOE,GPIO_PIN_12},
+		{GPIOE,GPIO_PIN_13},
+		{GPIOE,GPIO_PIN_14},
+		{GPIOE,GPIO_PIN_15}
+	},
+	{
+		RelayClose,
+		RelayClose,
+		RelayClose,
+		RelayClose,
+		RelayClose,
+		RelayClose
+	}
 };
 
 result SetRelayState(uint8_t Num,uint8_t State)
 {
-    RelayState[Num] = State;
+	p_REPD_Typedef REPD = (p_REPD_Typedef)relay.data;
+    REPD->RelayState[Num] = State;
     return true;
 }
 
@@ -31,13 +32,15 @@ uint8_t * GetRelayState(uint8_t Num)
 {
     static uint8_t Buf[30] = {0x00},Buf_1[10] = {0x00};
 	static uint8_t NOP[] = "NONE";
+	p_REPD_Typedef REPD = (p_REPD_Typedef)relay.data;
+	
 	if(Num > 5)return NOP;
 	
     strcmp((char const *)Buf,(char const *)relay.name);
     strcat((char *)Buf,"-");
     sprintf((char *)Buf_1,"%d-",Num);
     strcat((char *)Buf,(char const *)Buf_1);
-    if(RelayState[Num] == RelayOpen)
+    if(REPD->RelayState[Num] == RelayOpen)
     {
         strcat((char *)Buf,"OPNE-");
     }
@@ -74,6 +77,8 @@ static result d_open_relay(void)
     SET_STATE(relay.state,STATE_OPEN);
     RESET_STATE(relay.state,STATE_CLOSE);
 	
+	AddPrivateBuf(&relay,(uint8_t *)&REPD,sizeof(REPD_Typedef));
+	
 	return true;
 }
 /*
@@ -109,10 +114,7 @@ static result d_close_relay(void)
 */
 static result d_detect_relay(void)
 {
-	if(CHECK_STATE(relay.state,STATE_CLOSE))
-	{
-		relay.d_open();
-	}
+	if(CHECK_STATE(relay.state,STATE_CLOSE) && relay.d_open() != true)return false;
 
 	return true;
 }
@@ -130,18 +132,17 @@ static result d_detect_relay(void)
 */
 static result d_command_relay(uint8_t * command,uint32_t param)
 {
-	if(CHECK_STATE(relay.state,STATE_CLOSE))
-	{
-		relay.d_open();
-	}
+	p_REPD_Typedef REPD = (p_REPD_Typedef)relay.data;
+	
+	if(CHECK_STATE(relay.state,STATE_CLOSE) && relay.d_open() != true)return false;
 
 	if(strcmp((char const *)command,"OPEN") == 0)
     {
-        HAL_GPIO_WritePin(RelayArray[param].GPIOx,RelayArray[param].GPIO_PIN,GPIO_PIN_SET);
+        HAL_GPIO_WritePin(REPD->RelayArray[param].GPIOx,REPD->RelayArray[param].GPIO_PIN,GPIO_PIN_SET);
     }
 	if(strcmp((char const *)command,"CLOSE") == 0)
     {
-        HAL_GPIO_WritePin(RelayArray[param].GPIOx,RelayArray[param].GPIO_PIN,GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(REPD->RelayArray[param].GPIOx,REPD->RelayArray[param].GPIO_PIN,GPIO_PIN_RESET);
     }
 	
 	return true;
@@ -160,13 +161,12 @@ static result d_command_relay(uint8_t * command,uint32_t param)
 */
 static result d_set_relay (uint32_t Bit, uint32_t State)
 {
-	if(CHECK_STATE(relay.state,STATE_CLOSE))
-	{
-		relay.d_open();
-	}
+	p_REPD_Typedef REPD = (p_REPD_Typedef)relay.data;
 	
-	if(State == 1)HAL_GPIO_WritePin(RelayArray[Bit].GPIOx,RelayArray[Bit].GPIO_PIN,GPIO_PIN_SET);
-	if(State == 0)HAL_GPIO_WritePin(RelayArray[Bit].GPIOx,RelayArray[Bit].GPIO_PIN,GPIO_PIN_RESET);
+	if(CHECK_STATE(relay.state,STATE_CLOSE) && relay.d_open() != true)return false;
+	
+	if(State == 1)HAL_GPIO_WritePin(REPD->RelayArray[Bit].GPIOx,REPD->RelayArray[Bit].GPIO_PIN,GPIO_PIN_SET);
+	if(State == 0)HAL_GPIO_WritePin(REPD->RelayArray[Bit].GPIOx,REPD->RelayArray[Bit].GPIO_PIN,GPIO_PIN_RESET);
 	
 	return true;
 }
@@ -184,10 +184,8 @@ static result d_set_relay (uint32_t Bit, uint32_t State)
 */
 static result d_puts_relay (uint32_t Param1, uint8_t * Param2, uint32_t Param3)
 {
-	if(CHECK_STATE(relay.state,STATE_CLOSE))
-	{
-		relay.d_open();
-	}
+	if(CHECK_STATE(relay.state,STATE_CLOSE) && relay.d_open() != true)return false;
+	
 	return true;	
 }
 /*
@@ -204,10 +202,8 @@ static result d_puts_relay (uint32_t Param1, uint8_t * Param2, uint32_t Param3)
 */
 static result d_gets_relay (uint32_t Param1, uint8_t * Param2, uint32_t Param3)
 {
-	if(CHECK_STATE(relay.state,STATE_CLOSE))
-	{
-		relay.d_open();
-	}
+	if(CHECK_STATE(relay.state,STATE_CLOSE) && relay.d_open() != true)return false;
+	
 	return true;	
 }
 /*
@@ -224,10 +220,8 @@ static result d_gets_relay (uint32_t Param1, uint8_t * Param2, uint32_t Param3)
 */
 static result d_timing_proceee_relay(uint32_t Param1, uint32_t Param2, uint32_t Param3)
 {
-	if(CHECK_STATE(relay.state,STATE_CLOSE))
-	{
-		relay.d_open();
-	}
+	if(CHECK_STATE(relay.state,STATE_CLOSE) && relay.d_open() != true)return false;
+	
 	return true;
 }
 /*
@@ -244,10 +238,8 @@ static result d_timing_proceee_relay(uint32_t Param1, uint32_t Param2, uint32_t 
 */
 static result d_process_it_relay(uint32_t Param1, uint32_t Param2, uint32_t Param3)
 {
-	if(CHECK_STATE(relay.state,STATE_CLOSE))
-	{
-		relay.d_open();
-	}
+	if(CHECK_STATE(relay.state,STATE_CLOSE) && relay.d_open() != true)return false;
+	
 	return true;	
 }
 

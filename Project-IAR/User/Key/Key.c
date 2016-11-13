@@ -15,7 +15,9 @@
 
 extern ADC_HandleTypeDef hadc1;
 
-ADC_KeyStruct ADC_Key = 
+//p_ADC_KeyStruct ADC_Key = (p_ADC_KeyStruct)d_ADC_Key.data;
+
+static ADC_KeyStruct ADC_Key = 
 {
 	{0x00},
 	0,
@@ -42,24 +44,25 @@ KeyValueEnum ADC_KeyGetKey(void)
 {
 	uint16_t Max = 0,Min = 4096,i = 0;
 	uint32_t Sum = 0;
+	p_ADC_KeyStruct ADC_Key = (p_ADC_KeyStruct)d_ADC_Key.data;
 	
 	//求和最大值和最小值
 	for(i = 0;i < ADCBufDeep;i ++)
 	{
-		Sum += ADC_Key.KeyADC_Value[i];
+		Sum += ADC_Key->KeyADC_Value[i];
 		
-		if(Max < ADC_Key.KeyADC_Value[i])Max = ADC_Key.KeyADC_Value[i];
-		if(Min > ADC_Key.KeyADC_Value[i])Min = ADC_Key.KeyADC_Value[i];
+		if(Max < ADC_Key->KeyADC_Value[i])Max = ADC_Key->KeyADC_Value[i];
+		if(Min > ADC_Key->KeyADC_Value[i])Min = ADC_Key->KeyADC_Value[i];
 	}
 	//平均值
-	ADC_Key.KeyADC_ValueAverage = (Sum - Max - Min)/(ADCBufDeep - 2);
+	ADC_Key->KeyADC_ValueAverage = (Sum - Max - Min)/(ADCBufDeep - 2);
 	//比较
 	for(i = 0;i < NumOfKey;i ++)
 	{
-		if(ADC_Key.KeyADC_Boundary[i] < ADC_Key.KeyADC_ValueAverage && 
-		ADC_Key.KeyADC_ValueAverage < ADC_Key.KeyADC_Boundary[i + 1])
+		if(ADC_Key->KeyADC_Boundary[i] < ADC_Key->KeyADC_ValueAverage && 
+		ADC_Key->KeyADC_ValueAverage < ADC_Key->KeyADC_Boundary[i + 1])
 		{
-			ADC_Key.NewKeyValue = (KeyValueEnum)(i + 1);
+			ADC_Key->NewKeyValue = (KeyValueEnum)(i + 1);
 			break;
 		}
 	}
@@ -70,21 +73,21 @@ KeyValueEnum ADC_KeyGetKey(void)
 	
 	for(i = 0;i < ADCBufDeep;i ++)
 	{
-		Sum += (ADC_Key.KeyADC_Value[i] - ADC_Key.KeyADC_ValueAverage)*
-		(ADC_Key.KeyADC_Value[i] - ADC_Key.KeyADC_ValueAverage);
+		Sum += (ADC_Key->KeyADC_Value[i] - ADC_Key->KeyADC_ValueAverage)*
+		(ADC_Key->KeyADC_Value[i] - ADC_Key->KeyADC_ValueAverage);
 	}
 	
-	if(Sum > ADC_DX_MAX)ADC_Key.NewKeyValue = N;
+	if(Sum > ADC_DX_MAX)ADC_Key->NewKeyValue = N;
 	
 	//倘若按下一直不放，则返回N
-	if(ADC_Key.NewKeyValue == ADC_Key.OldKeyValue)
+	if(ADC_Key->NewKeyValue == ADC_Key->OldKeyValue)
 	{
 		return N;
 	}
 	else
 	{
-		ADC_Key.OldKeyValue = ADC_Key.NewKeyValue;
-		return ADC_Key.NewKeyValue;
+		ADC_Key->OldKeyValue = ADC_Key->NewKeyValue;
+		return ADC_Key->NewKeyValue;
 	}
 }
 /*
@@ -116,7 +119,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 *  Others         : 
 *****************************************************
 */
-result d_ADC_Key_Open (void)
+static result d_ADC_Key_Open (void)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
 	ADC_ChannelConfTypeDef sConfig;
@@ -154,6 +157,8 @@ result d_ADC_Key_Open (void)
 	
 	ADC_Enable(&hadc1);
 
+	AddPrivateBuf(&d_ADC_Key,(uint8_t *)&ADC_Key,sizeof(ADC_KeyStruct));
+	
 	SET_STATE(d_ADC_Key.state,STATE_OPEN);
     RESET_STATE(d_ADC_Key.state,STATE_CLOSE);
 	return true;
@@ -170,7 +175,7 @@ result d_ADC_Key_Open (void)
 *  Others         : 
 *****************************************************
 */
-result d_ADC_Key_Close (void)
+static result d_ADC_Key_Close (void)
 {
 	HAL_ADC_DeInit(&hadc1);
 	
@@ -189,12 +194,9 @@ result d_ADC_Key_Close (void)
 *  Others         : 
 *****************************************************
 */
-result d_ADC_Key_Detect (void)
+static result d_ADC_Key_Detect (void)
 {
-	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE))
-	{
-		d_ADC_Key.d_open();
-	}
+	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE) && d_ADC_Key.d_open() != true)return false;
 
 	return true;
 }
@@ -210,12 +212,9 @@ result d_ADC_Key_Detect (void)
 *  Others         : 
 *****************************************************
 */
-result d_ADC_Key_Command (uint8_t * command, uint32_t param)
+static result d_ADC_Key_Command (uint8_t * command, uint32_t param)
 {
-	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE))
-	{
-		d_ADC_Key.d_open();
-	}
+	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE) && d_ADC_Key.d_open() != true)return false;
 
 	command = command;
 	param = param;
@@ -233,12 +232,9 @@ result d_ADC_Key_Command (uint8_t * command, uint32_t param)
 *  Others         : 
 *****************************************************
 */
-result d_ADC_Key_Set (uint32_t type, uint32_t param)
+static result d_ADC_Key_Set (uint32_t type, uint32_t param)
 {
-	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE))
-	{
-		d_ADC_Key.d_open();
-	}
+	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE) && d_ADC_Key.d_open() != true)return false;
 
 	type = type;
 	param = param;
@@ -257,13 +253,10 @@ result d_ADC_Key_Set (uint32_t type, uint32_t param)
 *  Others         : 
 *****************************************************
 */
-result d_ADC_Key_Puts (uint32_t RecvAddr, uint8_t * start, uint32_t length)
+static result d_ADC_Key_Puts (uint32_t RecvAddr, uint8_t * start, uint32_t length)
 {
-	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE))
-	{
-		d_ADC_Key.d_open();
-	}
-
+	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE) && d_ADC_Key.d_open() != true)return false;
+	
 	RecvAddr = RecvAddr;
 	start = start;
 	length = length;
@@ -281,14 +274,11 @@ result d_ADC_Key_Puts (uint32_t RecvAddr, uint8_t * start, uint32_t length)
 *  Others         : 
 *****************************************************
 */
-result d_ADC_Key_Gets (uint32_t SendAddr, uint8_t * p_KeyValue, uint32_t length)
+static result d_ADC_Key_Gets (uint32_t SendAddr, uint8_t * p_KeyValue, uint32_t length)
 {
 	KeyValueEnum KeyValue = N;
 	
-	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE))
-	{
-		d_ADC_Key.d_open();
-	}
+	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE) && d_ADC_Key.d_open() != true)return false;
 
     SendAddr = SendAddr;
 	length = length;
@@ -311,12 +301,9 @@ result d_ADC_Key_Gets (uint32_t SendAddr, uint8_t * p_KeyValue, uint32_t length)
 *  Others         : 
 *****************************************************
 */
-result d_ADC_Key_TimingProcess(uint32_t Param1, uint32_t Param2, uint32_t Param3)
+static result d_ADC_Key_TimingProcess(uint32_t Param1, uint32_t Param2, uint32_t Param3)
 {
-	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE))
-	{
-		d_ADC_Key.d_open();
-	}
+	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE) && d_ADC_Key.d_open() != true)return false;
 	
 	Param1 = Param1;
 	Param2 = Param2;
@@ -338,18 +325,17 @@ result d_ADC_Key_TimingProcess(uint32_t Param1, uint32_t Param2, uint32_t Param3
 *  Others         : 
 *****************************************************
 */
-result d_ADC_Key_process_it(uint32_t ADC_Handle, uint32_t Param2, uint32_t Param3)
+static result d_ADC_Key_process_it(uint32_t ADC_Handle, uint32_t Param2, uint32_t Param3)
 {
-	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE))
-	{
-		d_ADC_Key.d_open();
-	}
+	p_ADC_KeyStruct ADC_Key = (p_ADC_KeyStruct)d_ADC_Key.data;
+	
+	if(CHECK_STATE(d_ADC_Key.state,STATE_CLOSE) && d_ADC_Key.d_open() != true)return false;
 	
 	Param2 = Param2;
 	Param3 = Param3;
 	
-	if(ADC_Key.KeyADC_ValuePoint >= ADCBufDeep)ADC_Key.KeyADC_ValuePoint = 0;
-	ADC_Key.KeyADC_Value[ADC_Key.KeyADC_ValuePoint++] = HAL_ADC_GetValue((ADC_HandleTypeDef*)ADC_Handle);
+	if(ADC_Key->KeyADC_ValuePoint >= ADCBufDeep)ADC_Key->KeyADC_ValuePoint = 0;
+	ADC_Key->KeyADC_Value[ADC_Key->KeyADC_ValuePoint++] = HAL_ADC_GetValue((ADC_HandleTypeDef*)ADC_Handle);
 	HAL_ADC_Stop_IT((ADC_HandleTypeDef*)ADC_Handle);
 	return true;
 }
