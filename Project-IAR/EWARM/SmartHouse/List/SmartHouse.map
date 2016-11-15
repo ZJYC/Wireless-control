@@ -1,93 +1,93 @@
 ###############################################################################
 #
-# IAR ELF Linker V7.50.2.10312/W32 for ARM                13/Nov/2016  18:14:27
+# IAR ELF Linker V7.50.2.10312/W32 for ARM                15/Nov/2016  18:54:51
 # Copyright 2007-2015 IAR Systems AB.
 #
 #    Output file  =  
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Exe\SmartHouse.out
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Exe\SmartHouse.out
 #    Map file     =  
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\List\SmartHouse.map
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\List\SmartHouse.map
 #    Command line =  
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\adc.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\Alarm.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\board.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\bsp_driver_sd.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\can.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\cc950.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\cmsis_os.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\CRC_JIAMI.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\croutine.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\dac.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\DataTransfer.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\DeviceModule.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\diskio.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\DS1307.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\event_groups.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\fatfs.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\fatfs_platform.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\ff.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\ff_gen_drv.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\freertos.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\Gizwits.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\gpio.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\Handle.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\heap_4.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\HMI.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\Key.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\list.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\main.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\port.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\portasm.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\queue.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\relay.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\RF4463.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\sd_diskio.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\sdio.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\SerialDriver.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\SerialDriver_Bare.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\SerialDriver_OS.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\SHT2x.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\si446x.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\spi.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\startup_stm32f103xe.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_adc.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_adc_ex.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_can.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_cortex.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_dac.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_dac_ex.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_dma.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_flash.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_flash_ex.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_gpio.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_gpio_ex.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_msp.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_pwr.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_rcc.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_rcc_ex.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_sd.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_spi.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_spi_ex.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_tim.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_tim_ex.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_timebase_TIM.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_uart.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_it.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_ll_sdmmc.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\syscall.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\system_stm32f1xx.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\tasks.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\tim.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\timers.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\usart.o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\UsartDriver.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\adc.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\Alarm.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\board.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\bsp_driver_sd.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\can.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\cc950.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\cmsis_os.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\CRC_JIAMI.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\croutine.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\dac.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\DataTransfer.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\DeviceModule.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\diskio.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\DS1307.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\event_groups.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\fatfs.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\fatfs_platform.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\ff.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\ff_gen_drv.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\freertos.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\Gizwits.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\gpio.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\Handle.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\heap_4.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\HMI.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\Key.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\list.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\main.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\port.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\portasm.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\queue.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\relay.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\RF4463.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\sd_diskio.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\sdio.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\SerialDriver.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\SerialDriver_Bare.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\SerialDriver_OS.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\SHT2x.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\si446x.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\spi.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\startup_stm32f103xe.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_adc.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_adc_ex.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_can.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_cortex.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_dac.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_dac_ex.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_dma.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_flash.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_flash_ex.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_gpio.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_gpio_ex.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_msp.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_pwr.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_rcc.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_rcc_ex.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_sd.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_spi.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_spi_ex.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_tim.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_tim_ex.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_timebase_TIM.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_hal_uart.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_it.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\stm32f1xx_ll_sdmmc.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\syscall.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\system_stm32f1xx.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\tasks.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\tim.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\timers.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\usart.o
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj\UsartDriver.o
 #        --redirect _Printf=_PrintfFull --redirect _Scanf=_ScanfFull -o
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Exe\SmartHouse.out
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Exe\SmartHouse.out
 #        --map
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\List\SmartHouse.map
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\List\SmartHouse.map
 #        --config
-#        C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM/stm32f103xe_flash.icf
+#        C:\GitHub\Wireless-control\Project-IAR\EWARM/stm32f103xe_flash.icf
 #        --semihosting --entry __iar_program_start --vfe
 #
 ###############################################################################
@@ -116,7 +116,7 @@ __dlib_dynamic_initialization = normal
   .intvec             ro code  0x08000000   0x130  startup_stm32f103xe.o [1]
                              - 0x08000130   0x130
 
-"P1":                                      0xd5d1
+"P1":                                      0xd5ef
   .text               ro code  0x08000130  0x1166  xprintffull.o [3]
   .text               ro code  0x08001296    0x20  xmbtowc.o [3]
   .text               ro code  0x080012b6    0x76  lz77_init_single.o [5]
@@ -216,80 +216,73 @@ __dlib_dynamic_initialization = normal
   .text               ro code  0x0800b5e4   0x54c  UsartDriver.o [1]
   .text               ro code  0x0800bb30   0x534  si446x.o [1]
   .text               ro code  0x0800c064   0x4c4  RF4463.o [1]
-  .text               ro code  0x0800c528   0x428  HMI.o [1]
-  .text               ro code  0x0800c950   0x340  Alarm.o [1]
-  .rodata             const    0x0800cc90   0x16c  si446x.o [1]
-  .text               ro code  0x0800cdfc    0xdc  stm32f1xx_it.o [1]
-  .text               ro code  0x0800ced8    0xc0  stm32f1xx_hal_sd.o [1]
-  .text               ro code  0x0800cf98    0x68  system_stm32f1xx.o [1]
-  .text               ro code  0x0800d000    0x40  zero_init3.o [5]
-  .text               ro code  0x0800d040    0x28  data_init.o [5]
-  .iar.init_table     const    0x0800d068    0x20  - Linker created -
-  .rodata             const    0x0800d088    0x1c  HMI.o [1]
-  .text               ro code  0x0800d0a4    0x1a  cmain.o [5]
-  .text               ro code  0x0800d0be     0x4  low_level_init.o [3]
-  .text               ro code  0x0800d0c2     0x4  exit.o [3]
-  .text               ro code  0x0800d0c8     0xa  cexit.o [5]
-  .text               ro code  0x0800d0d4    0x14  exit.o [6]
-  .rodata             const    0x0800d0e8    0x18  freertos.o [1]
-  .rodata             const    0x0800d100    0x18  freertos.o [1]
-  .rodata             const    0x0800d118    0x18  freertos.o [1]
-  .rodata             const    0x0800d130    0x18  freertos.o [1]
-  .rodata             const    0x0800d148    0x14  freertos.o [1]
-  .rodata             const    0x0800d15c    0x14  freertos.o [1]
-  .rodata             const    0x0800d170    0x14  freertos.o [1]
-  .rodata             const    0x0800d184    0x14  freertos.o [1]
-  .rodata             const    0x0800d198    0x14  freertos.o [1]
-  .rodata             const    0x0800d1ac    0x14  freertos.o [1]
-  .rodata             const    0x0800d1c0    0x14  freertos.o [1]
-  .rodata             const    0x0800d1d4    0x14  freertos.o [1]
-  .rodata             const    0x0800d1e8    0x14  HMI.o [1]
-  .rodata             const    0x0800d1fc    0x10  Handle.o [1]
-  .rodata             const    0x0800d20c    0x10  Handle.o [1]
-  .rodata             const    0x0800d21c    0x10  stm32f1xx_hal_rcc.o [1]
-  .rodata             const    0x0800d22c    0x10  system_stm32f1xx.o [1]
-  .text               ro code  0x0800d23c    0x10  startup_stm32f103xe.o [1]
-  .rodata             const    0x0800d24c     0xc  DS1307.o [1]
-  .rodata             const    0x0800d258     0xc  DS1307.o [1]
-  .rodata             const    0x0800d264     0xc  freertos.o [1]
-  .rodata             const    0x0800d270     0xc  freertos.o [1]
-  .rodata             const    0x0800d27c     0xc  HMI.o [1]
-  .rodata             const    0x0800d288     0xc  RF4463.o [1]
-  .rodata             const    0x0800d294     0xc  SHT2x.o [1]
-  .rodata             const    0x0800d2a0     0xc  SHT2x.o [1]
-  .text               ro code  0x0800d2ac     0xc  cstartup_M.o [5]
-  .rodata             const    0x0800d2b8     0x8  board.o [1]
-  .rodata             const    0x0800d2c0     0x8  DataTransfer.o [1]
-  .rodata             const    0x0800d2c8     0x8  DataTransfer.o [1]
-  .rodata             const    0x0800d2d0     0x8  Gizwits.o [1]
-  .rodata             const    0x0800d2d8     0x8  Gizwits.o [1]
-  .rodata             const    0x0800d2e0     0x8  Gizwits.o [1]
-  .rodata             const    0x0800d2e8     0x8  Gizwits.o [1]
-  .rodata             const    0x0800d2f0     0x8  Handle.o [1]
-  .rodata             const    0x0800d2f8     0x8  Handle.o [1]
-  .rodata             const    0x0800d300     0x8  Handle.o [1]
-  .rodata             const    0x0800d308     0x8  Handle.o [1]
-  .rodata             const    0x0800d310     0x8  HMI.o [1]
-  .rodata             const    0x0800d318     0x8  HMI.o [1]
-  .rodata             const    0x0800d320     0x8  relay.o [1]
-  .rodata             const    0x0800d328     0x8  relay.o [1]
-  .rodata             const    0x0800d330     0x8  relay.o [1]
-  .rodata             const    0x0800d338     0x8  relay.o [1]
-  .rodata             const    0x0800d340     0x8  system_stm32f1xx.o [1]
-  .rodata             const    0x0800d348     0x8  tasks.o [1]
-  .rodata             const    0x0800d350     0x8  timers.o [1]
-  .rodata             const    0x0800d358     0x8  timers.o [1]
-  .rodata             const    0x0800d360     0x4  freertos.o [1]
-  .rodata             const    0x0800d364     0x4  freertos.o [1]
-  .rodata             const    0x0800d368     0x4  heap_4.o [1]
-  .rodata             const    0x0800d36c     0x4  port.o [1]
-  .text               ro code  0x0800d370     0x4  startup_stm32f103xe.o [1]
-  .text               ro code  0x0800d374     0x4  startup_stm32f103xe.o [1]
-  .text               ro code  0x0800d378     0x4  startup_stm32f103xe.o [1]
-  .text               ro code  0x0800d37c     0x4  startup_stm32f103xe.o [1]
-  .text               ro code  0x0800d380     0x4  startup_stm32f103xe.o [1]
-  .text               ro code  0x0800d384     0x4  startup_stm32f103xe.o [1]
-  .text               ro code  0x0800d388     0x4  startup_stm32f103xe.o [1]
+  .text               ro code  0x0800c528   0x448  HMI.o [1]
+  .text               ro code  0x0800c970   0x340  Alarm.o [1]
+  .rodata             const    0x0800ccb0   0x16c  si446x.o [1]
+  .text               ro code  0x0800ce1c    0xdc  stm32f1xx_it.o [1]
+  .text               ro code  0x0800cef8    0xc0  stm32f1xx_hal_sd.o [1]
+  .text               ro code  0x0800cfb8    0x68  system_stm32f1xx.o [1]
+  .text               ro code  0x0800d020    0x40  zero_init3.o [5]
+  .text               ro code  0x0800d060    0x28  data_init.o [5]
+  .iar.init_table     const    0x0800d088    0x20  - Linker created -
+  .rodata             const    0x0800d0a8    0x1c  HMI.o [1]
+  .text               ro code  0x0800d0c4    0x1a  cmain.o [5]
+  .text               ro code  0x0800d0de     0x4  low_level_init.o [3]
+  .text               ro code  0x0800d0e2     0x4  exit.o [3]
+  .text               ro code  0x0800d0e8     0xa  cexit.o [5]
+  .text               ro code  0x0800d0f4    0x14  exit.o [6]
+  .rodata             const    0x0800d108    0x18  freertos.o [1]
+  .rodata             const    0x0800d120    0x18  freertos.o [1]
+  .rodata             const    0x0800d138    0x18  freertos.o [1]
+  .rodata             const    0x0800d150    0x18  freertos.o [1]
+  .rodata             const    0x0800d168    0x14  freertos.o [1]
+  .rodata             const    0x0800d17c    0x14  freertos.o [1]
+  .rodata             const    0x0800d190    0x14  freertos.o [1]
+  .rodata             const    0x0800d1a4    0x14  freertos.o [1]
+  .rodata             const    0x0800d1b8    0x14  freertos.o [1]
+  .rodata             const    0x0800d1cc    0x14  freertos.o [1]
+  .rodata             const    0x0800d1e0    0x14  freertos.o [1]
+  .rodata             const    0x0800d1f4    0x14  freertos.o [1]
+  .rodata             const    0x0800d208    0x14  HMI.o [1]
+  .rodata             const    0x0800d21c    0x10  Handle.o [1]
+  .rodata             const    0x0800d22c    0x10  Handle.o [1]
+  .rodata             const    0x0800d23c    0x10  stm32f1xx_hal_rcc.o [1]
+  .rodata             const    0x0800d24c    0x10  system_stm32f1xx.o [1]
+  .text               ro code  0x0800d25c    0x10  startup_stm32f103xe.o [1]
+  .rodata             const    0x0800d26c     0xc  DS1307.o [1]
+  .rodata             const    0x0800d278     0xc  DS1307.o [1]
+  .rodata             const    0x0800d284     0xc  freertos.o [1]
+  .rodata             const    0x0800d290     0xc  freertos.o [1]
+  .rodata             const    0x0800d29c     0xc  RF4463.o [1]
+  .rodata             const    0x0800d2a8     0xc  SHT2x.o [1]
+  .rodata             const    0x0800d2b4     0xc  SHT2x.o [1]
+  .text               ro code  0x0800d2c0     0xc  cstartup_M.o [5]
+  .rodata             const    0x0800d2cc     0x8  board.o [1]
+  .rodata             const    0x0800d2d4     0x8  DataTransfer.o [1]
+  .rodata             const    0x0800d2dc     0x8  DataTransfer.o [1]
+  .rodata             const    0x0800d2e4     0x8  Gizwits.o [1]
+  .rodata             const    0x0800d2ec     0x8  Gizwits.o [1]
+  .rodata             const    0x0800d2f4     0x8  Gizwits.o [1]
+  .rodata             const    0x0800d2fc     0x8  Gizwits.o [1]
+  .rodata             const    0x0800d304     0x8  Handle.o [1]
+  .rodata             const    0x0800d30c     0x8  Handle.o [1]
+  .rodata             const    0x0800d314     0x8  Handle.o [1]
+  .rodata             const    0x0800d31c     0x8  Handle.o [1]
+  .rodata             const    0x0800d324     0x8  HMI.o [1]
+  .rodata             const    0x0800d32c     0x8  HMI.o [1]
+  .rodata             const    0x0800d334     0x8  HMI.o [1]
+  .rodata             const    0x0800d33c     0x8  relay.o [1]
+  .rodata             const    0x0800d344     0x8  relay.o [1]
+  .rodata             const    0x0800d34c     0x8  relay.o [1]
+  .rodata             const    0x0800d354     0x8  relay.o [1]
+  .rodata             const    0x0800d35c     0x8  system_stm32f1xx.o [1]
+  .rodata             const    0x0800d364     0x8  tasks.o [1]
+  .rodata             const    0x0800d36c     0x8  timers.o [1]
+  .rodata             const    0x0800d374     0x8  timers.o [1]
+  .rodata             const    0x0800d37c     0x4  freertos.o [1]
+  .rodata             const    0x0800d380     0x4  freertos.o [1]
+  .rodata             const    0x0800d384     0x4  heap_4.o [1]
+  .rodata             const    0x0800d388     0x4  port.o [1]
   .text               ro code  0x0800d38c     0x4  startup_stm32f103xe.o [1]
   .text               ro code  0x0800d390     0x4  startup_stm32f103xe.o [1]
   .text               ro code  0x0800d394     0x4  startup_stm32f103xe.o [1]
@@ -333,10 +326,17 @@ __dlib_dynamic_initialization = normal
   .text               ro code  0x0800d42c     0x4  startup_stm32f103xe.o [1]
   .text               ro code  0x0800d430     0x4  startup_stm32f103xe.o [1]
   .text               ro code  0x0800d434     0x4  startup_stm32f103xe.o [1]
-  .rodata             const    0x0800d438     0x0  zero_init3.o [5]
-  .rodata             const    0x0800d438     0x0  lz77_init_single.o [5]
-  Initializer bytes   const    0x0800d438   0x2c9  <for P2-1>
-                             - 0x0800d701  0xd5d1
+  .text               ro code  0x0800d438     0x4  startup_stm32f103xe.o [1]
+  .text               ro code  0x0800d43c     0x4  startup_stm32f103xe.o [1]
+  .text               ro code  0x0800d440     0x4  startup_stm32f103xe.o [1]
+  .text               ro code  0x0800d444     0x4  startup_stm32f103xe.o [1]
+  .text               ro code  0x0800d448     0x4  startup_stm32f103xe.o [1]
+  .text               ro code  0x0800d44c     0x4  startup_stm32f103xe.o [1]
+  .text               ro code  0x0800d450     0x4  startup_stm32f103xe.o [1]
+  .rodata             const    0x0800d454     0x0  zero_init3.o [5]
+  .rodata             const    0x0800d454     0x0  lz77_init_single.o [5]
+  Initializer bytes   const    0x0800d454   0x2cb  <for P2-1>
+                             - 0x0800d71f  0xd5ef
 
 "P2", part 1 of 3:                          0x582
   P2-1                         0x20000000   0x582  <Init block>
@@ -483,8 +483,8 @@ Zero (__iar_zero_init3)
           0x20002588  0x8d08
 
 Copy/lz77 (__iar_lz77_init_single3)
-    1 source range, total size 0x2c9 (50% of destination):
-          0x0800d438   0x2c9
+    1 source range, total size 0x2cb (50% of destination):
+          0x0800d454   0x2cb
     1 destination range, total size 0x582:
           0x20000000   0x582
 
@@ -496,18 +496,18 @@ Copy/lz77 (__iar_lz77_init_single3)
 
     Module                        ro code  ro data  rw data
     ------                        -------  -------  -------
-C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj: [1]
+C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj: [1]
     Alarm.o                           832       36      116
-    CRC_JIAMI.o                       368       28       56
-    DS1307.o                        1 540       60       80
-    DataTransfer.o                    840       35      164
+    CRC_JIAMI.o                       368       29       56
+    DS1307.o                        1 540       61       80
+    DataTransfer.o                    840       34      164
     DeviceModule.o                    392       26       52
     Gizwits.o                         444       32      128
-    HMI.o                           1 064      193      229
+    HMI.o                           1 096      188      229
     Handle.o                          630       64
-    Key.o                             860       58      116
+    Key.o                             860       59      116
     RF4463.o                        1 220       58       98
-    SHT2x.o                         1 902       60      100
+    SHT2x.o                         1 902       61      100
     SerialDriver.o                  1 452       16      193
     SerialDriver_OS.o                 160
     UsartDriver.o                   1 356       73      674
@@ -553,7 +553,7 @@ C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\Sm
     timers.o                        1 112       16       56
     usart.o                           344                64
     -------------------------------------------------------
-    Total:                         43 608    1 598   37 246
+    Total:                         43 640    1 596   37 246
 
 command line: [2]
     -------------------------------------------------------
@@ -634,7 +634,7 @@ shb_l.a: [6]
     Gaps                               54
     Linker created                              32    8 192
 -----------------------------------------------------------
-    Grand Total:                   53 282    1 759   45 706
+    Grand Total:                   53 314    1 757   45 706
 
 
 *******************************************************************************
@@ -643,29 +643,29 @@ shb_l.a: [6]
 
 Entry                      Address    Size  Type      Object
 -----                      -------    ----  ----      ------
-.iar.init_table$$Base   0x0800d068           --   Gb  - Linker created -
-.iar.init_table$$Limit  0x0800d088           --   Gb  - Linker created -
-?main                   0x0800d0a5          Code  Gb  cmain.o [5]
-ADC1_2_IRQHandler       0x0800ce05     0xa  Code  Gb  stm32f1xx_it.o [1]
+.iar.init_table$$Base   0x0800d088           --   Gb  - Linker created -
+.iar.init_table$$Limit  0x0800d0a8           --   Gb  - Linker created -
+?main                   0x0800d0c5          Code  Gb  cmain.o [5]
+ADC1_2_IRQHandler       0x0800ce25     0xa  Code  Gb  stm32f1xx_it.o [1]
 ADC_ConversionStop_Disable
                         0x080088dd    0x4a  Code  Gb  stm32f1xx_hal_adc.o [1]
 ADC_Enable              0x0800883f    0x6e  Code  Gb  stm32f1xx_hal_adc.o [1]
 ADC_Key                 0x2000022c    0x2c  Data  Lc  Key.o [1]
 ADC_KeyGetKey           0x080089c5    0xe8  Code  Gb  Key.o [1]
-AHBPrescTable           0x0800d22c    0x10  Data  Gb  system_stm32f1xx.o [1]
+AHBPrescTable           0x0800d24c    0x10  Data  Gb  system_stm32f1xx.o [1]
 AHT2xData               0x2000b100    0x1c  Data  Lc  SHT2x.o [1]
-APBPrescTable           0x0800d340     0x8  Data  Gb  system_stm32f1xx.o [1]
+APBPrescTable           0x0800d35c     0x8  Data  Gb  system_stm32f1xx.o [1]
 AddPrivateBuf           0x08004cc3    0x16  Code  Gb  DeviceModule.o [1]
 Alarm                   0x20000000    0x48  Data  Gb  Alarm.o [1]
 AlarmMutex              0x2000b204     0x4  Data  Gb  freertos.o [1]
-Alarm_close             0x0800c9eb    0x30  Code  Lc  Alarm.o [1]
-Alarm_command           0x0800ca37    0x20  Code  Lc  Alarm.o [1]
-Alarm_detect            0x0800ca1b    0x1c  Code  Lc  Alarm.o [1]
-Alarm_gets              0x0800cb63    0x22  Code  Lc  Alarm.o [1]
-Alarm_open              0x0800c951    0x9a  Code  Lc  Alarm.o [1]
-Alarm_puts              0x0800cb1f    0x44  Code  Lc  Alarm.o [1]
-Alarm_set               0x0800ca57    0xc8  Code  Lc  Alarm.o [1]
-Alarm_timing_process    0x0800cb85    0xf2  Code  Lc  Alarm.o [1]
+Alarm_close             0x0800ca0b    0x30  Code  Lc  Alarm.o [1]
+Alarm_command           0x0800ca57    0x20  Code  Lc  Alarm.o [1]
+Alarm_detect            0x0800ca3b    0x1c  Code  Lc  Alarm.o [1]
+Alarm_gets              0x0800cb83    0x22  Code  Lc  Alarm.o [1]
+Alarm_open              0x0800c971    0x9a  Code  Lc  Alarm.o [1]
+Alarm_puts              0x0800cb3f    0x44  Code  Lc  Alarm.o [1]
+Alarm_set               0x0800ca77    0xc8  Code  Lc  Alarm.o [1]
+Alarm_timing_process    0x0800cba5    0xf2  Code  Lc  Alarm.o [1]
 BSP_SPI_ExchangeByte    0x0800bb4b    0x12  Code  Gb  si446x.o [1]
 BackGroundTask_1        0x080037e1     0xc  Code  Gb  freertos.o [1]
 BackGroundTask_1_Handle
@@ -673,8 +673,8 @@ BackGroundTask_1_Handle
 BackGroundTask_2        0x080037ed     0xc  Code  Gb  freertos.o [1]
 BackGroundTask_2_Handle
                         0x2000b1e4     0x4  Data  Gb  freertos.o [1]
-CAN1_RX1_IRQHandler     0x0800ce23     0xa  Code  Gb  stm32f1xx_it.o [1]
-CAN1_SCE_IRQHandler     0x0800ce2d     0xa  Code  Gb  stm32f1xx_it.o [1]
+CAN1_RX1_IRQHandler     0x0800ce43     0xa  Code  Gb  stm32f1xx_it.o [1]
+CAN1_SCE_IRQHandler     0x0800ce4d     0xa  Code  Gb  stm32f1xx_it.o [1]
 CAN_Receive_IT          0x0800785b   0x17c  Code  Lc  stm32f1xx_hal_can.o [1]
 CAN_Transmit_IT         0x08007817    0x44  Code  Lc  stm32f1xx_hal_can.o [1]
 CRC16CCITT_Table        0x20000088    0x20  Data  Gb  CRC_JIAMI.o [1]
@@ -769,11 +769,11 @@ HAL_RCC_GetPCLK2Freq    0x08007269    0x20  Code  Gb  stm32f1xx_hal_rcc.o [1]
 HAL_RCC_GetSysClockFreq
                         0x080071b9    0x8a  Code  Gb  stm32f1xx_hal_rcc.o [1]
 HAL_RCC_OscConfig       0x080068a9   0x6e8  Code  Gb  stm32f1xx_hal_rcc.o [1]
-HAL_SD_IRQHandler       0x0800ced9    0xb6  Code  Gb  stm32f1xx_hal_sd.o [1]
+HAL_SD_IRQHandler       0x0800cef9    0xb6  Code  Gb  stm32f1xx_hal_sd.o [1]
 HAL_SD_XferCpltCallback
-                        0x0800cf8f     0x2  Code  Wk  stm32f1xx_hal_sd.o [1]
+                        0x0800cfaf     0x2  Code  Wk  stm32f1xx_hal_sd.o [1]
 HAL_SD_XferErrorCallback
-                        0x0800cf91     0x2  Code  Wk  stm32f1xx_hal_sd.o [1]
+                        0x0800cfb1     0x2  Code  Wk  stm32f1xx_hal_sd.o [1]
 HAL_SPI_DeInit          0x08005489    0x38  Code  Gb  stm32f1xx_hal_spi.o [1]
 HAL_SPI_ErrorCallback   0x08005ab3     0x2  Code  Wk  stm32f1xx_hal_spi.o [1]
 HAL_SPI_IRQHandler      0x080059e9    0xca  Code  Gb  stm32f1xx_hal_spi.o [1]
@@ -827,10 +827,10 @@ HAL_UART_TxCpltCallback
                         0x0800ba8b    0x2e  Code  Gb  UsartDriver.o [1]
 HEAP$$Base              0x20001588           --   Gb  - Linker created -
 HEAP$$Limit             0x20002588           --   Gb  - Linker created -
-HMI_ExecInstruction     0x0800c745    0xfe  Code  Gb  HMI.o [1]
-HMI_SendInstruction     0x0800c529    0xcc  Code  Lc  HMI.o [1]
-HMI_SetTime             0x0800c8e3    0x42  Code  Lc  HMI.o [1]
-HMI_Task                0x0800c843    0xa0  Code  Gb  HMI.o [1]
+HMI_ExecInstruction     0x0800c75b   0x100  Code  Gb  HMI.o [1]
+HMI_SendInstruction     0x0800c529    0xe0  Code  Lc  HMI.o [1]
+HMI_SetTime             0x0800c8fd    0x46  Code  Lc  HMI.o [1]
+HMI_Task                0x0800c85b    0xa2  Code  Gb  HMI.o [1]
 HighSpeedDeviceTask_1   0x0800386b    0x5e  Code  Gb  freertos.o [1]
 HighSpeedDeviceTask_1_Handle
                         0x2000b1e8     0x4  Data  Gb  freertos.o [1]
@@ -908,9 +908,9 @@ REPD                    0x200002a4    0x38  Data  Gb  relay.o [1]
 RF4463Task              0x0800c49f    0x56  Code  Lc  RF4463.o [1]
 RFPD                    0x2000032c    0x10  Data  Gb  RF4463.o [1]
 RTC_init                0x08009c6d    0x10  Code  Lc  DS1307.o [1]
-Region$$Table$$Base     0x0800d068           --   Gb  - Linker created -
-Region$$Table$$Limit    0x0800d088           --   Gb  - Linker created -
-SDIO_IRQHandler         0x0800ce87     0xa  Code  Gb  stm32f1xx_it.o [1]
+Region$$Table$$Base     0x0800d088           --   Gb  - Linker created -
+Region$$Table$$Limit    0x0800d0a8           --   Gb  - Linker created -
+SDIO_IRQHandler         0x0800cea7     0xa  Code  Gb  stm32f1xx_it.o [1]
 SHT20                   0x200003a4    0x48  Data  Gb  SHT2x.o [1]
 SHT2x_Task              0x08008eb1    0xc6  Code  Gb  SHT2x.o [1]
 SI4463Mutex             0x2000b200     0x4  Data  Gb  freertos.o [1]
@@ -933,12 +933,12 @@ SI446X_START_RX         0x0800bee1    0xb0  Code  Gb  si446x.o [1]
 SI446X_START_TX         0x0800bdff    0x7a  Code  Gb  si446x.o [1]
 SI446X_TX_FIFO_RESET    0x0800bfa9    0x18  Code  Gb  si446x.o [1]
 SI446X_WAIT_CTS         0x0800bb5d    0x5e  Code  Gb  si446x.o [1]
-SPI1_IRQHandler         0x0800ce55     0xa  Code  Gb  stm32f1xx_it.o [1]
-SPI2_IRQHandler         0x0800ce5f     0xa  Code  Gb  stm32f1xx_it.o [1]
+SPI1_IRQHandler         0x0800ce75     0xa  Code  Gb  stm32f1xx_it.o [1]
+SPI2_IRQHandler         0x0800ce7f     0xa  Code  Gb  stm32f1xx_it.o [1]
 SPI_WaitOnFlagUntilTimeout
                         0x08005ab5    0xf2  Code  Lc  stm32f1xx_hal_spi.o [1]
 SVC_Handler             0x08002e5f          Code  Gb  portasm.o [1]
-SaveHMIValue            0x0800c5f5    0x9c  Code  Lc  HMI.o [1]
+SaveHMIValue            0x0800c609    0x9c  Code  Lc  HMI.o [1]
 SerialInit_Basic        0x0800a91f    0x48  Code  Gb  SerialDriver.o [1]
 SerialInit_OS           0x0800ae59    0x18  Code  Gb  SerialDriver_OS.o [1]
 SerialNotify            0x0800ac81    0x7a  Code  Lc  SerialDriver.o [1]
@@ -953,17 +953,17 @@ SerialTCB_Usart2        0x2000a960   0x128  Data  Lc  UsartDriver.o [1]
 SuspendList             0x2000aa88    0xa0  Data  Gb  SerialDriver.o [1]
 SuspendListAdd          0x0800acfb    0xba  Code  Lc  SerialDriver.o [1]
 SuspendListCheck        0x0800adb5    0x96  Code  Lc  SerialDriver.o [1]
-SyncPage                0x0800c691    0xb4  Code  Lc  HMI.o [1]
+SyncPage                0x0800c6a5    0xb6  Code  Lc  HMI.o [1]
 SysTick_Config          0x08005de1    0x30  Code  Lc  stm32f1xx_hal_cortex.o [1]
-SysTick_Handler         0x0800cdfd     0x8  Code  Gb  stm32f1xx_it.o [1]
+SysTick_Handler         0x0800ce1d     0x8  Code  Gb  stm32f1xx_it.o [1]
 SystemClock_Config      0x08005c7d    0x94  Code  Gb  main.o [1]
 SystemCoreClock         0x200003ec     0x4  Data  Gb  system_stm32f1xx.o [1]
-SystemInit              0x0800cf99    0x4e  Code  Gb  system_stm32f1xx.o [1]
-TIM1_UP_IRQHandler      0x0800ce37     0xa  Code  Gb  stm32f1xx_it.o [1]
-TIM2_IRQHandler         0x0800ce41     0xa  Code  Gb  stm32f1xx_it.o [1]
-TIM3_IRQHandler         0x0800ce4b     0xa  Code  Gb  stm32f1xx_it.o [1]
-TIM6_IRQHandler         0x0800ce91     0xa  Code  Gb  stm32f1xx_it.o [1]
-TIM7_IRQHandler         0x0800ce9b     0xa  Code  Gb  stm32f1xx_it.o [1]
+SystemInit              0x0800cfb9    0x4e  Code  Gb  system_stm32f1xx.o [1]
+TIM1_UP_IRQHandler      0x0800ce57     0xa  Code  Gb  stm32f1xx_it.o [1]
+TIM2_IRQHandler         0x0800ce61     0xa  Code  Gb  stm32f1xx_it.o [1]
+TIM3_IRQHandler         0x0800ce6b     0xa  Code  Gb  stm32f1xx_it.o [1]
+TIM6_IRQHandler         0x0800ceb1     0xa  Code  Gb  stm32f1xx_it.o [1]
+TIM7_IRQHandler         0x0800cebb     0xa  Code  Gb  stm32f1xx_it.o [1]
 TIM_Base_SetConfig      0x08007def    0x88  Code  Gb  stm32f1xx_hal_tim.o [1]
 TIM_ETR_SetConfig       0x080080bd    0x1c  Code  Lc  stm32f1xx_hal_tim.o [1]
 TIM_ITRx_SetConfig      0x080080a7    0x16  Code  Lc  stm32f1xx_hal_tim.o [1]
@@ -981,13 +981,13 @@ UART_EndTransmit_IT     0x0800b1f7    0x30  Code  Lc  stm32f1xx_hal_uart.o [1]
 UART_Receive_IT         0x0800b227    0xc4  Code  Lc  stm32f1xx_hal_uart.o [1]
 UART_SetConfig          0x0800b2eb   0x198  Code  Lc  stm32f1xx_hal_uart.o [1]
 UART_Transmit_IT        0x0800b17d    0x7a  Code  Lc  stm32f1xx_hal_uart.o [1]
-USART1_IRQHandler       0x0800ce69     0xa  Code  Gb  stm32f1xx_it.o [1]
-USART2_IRQHandler       0x0800ce73     0xa  Code  Gb  stm32f1xx_it.o [1]
-USART3_IRQHandler       0x0800ce7d     0xa  Code  Gb  stm32f1xx_it.o [1]
+USART1_IRQHandler       0x0800ce89     0xa  Code  Gb  stm32f1xx_it.o [1]
+USART2_IRQHandler       0x0800ce93     0xa  Code  Gb  stm32f1xx_it.o [1]
+USART3_IRQHandler       0x0800ce9d     0xa  Code  Gb  stm32f1xx_it.o [1]
 USB_HP_CAN1_TX_IRQHandler
-                        0x0800ce0f     0xa  Code  Gb  stm32f1xx_it.o [1]
+                        0x0800ce2f     0xa  Code  Gb  stm32f1xx_it.o [1]
 USB_LP_CAN1_RX0_IRQHandler
-                        0x0800ce19     0xa  Code  Gb  stm32f1xx_it.o [1]
+                        0x0800ce39     0xa  Code  Gb  stm32f1xx_it.o [1]
 Usart2RxMutex           0x2000b20c     0x4  Data  Gb  freertos.o [1]
 Usart2TxMutex           0x2000b208     0x4  Data  Gb  freertos.o [1]
 _EncodingSb_Mbtowc      0x08001f07    0x30  Code  Gb  xencoding_sb.o [3]
@@ -1030,10 +1030,10 @@ __aeabi_memset          0x08003c29          Code  Gb  ABImemset.o [5]
 __aeabi_ui2d            0x080018b5          Code  Gb  I32ToDbl.o [4]
 __aeabi_ui2f            0x080095cd          Code  Gb  I32ToFlt.o [4]
 __aeabi_uldivmod        0x080015ad          Code  Gb  I64DivMod.o [5]
-__cmain                 0x0800d0a5          Code  Gb  cmain.o [5]
+__cmain                 0x0800d0c5          Code  Gb  cmain.o [5]
 __data_Aldata           0x2000b1d8     0x8  Data  Gb  xxmemxmalloc.o [3]
 __data_GetMemChunk      0x08001f4d    0x2c  Code  Gb  xgetmemchunk.o [3]
-__exit                  0x0800d0d5    0x14  Code  Gb  exit.o [6]
+__exit                  0x0800d0f5    0x14  Code  Gb  exit.o [6]
 __iar_Dnorm             0x0800169b    0x42  Code  Gb  xdnorm.o [4]
 __iar_Dscale            0x0800173d   0x10c  Code  Gb  xdscale.o [4]
 __iar_Errno             0x20000508     0x4  Data  Gb  errno.o [3]
@@ -1050,7 +1050,7 @@ __iar_Stoulx            0x0800a6c1   0x13e  Code  Gb  xstoul.o [3]
 __iar_Strchr            0x0800132d          Code  Gb  strchr.o [5]
 __iar_d2uiz             0x08001881          Code  Gb  DblToI32.o [4]
 __iar_dadd              0x08001f91          Code  Gb  DblAdd.o [4]
-__iar_data_init3        0x0800d041    0x28  Code  Gb  data_init.o [5]
+__iar_data_init3        0x0800d061    0x28  Code  Gb  data_init.o [5]
 __iar_dlib_perthread_access
                         0x08002065     0x2  Code  Gb  xtls.o [3]
 __iar_dsub              0x080018e5          Code  Gb  DblSub.o [4]
@@ -1060,7 +1060,7 @@ __iar_fsub              0x080094a5          Code  Gb  FltSub.o [4]
 __iar_fsubStart         0x080094b5          Code  Gb  FltSub.o [4]
 __iar_lz77_init_single3
                         0x080012b7    0x76  Code  Gb  lz77_init_single.o [5]
-__iar_program_start     0x0800d2ad          Code  Gb  cstartup_M.o [5]
+__iar_program_start     0x0800d2c1          Code  Gb  cstartup_M.o [5]
 __iar_ui2d              0x080018b9          Code  Gb  I32ToDbl.o [4]
 __iar_ui2f              0x080095d1          Code  Gb  I32ToFlt.o [4]
 __iar_unaligned___aeabi_memcpy
@@ -1071,12 +1071,12 @@ __iar_unaligned___aeabi_memcpy8
                         0x080014d5          Code  Gb  ABImemcpy_unaligned.o [5]
 __iar_unaligned_strcmp  0x08004c11          Code  Gb  strcmp_unaligned.o [5]
 __iar_unaligned_strcpy  0x08004bcd          Code  Gb  strcpy_unaligned.o [5]
-__iar_zero_init3        0x0800d001    0x40  Code  Gb  zero_init3.o [5]
-__low_level_init        0x0800d0bf     0x4  Code  Gb  low_level_init.o [3]
+__iar_zero_init3        0x0800d021    0x40  Code  Gb  zero_init3.o [5]
+__low_level_init        0x0800d0df     0x4  Code  Gb  low_level_init.o [3]
 __vector_table          0x08000000          Data  Gb  startup_stm32f103xe.o [1]
-_call_main              0x0800d0b1          Code  Gb  cmain.o [5]
-_exit                   0x0800d0c9          Code  Gb  cexit.o [5]
-_main                   0x0800d0bb          Code  Gb  cmain.o [5]
+_call_main              0x0800d0d1          Code  Gb  cmain.o [5]
+_exit                   0x0800d0e9          Code  Gb  cexit.o [5]
+_main                   0x0800d0db          Code  Gb  cmain.o [5]
 ack_handle              0x0800a455     0x2  Code  Gb  Handle.o [1]
 alarm_handle            0x0800a289     0x2  Code  Gb  Handle.o [1]
 atoi                    0x0800a457     0x8  Code  Gb  atoi.o [3]
@@ -1088,7 +1088,7 @@ board_device_list_opera
 board_init              0x08004b5d    0x38  Code  Gb  board.o [1]
 board_sync_device       0x08004869    0x88  Code  Gb  board.o [1]
 caution                 0x2000b0b4    0x2c  Data  Lc  Alarm.o [1]
-config_table_1k         0x0800cc90   0x16c  Data  Gb  si446x.o [1]
+config_table_1k         0x0800ccb0   0x16c  Data  Gb  si446x.o [1]
 d_ADC_Key               0x20000258    0x48  Data  Gb  Key.o [1]
 d_ADC_Key_Close         0x08008baf    0x18  Code  Lc  Key.o [1]
 d_ADC_Key_Command       0x08008be3    0x20  Code  Lc  Key.o [1]
@@ -1158,7 +1158,7 @@ ds1307_Read             0x08009cbd    0x38  Code  Lc  DS1307.o [1]
 ds1307_Write            0x08009c7d    0x40  Code  Lc  DS1307.o [1]
 eTaskConfirmSleepModeStatus
                         0x080029c7    0x3c  Code  Gb  tasks.o [1]
-exit                    0x0800d0c3     0x4  Code  Gb  exit.o [3]
+exit                    0x0800d0e3     0x4  Code  Gb  exit.o [3]
 frame_rx                0x200000a8     0x4  Data  Gb  DataTransfer.o [1]
 free                    0x0800152d    0x7a  Code  Gb  xxmemxfree.o [3]
 hadc1                   0x2000b084    0x30  Data  Gb  adc.o [1]
@@ -1203,7 +1203,7 @@ p_read_spi_1            0x08004d3b    0x3c  Code  Gb  DeviceModule.o [1]
 p_rw_spi_1              0x08004daf    0x36  Code  Gb  DeviceModule.o [1]
 p_write_spi_1           0x08004d77    0x38  Code  Gb  DeviceModule.o [1]
 pcInterruptPriorityRegisters
-                        0x0800d36c     0x4  Data  Lc  port.o [1]
+                        0x0800d388     0x4  Data  Lc  port.o [1]
 prvAddCurrentTaskToDelayedList
                         0x08002b2d    0x4a  Code  Lc  tasks.o [1]
 prvAllocateTCBAndStack  0x08002b77    0x5a  Code  Lc  tasks.o [1]
@@ -1335,7 +1335,7 @@ xBlockAllocatedBit      0x2000b21c     0x4  Data  Lc  heap_4.o [1]
 xDelayedTaskList1       0x2000b130    0x14  Data  Lc  tasks.o [1]
 xDelayedTaskList2       0x2000b144    0x14  Data  Lc  tasks.o [1]
 xFreeBytesRemaining     0x2000b214     0x4  Data  Lc  heap_4.o [1]
-xHeapStructSize         0x0800d368     0x4  Data  Lc  heap_4.o [1]
+xHeapStructSize         0x0800d384     0x4  Data  Lc  heap_4.o [1]
 xMaximumPossibleSuppressedTicks
                         0x2000b224     0x4  Data  Lc  port.o [1]
 xMinimumEverFreeBytesRemaining
@@ -1381,15 +1381,15 @@ xTimerQueue             0x2000b27c     0x4  Data  Lc  timers.o [1]
 xYieldPending           0x2000b260     0x4  Data  Lc  tasks.o [1]
 
 
-[1] = C:\Users\Zhaojingyangchun\Documents\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj
+[1] = C:\GitHub\Wireless-control\Project-IAR\EWARM\SmartHouse\Obj
 [2] = command line
 [3] = dl7M_tlf.a
 [4] = m7M_tl.a
 [5] = rt7M_tl.a
 [6] = shb_l.a
 
-  53 282 bytes of readonly  code memory
-   1 759 bytes of readonly  data memory
+  53 314 bytes of readonly  code memory
+   1 757 bytes of readonly  data memory
   45 706 bytes of readwrite data memory
 
 Errors: none
