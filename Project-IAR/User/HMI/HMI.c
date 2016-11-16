@@ -37,48 +37,48 @@ PageInfTypedef PageAll[] =
     "大北屋",
     2,
     {
-    {0,"c0",14,1},
-    {0,"c1",15,0},
-    {0,"c2",16,1},
-    {0,"n0",18,12},
-    {0,"n1",19,13},
-    {0,"n2",20,14},
+    {0,"c0",14,1,"Temperature_0",0},
+    {0,"c1",15,0,"Humidity_0",0},
+    {0,"c2",16,1,0,0},
+    {0,"n0",18,12,"Relay_0-0-",0},
+    {0,"n1",19,13,"Relay_0-1-",0},
+    {0,"n2",20,14,"Relay_0-2-",0},
     }
     },
     {
     "南屋",
     3,
     {
-    {0,"c0",15,1},
-    {0,"c1",16,0},
-    {0,"c2",17,0},
-    {0,"n0",18,23},
-    {0,"n1",19,34},
-    {0,"n2",20,56},
+    {0,"c0",15,1,"Temperature_1",1},
+    {0,"c1",16,0,"Humidity_1",1},
+    {0,"c2",17,0,0,1},
+    {0,"n0",18,23,"Relay_1-0-",1},
+    {0,"n1",19,34,"Relay_1-1-",1},
+    {0,"n2",20,56,"Relay_1-2-",1},
     }
     },
     {
     "大门",
     4,
     {
-    {0,"c0",15,0},
-    {0,"c1",16,1},
-    {0,"c2",17,1},
-    {0,"n0",18,1},
-    {0,"n1",19,2},
-    {0,"n2",20,3},
+    {0,"c0",15,0,"Temperature_2",2},
+    {0,"c1",16,1,"Humidity_2",2},
+    {0,"c2",17,1,0,2},
+    {0,"n0",18,1,"Relay_2-0-",2},
+    {0,"n1",19,2,"Relay_2-1-",2},
+    {0,"n2",20,3,"Relay_2-2-",2},
     }
     },
     {
     "庭院",
     5,
     {
-    {0,"c0",15,1},
-    {0,"c1",16,1},
-    {0,"c2",17,0},
-    {0,"n0",18,7},
-    {0,"n1",19,8},
-    {0,"n2",20,9},
+    {0,"c0",15,1,"Temperature_3",3},
+    {0,"c1",16,1,"Humidity_3",3},
+    {0,"c2",17,0,0,3},
+    {0,"n0",18,7,"Relay_3-0-",3},
+    {0,"n1",19,8,"Relay_3-1-",3},
+    {0,"n2",20,9,"Relay_3-2-",3},
     }
     }
 };
@@ -94,190 +94,7 @@ PageInfTypedef PageAll[] =
 result HMI_ExecInstruction(uint8_t * Data,uint8_t Length);
 static result HMI_SetTime(p_DS1307TimeTypedef Time);
 static result HMI_SendInstruction(uint8_t * Command,uint8_t Type);
-#if 0//发送指令
-
-static uint8_t * SendInstruct_page(uint8_t * ID)
-{
-    strcpy(BuffHMI,Instruct_page);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,ID);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_ref(uint8_t * ID)
-{
-    strcpy(BuffHMI,Instruct_ref);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,ID);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_click(uint8_t * ID,uint8_t * Event)
-{
-    strcpy(BuffHMI,Instruct_click);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,ID);
-    strcat(BuffHMI,",");
-    strcat(BuffHMI,Event);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_get(uint8_t * ValueName)
-{
-    strcpy(BuffHMI,Instruct_get);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,ValueName);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_print(uint8_t * ValueName)
-{
-    strcpy(BuffHMI,Instruct_print);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,ValueName);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_printh(uint8_t * ValueName)
-{
-    strcpy(BuffHMI,Instruct_printh);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,ValueName);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_vis(uint8_t * ID,uint8_t * State)
-{
-    strcpy(BuffHMI,Instruct_vis);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,ID);
-    strcat(BuffHMI,",");
-    strcat(BuffHMI,State);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_tsw(uint8_t * ID,uint8_t * State)
-{
-    strcpy(BuffHMI,Instruct_tsw);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,ID);
-    strcat(BuffHMI,",");
-    strcat(BuffHMI,State);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_randset(uint8_t * Min,uint8_t * Max)
-{
-    strcpy(BuffHMI,Instruct_randset);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,Min);
-    strcat(BuffHMI,",");
-    strcat(BuffHMI,Max);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_add(uint8_t * ID,uint8_t * ch,uint8_t * val)
-{
-    strcpy(BuffHMI,Instruct_add);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,ID);
-    strcat(BuffHMI,",");
-    strcat(BuffHMI,ch);
-    strcat(BuffHMI,",");
-    strcat(BuffHMI,val);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_cle(uint8_t * ID,uint8_t * ch)
-{
-    strcpy(BuffHMI,Instruct_cle);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,ID);
-    strcat(BuffHMI,",");
-    strcat(BuffHMI,ch);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_addt(uint8_t * ID,uint8_t * ch,uint8_t * qyt)
-{
-    strcpy(BuffHMI,Instruct_addt);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,ID);
-    strcat(BuffHMI,",");
-    strcat(BuffHMI,ch);
-    strcat(BuffHMI,",");
-    strcat(BuffHMI,qyt);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_dovents(void)
-{
-    return Instruct_dovents;
-}
-
-static uint8_t * SendInstruct_sendme(void)
-{
-    return Instruct_sendme;
-}
-
-static uint8_t * SendInstruct_cov(uint8_t * att1,uint8_t * att2,uint8_t * length)
-{
-    strcpy(BuffHMI,Instruct_cov);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,att1);
-    strcat(BuffHMI,",");
-    strcat(BuffHMI,att2);
-    strcat(BuffHMI,",");
-    strcat(BuffHMI,length);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_strlen(uint8_t * att0,uint8_t * att1)
-{
-    strcpy(BuffHMI,Instruct_strlen);
-    strcat(BuffHMI," ");
-    strcat(BuffHMI,att0);
-    strcat(BuffHMI,",");
-    strcat(BuffHMI,att1);
-    return BuffHMI;
-}
-
-static uint8_t * SendInstruct_touch_j(void)
-{
-    return Instruct_touch_j;
-}
-
-static uint8_t * SendInstruct_ref_stop(void)
-{
-    return Instruct_ref_stop;
-}
-
-static uint8_t * SendInstruct_ref_start(void)
-{
-    return Instruct_ref_start;
-}
-
-static uint8_t * SendInstruct_com_stop(void)
-{
-    return Instruct_com_stop;
-}
-
-static uint8_t * SendInstruct_com_start(void)
-{
-    return Instruct_com_start;
-}
-
-static uint8_t * SendInstruct_code_c(void)
-{
-    return Instruct_code_c;
-}
-
-static uint8_t * SendInstruct_rest(void)
-{
-    return Instruct_rest;
-}
-
-#endif
+static result HMI_SyncTH(void);
 
 static result HMI_SendInstruction(uint8_t * Command,uint8_t Type)
 {
@@ -330,8 +147,8 @@ static result HMI_SendInstruction(uint8_t * Command,uint8_t Type)
 
 static result SaveHMIValue(uint8_t PageID,uint8_t ItemID,uint8_t NewValue)
 {
-    uint8_t i = 0,j = 0;
-    
+    uint8_t i = 0,j = 0,Buf[30] = {0x00};
+    //保存数据
     for(i = 0;i < sizeof(PageAll)/sizeof(PageAll[0]);i ++)
     {
         if(PageAll[i].ID == PageID)
@@ -340,7 +157,7 @@ static result SaveHMIValue(uint8_t PageID,uint8_t ItemID,uint8_t NewValue)
             {
                 if(PageAll[i].Item[j].ID == ItemID)
                 {
-                    //PageAll[i].Item[j].Changed = 0xff;
+                    PageAll[i].Item[j].Changed = 0xff;
                     if(PageAll[i].Item[j].Value == 0x00)PageAll[i].Item[j].Value = 1;
                     else PageAll[i].Item[j].Value = 0;
                 }
@@ -348,7 +165,22 @@ static result SaveHMIValue(uint8_t PageID,uint8_t ItemID,uint8_t NewValue)
             
         }
     }
-    
+    //执行数据
+    for(i = 0;i < sizeof(PageAll)/sizeof(PageAll[0]);i ++)
+    {
+        for(j = 0;j < 6; j ++)
+        {
+            if(PageAll[i].Item[j].Changed == 0xff)
+            {
+                PageAll[i].Item[j].Changed = 0x00;
+                strcpy(Buf,PageAll[i].Item[j].DeviceName);
+                if(PageAll[i].Item[j].Value == 0x00)strcat(Buf,"CLOSE-");
+                else strcat(Buf,"OPEN-");
+                send_operation(Buf,PageAll[i].Item[j].Board);
+                Buf[0] = 0x00;
+            }
+        }
+    }
     return true;
     
 }
@@ -357,26 +189,27 @@ static result SyncPage(uint8_t PageID)
 {
     uint8_t i = 0,j = 0,k = 0,Buf[30] = {0x00},Buf_1[10] = {0x00};
     
-    if(PageID == 0)
-    {
-        p_DS1307TimeTypedef DS1307Time = (p_DS1307TimeTypedef)DS1307.data;
-        HMI_SetTime(DS1307Time);
-    }
-    
     for(i = 0;i < sizeof(PageAll)/sizeof(PageAll[0]);i ++)
     {
         if(PageAll[i].ID == PageID)
         {
             for(j = 0;j < 6;j ++)
             {
-                //for(k = 0;k < 3;k ++)
+                if(PageAll[i].Item[j].Name[0] == 'n')
                 {
                     strcpy(Buf,PageAll[i].Item[j].Name);
                     strcat(Buf,".val=");
                     sprintf(Buf_1,"%d",PageAll[i].Item[j].Value);
                     strcat(Buf,Buf_1);
                     HMI_SendInstruction(Buf,0xff);
-                    //osDelay(20);
+                }
+                if(PageAll[i].Item[j].Name[0] == 'c')
+                {
+                    strcpy(Buf,PageAll[i].Item[j].Name);
+                    strcat(Buf,".val=");
+                    //sprintf(Buf_1,"%d",PageAll[i].Item[j].Value);
+                    strcat(Buf,PageAll[i].Item[j].Param);
+                    HMI_SendInstruction(Buf,0xff);
                 }
             }
         }
@@ -430,6 +263,7 @@ result HMI_ExecInstruction(uint8_t * Data,uint8_t Length)
         case HMI_RETURN_DataTransparentRdy:{break;}
         default:break;
     }
+	return true;
 }
 
 
@@ -451,19 +285,20 @@ result HMI_Task(uint32_t Type,uint32_t cnt)
     }
     if(cnt % 30 == 0)
     {
-        HMI_SendInstruction("sendme",0x00);
+        //HMI_SendInstruction("sendme",0x00);
     }
-    if(cnt % 50 == 0)
+    if(cnt % 10 == 0)
     {
         p_DS1307TimeTypedef DS1307Time = (p_DS1307TimeTypedef)DS1307.data;
         HMI_SetTime(DS1307Time);
+        HMI_SyncTH();
     }
 }
 
 static result HMI_SetTime(p_DS1307TimeTypedef Time)
 {
     //t1.txt="2016-08-20"
-    //t0.txt=23:35
+    //t0.txt="23:35"
     uint8_t Buf[30] = {0x00};
     
     if(CurPageID == 0)
@@ -478,6 +313,29 @@ static result HMI_SetTime(p_DS1307TimeTypedef Time)
         HMI_SendInstruction(Buf,0xff);
     
     }
+	else
+	{
+		HMI_SendInstruction("sendme",0x00);
+	}
+		
+}
+
+static result HMI_SyncTH(void)
+{
+    uint8_t i,j;
+    
+    for(i = 0;i < sizeof(PageAll)/sizeof(PageAll[0]);i ++)
+    {
+        for(j = 0;j < 6; j ++)
+        {
+            if(PageAll[i].Item[j].Name[0] == 'c')
+            {
+                strcpy(PageAll[i].Item[j].Param,(const char *)InfSetSearch(PageAll[i].Item[j].DeviceName));
+            }
+        }
+    }
+    
+    return true;
 }
 
 

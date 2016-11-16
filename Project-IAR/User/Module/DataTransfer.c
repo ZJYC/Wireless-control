@@ -23,43 +23,27 @@ p_dataframe frame_tx = (p_dataframe)tx_buffer;
 */
 uint8_t send_data(frame_type type,uint8_t recevier_channel,uint8_t * inf,uint8_t length)
 {
-	uint8_t cnt = 0,* buf = 0;
-    
-	//数据填充
-	board.frame_tx->type = type;
-	//board.frame_tx->level = board.board_level;
-	board.frame_tx->recevier_channel = recevier_channel;
-	board.frame_tx->data_length = length;
-	board.frame_tx->sender_channel = board.board_Local_channel;
-	//复制数据
-	buf = &board.frame_tx->databuf;
-	for(cnt = 0;cnt < length;cnt ++)
-	{
-		buf[cnt] = inf[cnt];
-	}
-	//如果是给自己发送的,则直接调用处理
-	if(recevier_channel == CUR_BOARD)
-	{
-		for(cnt = 0;cnt < 64;cnt ++)
-		{
-			rx_buffer[cnt] = tx_buffer[cnt];
-		}
-		data_recv_process();
+    uint8_t cnt = 0,* buf = 0;
+    //数据填充
+    board.frame_tx->type = type;
+    board.frame_tx->recevier_channel = recevier_channel;
+    board.frame_tx->data_length = length;
+    board.frame_tx->sender_channel = board.board_Local_channel;
+    //复制数据
+    buf = &board.frame_tx->databuf;
+    for(cnt = 0;cnt < length;cnt ++)buf[cnt] = inf[cnt];
+    //如果是给自己发送的,则直接调用处理
+    if(recevier_channel == CUR_BOARD)
+    {
+        for(cnt = 0;cnt < 64;cnt ++)rx_buffer[cnt] = tx_buffer[cnt];
+        data_recv_process();
         return true;
-	}
-	
-	//加密数据
+    }
+    //加密数据
     CRC_JIAMI((uint8_t *)tx_buffer);
-    
-	/* send 64 bytes */
-	if(si4463.d_puts(recevier_channel,tx_buffer,64)== true)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    /* 发送数据 */
+    if(si4463.d_puts(recevier_channel,tx_buffer,64)== true)return true;
+    else return false;
 }
 /*
 ****************************************************
@@ -76,10 +60,7 @@ uint8_t send_data(frame_type type,uint8_t recevier_channel,uint8_t * inf,uint8_t
 */
 uint8_t CheckReceive(void)
 {
-    if(si4463.d_gets(board.board_Local_channel,rx_buffer,64) == true)
-    {
-        return true;
-    }
+    if(si4463.d_gets(board.board_Local_channel,rx_buffer,64) == true)return true;
     return false;
 }
 
@@ -98,9 +79,15 @@ uint8_t CheckReceive(void)
 */
 uint8_t send_alarm(uint8_t * inf,uint8_t recevier_channel)
 {
-	/* send_alarm("wet-L-80%-",4) */
-	uint8_t length = strlen((char const *)inf);
-	return send_data(alarm,recevier_channel,inf,length);
+    /*
+    数据类型+类型+数值+趋向
+    "ALARM-WET-80-LOW-"
+    
+    
+    
+    */
+    uint8_t length = strlen((char const *)inf);
+    return send_data(alarm,recevier_channel,inf,length);
 }
 /*
 ****************************************************
@@ -117,31 +104,30 @@ uint8_t send_alarm(uint8_t * inf,uint8_t recevier_channel)
 */
 uint8_t send_sync(uint8_t * inf,uint8_t recevier_channel)
 {
-	/* send_sync("TIME-2016-07-07-14-24-47-",4) :sync the time*/
-	
-	uint8_t cnt = 0,ChannelTemp = 0xff;
-	uint8_t length = strlen((char const *)inf);
+    
+    uint8_t cnt = 0,ChannelTemp = 0xff;
+    uint8_t length = strlen((char const *)inf);
 
-	//如果频道为0xff，则轮训,否则单发
-	
-	if(recevier_channel == 0xff)
-	{
-		for(cnt = 0;cnt < MAX_DEVICE_NUM;cnt ++)
-		{
-			
+    //如果频道为0xff，则轮训,否则单发
+    
+    if(recevier_channel == 0xff)
+    {
+        for(cnt = 0;cnt < MAX_DEVICE_NUM;cnt ++)
+        {
+            
             if(board.DeviceList[cnt].Used == true && board.DeviceList[cnt].Addr != ChannelTemp)
             {
                 ChannelTemp = board.DeviceList[cnt].Addr;
                 
                 send_data(sync,board.DeviceList[cnt].Addr,inf,length);
             }
-		}
-		return true;
-	}
-	else
-	{
-		return send_data(sync,recevier_channel,inf,length);
-	}
+        }
+        return true;
+    }
+    else
+    {
+        return send_data(sync,recevier_channel,inf,length);
+    }
 }
 
 uint8_t send_sync_time(uint8_t recevier_channel)
@@ -198,7 +184,7 @@ uint8_t sync_send_TH(uint8_t recevier_channel)
 */
 uint8_t send_datatran(uint8_t * data,uint8_t length,uint8_t recevier_channel)
 {
-	return send_data(data_tran,recevier_channel,data,length);
+    return send_data(data_tran,recevier_channel,data,length);
 }
 /*
 ****************************************************
@@ -215,8 +201,8 @@ uint8_t send_datatran(uint8_t * data,uint8_t length,uint8_t recevier_channel)
 */
 uint8_t send_operation(uint8_t * inf,uint8_t recevier_channel)
 {
-	uint8_t length = strlen((char const *)inf);
-	return send_data(operation,recevier_channel,inf,length);
+    uint8_t length = strlen((char const *)inf);
+    return send_data(operation,recevier_channel,inf,length);
 }
 /*
 ****************************************************
@@ -232,28 +218,28 @@ uint8_t send_operation(uint8_t * inf,uint8_t recevier_channel)
 */
 uint8_t data_recv_process(void)
 {
-	switch(frame_rx->type)
-	{
-		case operation:	{operation_handle();break;}
-		case data_tran:	{data_tran_handle();break;}
-		case alarm:		{alarm_handle();break;}
-		case sync:		{sync_handle();break;}
-		case ack:		{ack_handle();break;}
-		default:break;
-	}
+    switch(frame_rx->type)
+    {
+        case operation: {operation_handle();break;}
+        case data_tran: {data_tran_handle();break;}
+        case alarm:     {alarm_handle();break;}
+        case sync:      {sync_handle();break;}
+        case ack:       {ack_handle();break;}
+        default:break;
+    }
     //信息只能使用一次
     frame_rx->type = none;
-	return true;
+    return true;
 }
 
 
 tranops ops = 
 {
-	send_alarm,
-	send_sync,
-	send_datatran,
-	send_operation,
-	data_recv_process,
+    send_alarm,
+    send_sync,
+    send_datatran,
+    send_operation,
+    data_recv_process,
     CheckReceive,
     send_sync_time,
     sync_send_TH

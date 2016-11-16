@@ -100,36 +100,36 @@ void PostSleepProcessing(uint32_t *ulExpectedIdleTime)
 void MX_FREERTOS_Init(void) 
 {
 
-	SI4463Mutex = osMutexCreate(0x00);
-	AlarmMutex = osMutexCreate(0x00);
+    SI4463Mutex = osMutexCreate(0x00);
+    AlarmMutex = osMutexCreate(0x00);
     Usart2RxMutex = osMutexCreate(0x00);
     Usart2TxMutex = osMutexCreate(0x00);
 
-	osTimerDef(HighSpeedTimer, HighSpeedTimerTask);
-	HighSpeedTimer = osTimerCreate(osTimer(HighSpeedTimer), osTimerPeriodic, NULL);
-	osTimerDef(LowSpeedTimer, LowSpeedTimerTask);
-	LowSpeedTimer = osTimerCreate(osTimer(LowSpeedTimer), osTimerPeriodic, NULL);
+    osTimerDef(HighSpeedTimer, HighSpeedTimerTask);
+    HighSpeedTimer = osTimerCreate(osTimer(HighSpeedTimer), osTimerPeriodic, NULL);
+    osTimerDef(LowSpeedTimer, LowSpeedTimerTask);
+    LowSpeedTimer = osTimerCreate(osTimer(LowSpeedTimer), osTimerPeriodic, NULL);
 
-	osTimerStart(HighSpeedTimer,20);
-	osTimerStart(LowSpeedTimer,100);
+    osTimerStart(HighSpeedTimer,20);
+    osTimerStart(LowSpeedTimer,100);
 
-	osThreadDef(BackGroundTask_1, BackGroundTask_1, osPriorityNormal, 0, 1024);
-	BackGroundTask_1_Handle = osThreadCreate(osThread(BackGroundTask_1), NULL);
+    osThreadDef(BackGroundTask_1, BackGroundTask_1, osPriorityNormal, 0, 1024);
+    BackGroundTask_1_Handle = osThreadCreate(osThread(BackGroundTask_1), NULL);
 
-	osThreadDef(BackGroundTask_2, BackGroundTask_2, osPriorityNormal, 0, 1024);
-	BackGroundTask_2_Handle = osThreadCreate(osThread(BackGroundTask_2), NULL);
-	
-	osThreadDef(HighSpeedDeviceTask_1,HighSpeedDeviceTask_1, osPriorityRealtime, 0, 1024);
-	HighSpeedDeviceTask_1_Handle = osThreadCreate(osThread(HighSpeedDeviceTask_1), NULL);
-	
-	osThreadDef(HighSpeedDeviceTask_2,HighSpeedDeviceTask_2, osPriorityNormal, 0, 1024);
-	HighSpeedDeviceTask_2_Handle = osThreadCreate(osThread(HighSpeedDeviceTask_2), NULL);
-	
-	osThreadDef(LowSpeedDeviceTask_2,LowSpeedDeviceTask_2, osPriorityNormal, 0, 1024);
-	LowSpeedDeviceTask_2_Handle = osThreadCreate(osThread(LowSpeedDeviceTask_2), NULL);
-	
-	osThreadDef(LowSpeedDeviceTask_1,LowSpeedDeviceTask_1, osPriorityNormal, 0, 1024);
-	LowSpeedDeviceTask_1_Handle = osThreadCreate(osThread(LowSpeedDeviceTask_1), NULL);
+    osThreadDef(BackGroundTask_2, BackGroundTask_2, osPriorityNormal, 0, 1024);
+    BackGroundTask_2_Handle = osThreadCreate(osThread(BackGroundTask_2), NULL);
+    
+    osThreadDef(HighSpeedDeviceTask_1,HighSpeedDeviceTask_1, osPriorityRealtime, 0, 1024);
+    HighSpeedDeviceTask_1_Handle = osThreadCreate(osThread(HighSpeedDeviceTask_1), NULL);
+    
+    osThreadDef(HighSpeedDeviceTask_2,HighSpeedDeviceTask_2, osPriorityNormal, 0, 1024);
+    HighSpeedDeviceTask_2_Handle = osThreadCreate(osThread(HighSpeedDeviceTask_2), NULL);
+    
+    osThreadDef(LowSpeedDeviceTask_2,LowSpeedDeviceTask_2, osPriorityNormal, 0, 1024);
+    LowSpeedDeviceTask_2_Handle = osThreadCreate(osThread(LowSpeedDeviceTask_2), NULL);
+    
+    osThreadDef(LowSpeedDeviceTask_1,LowSpeedDeviceTask_1, osPriorityNormal, 0, 1024);
+    LowSpeedDeviceTask_1_Handle = osThreadCreate(osThread(LowSpeedDeviceTask_1), NULL);
 }
 /*
 ****************************************************
@@ -146,11 +146,15 @@ void MX_FREERTOS_Init(void)
 */
 void BackGroundTask_1(void const * argument)
 {
-	for(;;)
-	{
-        while(1)osDelay(100);
-
-	}
+    //extern IWDG_HandleTypeDef hiwdg;
+    uint32_t cnt = 0;
+    
+    for(;;)
+    {
+        osDelay(100);if(++cnt > 100000)cnt = 0;
+        //每0.5s重装看门狗
+        if(cnt % 5 == 0)HAL_IWDG_Refresh(&hiwdg);
+    }
 }
 /*
 ****************************************************
@@ -167,37 +171,37 @@ void BackGroundTask_1(void const * argument)
 */
 void BackGroundTask_2(void const * argument)
 {
-	for(;;)
-	{
-		osDelay(100);
-	}
+    for(;;)
+    {
+        osDelay(100);
+    }
 }
 
 //H-speed timer task(20ms)
 void HighSpeedTimerTask(void const * argument)
 {
-	static uint16_t cnt = 0x00;
-	//every 2 seconds we flick the LED1
-	cnt ++;if(cnt > 100)cnt = 0;
+    static uint16_t cnt = 0x00;
+    //every 2 seconds we flick the LED1
+    cnt ++;if(cnt > 100)cnt = 0;
     if(cnt == 0)Alarm.d_puts(LED1,"100000000",1);
-	//devices's timing process is here
-	d_ADC_Key.d_timing_proceee(0,0,0);
-	Alarm.d_timing_proceee(0,0,0);
-	si4463.d_timing_proceee(20,0,0);
+    //devices's timing process is here
+    d_ADC_Key.d_timing_proceee(0,0,0);
+    Alarm.d_timing_proceee(0,0,0);
+    si4463.d_timing_proceee(20,0,0);
     GizwitsTimingProcess();
-	//the TTL(time to live)
-	/*
-	The SI4463 commucation module is One master more slave,So the master need to know wheter the slaver is exist,
-	So once the slaver power on,the first thing to do is send what I have&&Addr to the master,once master receive 
-	such information,It record it and keep it for about 120 seconds,once expired,the master wiil delete it,
-	the slaver need to send such information every 100 seconds to keep that.
-	*/
-	if(cnt % 50 == 0)board_device_list_opera();
+    //the TTL(time to live)
+    /*
+    The SI4463 commucation module is One master more slave,So the master need to know wheter the slaver is exist,
+    So once the slaver power on,the first thing to do is send what I have&&Addr to the master,once master receive 
+    such information,It record it and keep it for about 120 seconds,once expired,the master wiil delete it,
+    the slaver need to send such information every 100 seconds to keep that.
+    */
+    if(cnt % 50 == 0)board_device_list_opera();
 }
 //L-speed timer task(100ms)
 void LowSpeedTimerTask(void const * argument)
 {
-	;
+    ;
 }
 
 
@@ -207,9 +211,9 @@ void HighSpeedDeviceTask_1(void const * argument)
     uint32_t cnt = 0x00;
     
     osDelay(200);
-	//初始化板子数据结构
+    //初始化板子数据结构
     board_init();
-	//初始化完成闪烁LED2
+    //初始化完成闪烁LED2
     Alarm.d_puts(LED1,"10001000",1);
     Alarm.d_puts(LED2,"10001000",1);
     Alarm.d_puts(LED3,"10001000",1);
@@ -226,61 +230,61 @@ void HighSpeedDeviceTask_1(void const * argument)
 //H-Device-2
 void HighSpeedDeviceTask_2(void const * argument)
 {
-	uint32_t cnt  = 0; 
+    uint32_t cnt  = 0; 
     while(1)
-	{
+    {
         osDelay(20);
-		cnt ++;if(cnt >= 100000)cnt = 0;
-	}
+        cnt ++;if(cnt >= 100000)cnt = 0;
+    }
 }
 //L-Device-2
 void LowSpeedDeviceTask_1(void const * argument)
 {
 
-	uint32_t cnt = 0;
+    uint32_t cnt = 0;
 
     if(CUR_BOARD == MAIN_BOARD)GizwitsInit();
     
     while(1)
     {
-		cnt++;if(cnt >= 100000)cnt = 0;
-		osDelay(100);
+        cnt++;if(cnt >= 100000)cnt = 0;
+        osDelay(100);
         if(CUR_BOARD == MAIN_BOARD)GizwitsExecDirective();
     }
 }
 //L-Device-1
 void LowSpeedDeviceTask_2(void const * argument)
 {
-	uint32_t cnt  = 0;
+    uint32_t cnt  = 0;
     float TemperatureLast = 0,HumidityLast = 0;
-	//初始化SHT20
+    //初始化SHT20
     SHT20.d_open();
-	//获取SHT20序列号
-	//初始化时钟
+    //获取SHT20序列号
+    //初始化时钟
     DS1307.d_open();
     
     relay.d_open();
-	
-	while(1)
-	{
-		osDelay(100);
-		cnt ++;if(cnt >= 100000)cnt = 0;
-		//温湿度传感器任务
+    
+    while(1)
+    {
+        osDelay(100);
+        cnt ++;if(cnt >= 100000)cnt = 0;
+        //温湿度传感器任务
         SHT20.Task(Task_CalledPeriod,cnt);
-		//DS1307任务
+        //DS1307任务
         DS1307.Task(Task_CalledPeriod,cnt);
-		
+        
         if(cnt % 60 == 0 && CUR_BOARD == MAIN_BOARD)
         {
             //GizwitsSync();
         }
-		
-		if(cnt % 1 == 0)
-		{
-			usart_1.Task(0,cnt);
-		}
-		
-	}
+        
+        if(cnt % 1 == 0)
+        {
+            usart_1.Task(0,cnt);
+        }
+        
+    }
 }
 /* USER CODE END Application */
 

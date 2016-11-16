@@ -7,6 +7,7 @@
 #include "stm32f1xx_hal.h"
 #include "string.h"
 #include "spi.h"
+#include "iwdg.h"
 #include "FreeRTOS.h"
 #include "Alarm.h"
 #include "SHT2x.h"
@@ -32,16 +33,16 @@
 #define u16         uint16_t
 #define u32         uint32_t
 
-#define CHANNEL_0	0
-#define CHANNEL_1	1
-#define CHANNEL_2	2
-#define CHANNEL_3	3
-#define CHANNEL_4	4
-#define CHANNEL_5	5
-#define CHANNEL_6	6
-#define CHANNEL_7	7
-#define CHANNEL_8	8
-#define CHANNEL_9	9
+#define CHANNEL_0   0
+#define CHANNEL_1   1
+#define CHANNEL_2   2
+#define CHANNEL_3   3
+#define CHANNEL_4   4
+#define CHANNEL_5   5
+#define CHANNEL_6   6
+#define CHANNEL_7   7
+#define CHANNEL_8   8
+#define CHANNEL_9   9
 #define MAIN_BOARD      CHANNEL_0
 #define BOARD_1         CHANNEL_1
 #define BOARD_2         CHANNEL_2
@@ -64,21 +65,21 @@ typedef struct DeviceListAll_
 //描述一个板子
 typedef struct _boardstruct
 {
-	uint8_t board_name[16];                     //板子的名称
-	uint8_t board_level;                        //板子的等级
-	uint8_t board_Local_channel;                //板子本地地址
-	p_deviceModule device_list;                 //本板的所有器件列表
-    p_DeviceListAll DeviceList;   				//外板的器件列表
-	p_dataframe frame_rx;                       //本板的接收缓冲区
-	p_dataframe frame_tx;                       //本板的发送缓冲区
-	p_tranops ops;                              //本板的操作函数
+    uint8_t board_name[16];                     //板子的名称
+    uint8_t board_level;                        //板子的等级
+    uint8_t board_Local_channel;                //板子本地地址
+    p_deviceModule device_list;                 //本板的所有器件列表
+    p_DeviceListAll DeviceList;                 //外板的器件列表
+    p_dataframe frame_rx;                       //本板的接收缓冲区
+    p_dataframe frame_tx;                       //本板的发送缓冲区
+    p_tranops ops;                              //本板的操作函数
 }boardstruct;
 
 typedef struct InfSet_
 {
-	result Used;
-	uint8_t Name[32];//信息名称
-	uint8_t Param[32];//信息内容
+    result Used;
+    uint8_t Name[32];//信息名称
+    uint8_t Param[32];//信息内容
 }InfSet,*p_InfSet;
 
 extern boardstruct board;

@@ -1014,6 +1014,9 @@
         <name>$PROJ_DIR$\..\Src\gpio.c</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\Src\iwdg.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\Src\main.c</name>
       </file>
       <file>
@@ -1084,6 +1087,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio_ex.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_iwdg.c</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_pwr.c</name>
